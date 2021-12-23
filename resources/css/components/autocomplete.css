@@ -1,0 +1,22 @@
+.autocomplete-container {
+    @apply z-10 absolute bg-white mt-2 rounded-lg shadow-xl w-1/3
+}
+
+.autocomplete-ul {
+    @apply items-center list-none px-2
+}
+
+.autocomplete-li {
+    @apply px-4 py-2 cursor-pointer -mx-2 transition duration-100 hover:bg-green-500 hover:text-white text-green-500
+}
+
+.autocomplete-enter-active,
+.autocomplete-leave-active {
+    transition: all 0.4s;
+}
+
+.autocomplete-enter,
+.autocomplete-leave-active {
+    opacity: 0;
+    transform: translateY(-7px);
+}
