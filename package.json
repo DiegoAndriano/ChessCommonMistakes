@@ -27,6 +27,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "loadash": "^1.0.0",
         "moment": "^2.29.1",
         "vue-chessboard": "^0.6.7"
     }
