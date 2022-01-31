@@ -1,5 +1,5 @@
 <x-app>
-    <div class="bg-white py-3">
+    <div id="app" class="bg-white py-3">
         <div class="flex justify-around">
 
             <div class="font-bold text-xl">
@@ -29,6 +29,11 @@
         </div>
     </div>
 
+prueba 1
+    <chess-component></chess-component>
+
+    prueba 2
+    <chessboard></chessboard>
 {{--    <leaflet-geosearch></leaflet-geosearch>--}}
 
 </x-app>

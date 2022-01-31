@@ -11,6 +11,7 @@
     },
     "devDependencies": {
         "@vue/compiler-sfc": "^3.2.19",
+        "@vue/devtools": "^5.3.4",
         "autoprefixer": "^10.3.6",
         "axios": "^0.21",
         "bootstrap": "^4.6.0",
