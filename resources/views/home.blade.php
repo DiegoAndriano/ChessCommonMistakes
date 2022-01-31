@@ -1,33 +1,34 @@
 <x-app>
-    <div class="bg-analogue-500 py-10">
+    <div class="bg-white py-3">
         <div class="flex justify-around">
 
-            <div>
-                LOGO
+            <div class="font-bold text-xl">
+                Chess Common Mistakes
             </div>
 
             <li class="flex">
-                <ul class="text-lg px-10 py-4 text-primary-500 font-semibold">
+                <ul class="text-lg px-10 py-4 text-green-500 font-semibold">
                     Inicio
                 </ul>
-                <ul class="text-lg px-10 py-4 text-white font-semibold">
-                    Comprar
+                <ul class="text-lg px-10 py-4 text-black font-semibold">
+                    Uno
                 </ul>
-                <ul class="text-lg px-10 py-4 text-white font-semibold">
-                    Vender
+                <ul class="text-lg px-10 py-4 text-black font-semibold">
+                    Otro
                 </ul>
-                <ul class="text-lg px-10 py-4 text-white font-semibold">
-                    Alquilar
+                <ul class="text-lg px-10 py-4 text-black font-semibold">
+                    Ese
                 </ul>
-                <ul class="text-lg px-10 py-4 text-white font-semibold">
-                    Institucional
+                <ul class="text-lg px-10 py-4 text-black font-semibold">
+                    Aquél
                 </ul>
             </li>
 
-            <p class="text-lg px-8 py-4 text-primary-500 border-2 border-primary-500 font-semibold">Contacto</p>
+            <p class="text-lg px-8 py-4 text-black-500 border-2 border-green-500 font-semibold">Contacto</p>
+
         </div>
     </div>
 
-    <leaflet-geosearch></leaflet-geosearch>
+{{--    <leaflet-geosearch></leaflet-geosearch>--}}
 
 </x-app>
