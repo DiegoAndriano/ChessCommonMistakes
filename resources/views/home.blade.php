@@ -29,7 +29,11 @@
         </div>
     </div>
 
-prueba 1
-    <chess-component></chess-component>
+    <div class="max-w-lg mx-auto">
+        <h2 class="font-bold text-3xl mt-6">Select your account</h2>
+        <p class="mb-4">Get your most common errors in the openings given a number of games.</p>
+        <sync-account></sync-account>
+        <chess-component></chess-component>
+    </div>
 
 </x-app>

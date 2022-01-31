@@ -1,7 +1,6 @@
 <template>
     <div>
-        <h2>Play here</h2>
-        <chessboard></chessboard>
+        <chessboard />
     </div>
 </template>
 
