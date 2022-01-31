@@ -10,26 +10,24 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@vue/compiler-sfc": "^3.2.19",
-        "@vue/devtools": "^5.3.4",
-        "autoprefixer": "^10.3.6",
-        "axios": "^0.21",
+        "axios": "^0.18",
         "bootstrap": "^4.6.0",
-        "jquery": "^3.6",
+        "cross-env": "^5.1",
+        "jquery": "^3.2",
+        "laravel-elixir-vue-2": "^0.3.0",
         "laravel-mix": "^6.0.0-beta.17",
-        "lodash": "^4.17.19",
-        "popper.js": "^1.16.1",
-        "postcss": "^8.3.8",
-        "resolve-url-loader": "^3.1.2",
-        "sass": "^1.32.11",
-        "sass-loader": "^11.0.1",
+        "popper.js": "^1.12",
+        "postcss": "^8.1.14",
+        "resolve-url-loader": "^3.1.0",
+        "sass": "^1.32.6",
+        "sass-loader": "^10.1.1",
         "tailwindcss": "^2.2.16",
-        "vue": "^3.2.19",
-        "vue-loader": "^16.8.1",
+        "vue": "^2.6.12",
+        "vue-loader": "^15.9.5",
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "leaflet-geosearch": "^3.5.2",
+        "moment": "^2.29.1",
         "vue-chessboard": "^0.6.7"
     }
 }
