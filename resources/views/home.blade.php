@@ -32,5 +32,7 @@
 prueba 1
     <chess-component></chess-component>
 
+    prueba 2
+    <chessboard></chessboard>
 
 </x-app>
