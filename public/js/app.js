@@ -1621,7 +1621,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {}
+  data: function data() {
+    return {
+      data: ''
+    };
+  }
 });
 
 /***/ }),
@@ -1643,7 +1647,10 @@ __webpack_require__.r(__webpack_exports__);
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('chess-component', (__webpack_require__(/*! ./components/Chess.vue */ "./resources/js/components/Chess.vue")["default"]));
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
-  el: '#app'
+  el: '#app',
+  components: {
+    VueChessboard: VueChessboard
+  }
 });
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // const app = Vue({});
