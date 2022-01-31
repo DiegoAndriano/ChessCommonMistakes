@@ -24,7 +24,7 @@
                 </ul>
             </li>
 
-            <p class="text-lg px-8 py-4 text-black-500 border-2 border-green-500 font-semibold">Contacto</p>
+            <p class="text-lg px-8 py-4 text-black-500 border-2 border-green-500 font-semibold cursor-pointer">Contacto</p>
 
         </div>
     </div>
