@@ -1612,6 +1612,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vue_chessboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chessboard */ "./node_modules/vue-chessboard/index.js");
+/* harmony import */ var vue_chessboard_dist_vue_chessboard_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-chessboard/dist/vue-chessboard.css */ "./node_modules/vue-chessboard/dist/vue-chessboard.css");
 //
 //
 //
@@ -1620,8 +1621,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {}
+  components: {
+    chessboard: vue_chessboard__WEBPACK_IMPORTED_MODULE_0__.chessboard
+  }
 });
 
 /***/ }),

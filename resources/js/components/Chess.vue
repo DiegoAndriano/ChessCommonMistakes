@@ -6,12 +6,12 @@
 </template>
 
 <script>
+import {chessboard} from 'vue-chessboard'
+import 'vue-chessboard/dist/vue-chessboard.css'
 
-    import {chessboard} from 'vue-chessboard'
-
-    export default {
-        data() {
-        },
-
-    }
+export default {
+    components:{
+        chessboard
+    },
+}
 </script>
