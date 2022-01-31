@@ -7,19 +7,19 @@
             </div>
 
             <li class="flex">
-                <ul class="text-lg px-10 py-4 text-green-500 font-semibold">
+                <ul class="text-lg px-10 py-4 text-green-500 font-semibold cursor-pointer">
                     Inicio
                 </ul>
-                <ul class="text-lg px-10 py-4 text-black font-semibold">
+                <ul class="text-lg px-10 py-4 text-black font-semibold cursor-pointer">
                     Uno
                 </ul>
-                <ul class="text-lg px-10 py-4 text-black font-semibold">
+                <ul class="text-lg px-10 py-4 text-black font-semibold cursor-pointer">
                     Otro
                 </ul>
-                <ul class="text-lg px-10 py-4 text-black font-semibold">
+                <ul class="text-lg px-10 py-4 text-black font-semibold cursor-pointer">
                     Ese
                 </ul>
-                <ul class="text-lg px-10 py-4 text-black font-semibold">
+                <ul class="text-lg px-10 py-4 text-black font-semibold cursor-pointer">
                     Aquél
                 </ul>
             </li>
