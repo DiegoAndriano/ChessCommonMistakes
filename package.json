@@ -29,7 +29,6 @@
     "dependencies": {
         "loadash": "^1.0.0",
         "moment": "^2.29.1",
-        "stockfish": "^14.1.0",
         "vue-chessboard": "^0.6.7"
     }
 }
