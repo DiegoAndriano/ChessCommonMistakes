@@ -14,7 +14,9 @@ export default {
         chessboard
     },
     mounted() {
-
+        var Chess = require('chess.js/chess.js');
+        var chessGame = new Chess();
+        console.log(chessGame);
     },
 
 }
