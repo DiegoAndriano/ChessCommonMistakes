@@ -9,8 +9,10 @@ Vue.component('chess-component', require('./components/Chess.vue').default);
 
 const app = new Vue({
     el: '#app',
-    
+
 });
+
+
 
 require('./bootstrap');
 

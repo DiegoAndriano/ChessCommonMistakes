@@ -29,7 +29,9 @@
         </div>
     </div>
 
-prueba 1
+    <div class="max-w-lg mx-auto">
+    <h2>prueba 1</h2>
     <chess-component></chess-component>
+    </div>
 
 </x-app>
