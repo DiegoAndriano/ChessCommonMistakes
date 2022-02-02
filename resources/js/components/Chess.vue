@@ -4,12 +4,12 @@
         <br>
         <div class="md:flex">
             <div class="w-full md:w-2/3">
-                <chessboard />
+                <chessboard :fen="selectedFen" />
             </div>
             <div class="w-full md:w-1/3 bg-light">
-                Movements <p>{{this.sync}}</p>
-                <div v-for="movement in movementMatrix">
-                    Movement <p :value="movement.fen"></p>
+                Movements <p>{{this.sync}}</p> | {{movementMatrix.length}}
+                <div v-for="(value, name) in movementMatrix">
+                    <button onclick="changeBoard(value.fen)">Movement {{name}} {{value.score}}</button>
                     <br>
                 </div>
             </div>
@@ -25,6 +25,7 @@ import 'vue-chessboard/dist/vue-chessboard.css'
 export default {
     data(){
         return {
+            selectedFen : '',
             movementMatrix : [],
             sync : 0,
         }
@@ -37,13 +38,16 @@ export default {
 
     },
     methods: {
+        changeBoard(fen) {
+            this.selectedFen = fen;
+        },
         handleSync(movementMatrix){
             console.log("recibido");
             console.log(movementMatrix)
             this.movementMatrix = movementMatrix;
             this.sync++;
 
-            
+
         }
     }
 

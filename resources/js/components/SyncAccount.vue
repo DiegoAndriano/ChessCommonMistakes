@@ -24,7 +24,7 @@
                 account: "DiegoAndriano",
                 chessGames: [],
                 chessGamesParsed: [],
-                movementMatrix:[],
+                movementMatrix:{},
             }
         },
         methods: {
@@ -37,7 +37,7 @@
                         this.chessGames = response.data;
                         this.chessGames = this.chessGames.split("\n\n");
                         this.chessGamesParsed = [];
-                        this.movementMatrix = [];
+                        this.movementMatrix = {};
                         for(var i=1; i<this.chessGames.length; i+=2) {
                             this.chessGames[i] = this.chessGames[i].replaceAll('[%eval','');
                             this.chessGames[i] = this.chessGames[i].replaceAll(']','');

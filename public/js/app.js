@@ -1639,6 +1639,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      selectedFen: '',
       movementMatrix: [],
       sync: 0
     };
@@ -1649,6 +1650,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {},
   methods: {
+    changeBoard: function changeBoard(fen) {
+      this.selectedFen = fen;
+    },
     handleSync: function handleSync(movementMatrix) {
       console.log("recibido");
       console.log(movementMatrix);
@@ -1694,7 +1698,7 @@ __webpack_require__.r(__webpack_exports__);
       account: "DiegoAndriano",
       chessGames: [],
       chessGamesParsed: [],
-      movementMatrix: []
+      movementMatrix: {}
     };
   },
   methods: {
@@ -1706,7 +1710,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.chessGames = response.data;
         _this.chessGames = _this.chessGames.split("\n\n");
         _this.chessGamesParsed = [];
-        _this.movementMatrix = [];
+        _this.movementMatrix = {};
 
         for (var i = 1; i < _this.chessGames.length; i += 2) {
           _this.chessGames[i] = _this.chessGames[i].replaceAll('[%eval', '');
@@ -39648,7 +39652,12 @@ var render = function () {
       _c("br"),
       _vm._v(" "),
       _c("div", { staticClass: "md:flex" }, [
-        _c("div", { staticClass: "w-full md:w-2/3" }, [_c("chessboard")], 1),
+        _c(
+          "div",
+          { staticClass: "w-full md:w-2/3" },
+          [_c("chessboard", { attrs: { fen: _vm.selectedFen } })],
+          1
+        ),
         _vm._v(" "),
         _c(
           "div",
@@ -39656,11 +39665,16 @@ var render = function () {
           [
             _vm._v("\n            Movements "),
             _c("p", [_vm._v(_vm._s(this.sync))]),
-            _vm._v(" "),
-            _vm._l(_vm.movementMatrix, function (movement) {
+            _vm._v(
+              " | " + _vm._s(_vm.movementMatrix.length) + "\n            "
+            ),
+            _vm._l(_vm.movementMatrix, function (value, name) {
               return _c("div", [
-                _vm._v("\n                Movement "),
-                _c("p", { attrs: { value: movement.fen } }),
+                _c("button", { attrs: { onclick: "changeBoard(value.fen)" } }, [
+                  _vm._v(
+                    "Movement " + _vm._s(name) + " " + _vm._s(value.score)
+                  ),
+                ]),
                 _vm._v(" "),
                 _c("br"),
               ])
