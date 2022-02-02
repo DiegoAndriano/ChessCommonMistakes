@@ -1629,10 +1629,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      movementMatrix: [],
+      sync: 0
+    };
+  },
   components: {
     chessboard: vue_chessboard__WEBPACK_IMPORTED_MODULE_1__.chessboard,
     'sync-account': _SyncAccount__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -1642,6 +1652,8 @@ __webpack_require__.r(__webpack_exports__);
     handleSync: function handleSync(movementMatrix) {
       console.log("recibido");
       console.log(movementMatrix);
+      this.movementMatrix = movementMatrix;
+      this.sync++;
     }
   }
 });
@@ -39638,9 +39650,24 @@ var render = function () {
       _c("div", { staticClass: "md:flex" }, [
         _c("div", { staticClass: "w-full md:w-2/3" }, [_c("chessboard")], 1),
         _vm._v(" "),
-        _c("div", { staticClass: "w-full md:w-1/3 bg-light" }, [
-          _vm._v("\n            Movements\n        "),
-        ]),
+        _c(
+          "div",
+          { staticClass: "w-full md:w-1/3 bg-light" },
+          [
+            _vm._v("\n            Movements "),
+            _c("p", [_vm._v(_vm._s(this.sync))]),
+            _vm._v(" "),
+            _vm._l(_vm.movementMatrix, function (movement) {
+              return _c("div", [
+                _vm._v("\n                Movement "),
+                _c("p", { attrs: { value: movement.fen } }),
+                _vm._v(" "),
+                _c("br"),
+              ])
+            }),
+          ],
+          2
+        ),
       ]),
     ],
     1

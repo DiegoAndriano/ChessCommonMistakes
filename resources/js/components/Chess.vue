@@ -7,7 +7,11 @@
                 <chessboard />
             </div>
             <div class="w-full md:w-1/3 bg-light">
-                Movements
+                Movements <p>{{this.sync}}</p>
+                <div v-for="movement in movementMatrix">
+                    Movement <p :value="movement.fen"></p>
+                    <br>
+                </div>
             </div>
         </div>
     </div>
@@ -19,6 +23,12 @@ import {chessboard} from 'vue-chessboard'
 import 'vue-chessboard/dist/vue-chessboard.css'
 
 export default {
+    data(){
+        return {
+            movementMatrix : [],
+            sync : 0,
+        }
+    },
     components:{
         chessboard,
         'sync-account': SyncAccount,
@@ -30,6 +40,10 @@ export default {
         handleSync(movementMatrix){
             console.log("recibido");
             console.log(movementMatrix)
+            this.movementMatrix = movementMatrix;
+            this.sync++;
+
+            
         }
     }
 
