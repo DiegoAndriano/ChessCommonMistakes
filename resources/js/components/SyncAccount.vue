@@ -70,8 +70,9 @@
                             }
                         }
 
-                        console.log(this.movementMatrix)
-                        console.log(JSON.stringify(this.movementMatrix))
+//                        console.log(this.movementMatrix)
+//                        console.log(JSON.stringify(this.movementMatrix))
+                        this.$emit('synced', this.movementMatrix)
 
                     })
 
