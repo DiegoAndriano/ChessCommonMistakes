@@ -1630,7 +1630,12 @@ __webpack_require__.r(__webpack_exports__);
     chessboard: vue_chessboard__WEBPACK_IMPORTED_MODULE_1__.chessboard,
     'sync-account': _SyncAccount__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {},
+  methods: {
+    handleSync: function handleSync(movementMatrix) {
+      console.log(movementMatrix);
+    }
+  }
 });
 
 /***/ }),
@@ -1715,7 +1720,8 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
 
-        console.log(_this.movementMatrix);
+        _this.$emit('synced', _this.movementMatrix); // console.log(this.movementMatrix)
+
       });
     }
   }
@@ -37848,7 +37854,15 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("sync-account"), _vm._v(" "), _c("chessboard")], 1)
+  return _c(
+    "div",
+    [
+      _c("sync-account", { on: { synced: _vm.handleSync } }),
+      _vm._v(" "),
+      _c("chessboard"),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

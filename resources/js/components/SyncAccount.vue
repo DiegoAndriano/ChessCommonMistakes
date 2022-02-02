@@ -69,7 +69,8 @@
                             }
                         }
 
-                        console.log(this.movementMatrix)
+                        this.$emit('synced', this.movementMatrix)
+                        // console.log(this.movementMatrix)
 
                     })
 

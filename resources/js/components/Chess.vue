@@ -1,6 +1,6 @@
 <template>
     <div>
-        <sync-account />
+        <sync-account @synced="handleSync"/>
 
         <chessboard />
     </div>
@@ -18,10 +18,12 @@ export default {
     },
     mounted() {
 
-
-
-
     },
+    methods: {
+        handleSync(movementMatrix){
+            console.log(movementMatrix)
+        }
+    }
 
 }
 </script>
