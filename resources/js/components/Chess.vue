@@ -1,8 +1,15 @@
 <template>
     <div>
         <sync-account @synced="handleSync"/>
-
-        <chessboard />
+        <br>
+        <div class="md:flex">
+            <div class="w-full md:w-2/3">
+                <chessboard />
+            </div>
+            <div class="w-full md:w-1/3 bg-light">
+                Movements
+            </div>
+        </div>
     </div>
 </template>
 
@@ -21,6 +28,7 @@ export default {
     },
     methods: {
         handleSync(movementMatrix){
+            console.log("recibido");
             console.log(movementMatrix)
         }
     }
