@@ -4,12 +4,12 @@
         <br>
         <div class="md:flex">
             <div class="w-full md:w-2/3">
-                <chessboard :fen="selectedFen" />
+                <chessboard :fen="this.selectedFen" />
             </div>
             <div class="w-full md:w-1/3 bg-light">
                 Movements <p>{{this.sync}}</p> | {{movementMatrix.length}}
                 <div v-for="(value, name) in movementMatrix">
-                    <button onclick="changeBoard(value.fen)">Movement {{name}} {{value.score}}</button>
+                    <button @click="changeBoard(value.fen)">Movement {{name}} {{value.score}}</button>
                     <br>
                 </div>
             </div>

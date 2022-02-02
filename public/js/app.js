@@ -39655,7 +39655,7 @@ var render = function () {
         _c(
           "div",
           { staticClass: "w-full md:w-2/3" },
-          [_c("chessboard", { attrs: { fen: _vm.selectedFen } })],
+          [_c("chessboard", { attrs: { fen: this.selectedFen } })],
           1
         ),
         _vm._v(" "),
@@ -39670,11 +39670,21 @@ var render = function () {
             ),
             _vm._l(_vm.movementMatrix, function (value, name) {
               return _c("div", [
-                _c("button", { attrs: { onclick: "changeBoard(value.fen)" } }, [
-                  _vm._v(
-                    "Movement " + _vm._s(name) + " " + _vm._s(value.score)
-                  ),
-                ]),
+                _c(
+                  "button",
+                  {
+                    on: {
+                      click: function ($event) {
+                        return _vm.changeBoard(value.fen)
+                      },
+                    },
+                  },
+                  [
+                    _vm._v(
+                      "Movement " + _vm._s(name) + " " + _vm._s(value.score)
+                    ),
+                  ]
+                ),
                 _vm._v(" "),
                 _c("br"),
               ])
