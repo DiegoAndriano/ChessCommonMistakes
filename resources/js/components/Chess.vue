@@ -40,6 +40,7 @@ export default {
     methods: {
         changeBoard(fen) {
             this.selectedFen = fen;
+            console.log(fen);
         },
         handleSync(movementMatrix){
             console.log("recibido");

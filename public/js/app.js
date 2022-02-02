@@ -1652,6 +1652,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     changeBoard: function changeBoard(fen) {
       this.selectedFen = fen;
+      console.log(fen);
     },
     handleSync: function handleSync(movementMatrix) {
       console.log("recibido");
@@ -1734,14 +1735,14 @@ __webpack_require__.r(__webpack_exports__);
           var chessGame = new Chess();
 
           for (var j = 0; j < gameMovement.length - 1; j += 3) {
-            chessGame.move(currentNode[gameMovement[j + 1]]);
-
             if (Object.keys(currentNode).includes(gameMovement[j + 1])) {
+              chessGame.move(currentNode[gameMovement[j + 1]]);
               currentNode[gameMovement[j + 1]].repetition++;
             } else {
               currentNode[gameMovement[j + 1]] = new Object();
               currentNode[gameMovement[j + 1]].score = gameMovement[j + 2];
               currentNode[gameMovement[j + 1]].repetition = 0;
+              chessGame.move(gameMovement[j + 1]);
               currentNode[gameMovement[j + 1]].fen = chessGame.fen();
             }
 
