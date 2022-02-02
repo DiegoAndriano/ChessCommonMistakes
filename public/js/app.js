@@ -1689,6 +1689,7 @@ __webpack_require__.r(__webpack_exports__);
         _this.chessGames = response.data;
         _this.chessGames = _this.chessGames.split("\n\n");
         _this.chessGamesParsed = [];
+        _this.movementMatrix = [];
 
         for (var i = 1; i < _this.chessGames.length; i += 2) {
           _this.chessGames[i] = _this.chessGames[i].replaceAll('[%eval', '');
@@ -1718,10 +1719,11 @@ __webpack_require__.r(__webpack_exports__);
 
             currentNode = currentNode[gameMovement[j + 1]];
           }
-        }
+        } //                        console.log(this.movementMatrix)
+        //                        console.log(JSON.stringify(this.movementMatrix))
 
-        _this.$emit('synced', _this.movementMatrix); // console.log(this.movementMatrix)
 
+        _this.$emit('synced', _this.movementMatrix);
       });
     }
   }
