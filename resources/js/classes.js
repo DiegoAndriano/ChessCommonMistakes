@@ -38,6 +38,7 @@ export class Movement {
     constructor(fen, score) {
         this.fen = fen;
         this.score = score;
+        this.timesRepeated = 0;
     }
 
 }

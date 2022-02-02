@@ -1661,17 +1661,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      account: "",
+      account: "DiegoAndriano",
       chessGames: [],
       chessGamesParsed: [],
-      movementMatrix: [[]]
+      movementMatrix: []
     };
   },
   methods: {
     getGames: function getGames() {
       var _this = this;
 
-      axios.get('https://lichess.org/api/games/user/' + this.account + '?max=3&evals=true').then(function (response) {
+      axios.get('https://lichess.org/api/games/user/' + this.account + '?max=5&evals=true').then(function (response) {
         // var Chess = require('chess.js/chess.js');
         // var chessGame = new Chess();
         // console.log(chessGame);
@@ -1681,19 +1681,36 @@ __webpack_require__.r(__webpack_exports__);
         _this.chessGamesParsed = [];
 
         for (var i = 1; i < _this.chessGames.length; i += 2) {
+          _this.chessGames[i] = _this.chessGames[i].replaceAll('[%eval', '');
+          _this.chessGames[i] = _this.chessGames[i].replaceAll(']', '');
           _this.chessGames[i] = _this.chessGames[i].replaceAll('{', '');
           _this.chessGames[i] = _this.chessGames[i].replaceAll('}', '');
+          _this.chessGames[i] = _this.chessGames[i].replaceAll('  ', ' ');
+          _this.chessGames[i] = _this.chessGames[i].replaceAll('  ', ' ');
 
           _this.chessGamesParsed.push(_this.chessGames[i]);
         }
 
         for (var i = 0; i < _this.chessGamesParsed.length; i++) {
-          console.log(i);
-          var gameMovement = [];
+          var gameMovement = _this.chessGamesParsed[i].split(' ');
 
-          for (var j = 0; j < gameMovement.length; j++) {// if (this.movementMatrix)
+          console.log(gameMovement);
+          var currentNode = _this.movementMatrix;
+
+          for (var j = 0; j < gameMovement.length - 1; j += 3) {
+            if (Object.keys(currentNode).includes(gameMovement[j + 1])) {
+              currentNode[gameMovement[j + 1]].repetition++;
+            } else {
+              currentNode[gameMovement[j + 1]] = new Object();
+              currentNode[gameMovement[j + 1]].score = gameMovement[j + 2];
+              currentNode[gameMovement[j + 1]].repetition = 0;
+            }
+
+            currentNode = currentNode[gameMovement[j + 1]];
           }
         }
+
+        console.log(_this.movementMatrix);
       });
     }
   }
@@ -1835,6 +1852,7 @@ var Movement = /*#__PURE__*/_createClass(function Movement(fen, score) {
 
   this.fen = fen;
   this.score = score;
+  this.timesRepeated = 0;
 });
 
 /***/ }),

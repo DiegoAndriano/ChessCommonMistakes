@@ -21,16 +21,16 @@
     export default {
         data() {
             return {
-                account: "",
+                account: "DiegoAndriano",
                 chessGames: [],
                 chessGamesParsed: [],
-                movementMatrix:[[]],
+                movementMatrix:[],
             }
         },
         methods: {
             getGames() {
                 axios
-                    .get('https://lichess.org/api/games/user/' + this.account + '?max=3&evals=true')
+                    .get('https://lichess.org/api/games/user/' + this.account + '?max=5&evals=true')
                     .then(response => {
                         // var Chess = require('chess.js/chess.js');
                         // var chessGame = new Chess();
@@ -41,20 +41,35 @@
                         this.chessGames = this.chessGames.split("\n\n");
                         this.chessGamesParsed = [];
                         for(var i=1; i<this.chessGames.length; i+=2) {
+                            this.chessGames[i] = this.chessGames[i].replaceAll('[%eval','');
+                            this.chessGames[i] = this.chessGames[i].replaceAll(']','');
                             this.chessGames[i] = this.chessGames[i].replaceAll('{','');
                             this.chessGames[i] = this.chessGames[i].replaceAll('}','');
+                            this.chessGames[i] = this.chessGames[i].replaceAll('  ',' ');
+                            this.chessGames[i] = this.chessGames[i].replaceAll('  ',' ');
                             this.chessGamesParsed.push(this.chessGames[i]);
                         }
 
-                        for(var i=0; i<this.chessGamesParsed.length; i++) {
-                            console.log(i);
-                            var gameMovement = [];
 
-                            for (var j=0; j<gameMovement.length; j++) {
-                                // if (this.movementMatrix)
+                        for(var i=0; i<this.chessGamesParsed.length; i++) {
+                            var gameMovement = this.chessGamesParsed[i].split(' ');
+                            console.log(gameMovement)
+                            var currentNode = this.movementMatrix;
+                            for (var j=0; j<gameMovement.length-1; j+=3) {
+                                if (Object.keys(currentNode).includes(gameMovement[j+1])) {
+                                    currentNode[gameMovement[j+1]].repetition ++
+                                }
+                                else {
+                                    currentNode[gameMovement[j+1]] = new Object();
+                                    currentNode[gameMovement[j+1]].score = gameMovement[j+2];
+                                    currentNode[gameMovement[j+1]].repetition = 0;
+
+                                }
+                                currentNode = currentNode[gameMovement[j+1]];
                             }
                         }
 
+                        console.log(this.movementMatrix)
 
                     })
 
