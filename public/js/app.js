@@ -1612,8 +1612,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _SyncAccount__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SyncAccount */ "./resources/js/components/SyncAccount.vue");
-/* harmony import */ var vue_chessboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-chessboard */ "./node_modules/vue-chessboard/index.js");
-/* harmony import */ var vue_chessboard_dist_vue_chessboard_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-chessboard/dist/vue-chessboard.css */ "./node_modules/vue-chessboard/dist/vue-chessboard.css");
+/* harmony import */ var _Tree__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tree */ "./resources/js/components/Tree.vue");
+/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./board */ "./resources/js/components/board.vue");
+/* harmony import */ var vue_chessboard_dist_vue_chessboard_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue-chessboard/dist/vue-chessboard.css */ "./node_modules/vue-chessboard/dist/vue-chessboard.css");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
 //
 //
 //
@@ -1633,6 +1635,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
+
 
 
 
@@ -1645,19 +1653,20 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   components: {
-    chessboard: vue_chessboard__WEBPACK_IMPORTED_MODULE_1__.chessboard,
-    'sync-account': _SyncAccount__WEBPACK_IMPORTED_MODULE_0__["default"]
+    board: _board__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'sync-account': _SyncAccount__WEBPACK_IMPORTED_MODULE_0__["default"],
+    'tree': _Tree__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.movementMatrix = new Object();
+    this.movementMatrix.movements = new Object();
+    _app__WEBPACK_IMPORTED_MODULE_4__.EventBus.$on('clickeado', function (val) {
+      this.selectedFen = val.fen;
+    }.bind(this)); // document.querySelector('#chessboaord').game.moves.threats.push({orig: 'a1', brush: 'yellow'})
+  },
   methods: {
-    changeBoard: function changeBoard(fen) {
-      this.selectedFen = fen;
-      console.log(fen);
-    },
-    handleSync: function handleSync(movementMatrix) {
-      console.log("recibido");
-      console.log(movementMatrix);
-      this.movementMatrix = movementMatrix;
+    handleSync: function handleSync(receivedMatrix) {
+      this.movementMatrix = receivedMatrix;
       this.sync++;
     }
   }
@@ -1706,12 +1715,16 @@ __webpack_require__.r(__webpack_exports__);
     getGames: function getGames() {
       var _this = this;
 
-      axios.get('https://lichess.org/api/games/user/' + this.account + '?max=5&evals=true').then(function (response) {
+      axios.get('https://lichess.org/api/games/user/' + this.account + '?color=white&max=20&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
         console.log(response);
         _this.chessGames = response.data;
         _this.chessGames = _this.chessGames.split("\n\n");
         _this.chessGamesParsed = [];
         _this.movementMatrix = {};
+        _this.movementMatrix.movements = new Object();
+        _this.movementMatrix.score = 0;
+        _this.movementMatrix.repetition = 1;
+        _this.movementMatrix.fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
         for (var i = 1; i < _this.chessGames.length; i += 2) {
           _this.chessGames[i] = _this.chessGames[i].replaceAll('[%eval', '');
@@ -1735,19 +1748,39 @@ __webpack_require__.r(__webpack_exports__);
           var chessGame = new Chess();
 
           for (var j = 0; j < gameMovement.length - 1; j += 3) {
-            if (Object.keys(currentNode).includes(gameMovement[j + 1])) {
-              chessGame.move(currentNode[gameMovement[j + 1]]);
-              currentNode[gameMovement[j + 1]].repetition++;
-            } else {
-              currentNode[gameMovement[j + 1]] = new Object();
-              currentNode[gameMovement[j + 1]].score = gameMovement[j + 2];
-              currentNode[gameMovement[j + 1]].repetition = 0;
-              chessGame.move(gameMovement[j + 1]);
-              currentNode[gameMovement[j + 1]].fen = chessGame.fen();
+            if (currentNode.movements == null) {
+              currentNode.movements = new Object();
             }
 
-            currentNode = currentNode[gameMovement[j + 1]];
+            if (Object.keys(currentNode.movements).includes(gameMovement[j + 1])) {
+              chessGame.move(gameMovement[j + 1]);
+              currentNode.movements[gameMovement[j + 1]].repetition++;
+            } else {
+              currentNode.movements[gameMovement[j + 1]] = new Object();
+              currentNode.movements[gameMovement[j + 1]].score = gameMovement[j + 2];
+              currentNode.movements[gameMovement[j + 1]].repetition = 1;
+              chessGame.move(gameMovement[j + 1]);
+              currentNode.movements[gameMovement[j + 1]].fen = chessGame.fen();
+            }
+
+            currentNode = currentNode.movements[gameMovement[j + 1]]; // if (Object.keys(currentNode).includes(gameMovement[j+1])) {
+            //     chessGame.move(currentNode[gameMovement[j+1]]);
+            //     currentNode[gameMovement[j+1]].repetition ++
+            // }
+            // else {
+            //     currentNode[gameMovement[j+1]] = new Object();
+            //     currentNode[gameMovement[j+1]].score = gameMovement[j+2];
+            //     currentNode[gameMovement[j+1]].repetition = 0;
+            //     currentNode[gameMovement[j+1]].movements = ;
+            //     chessGame.move(gameMovement[j+1]);
+            //     currentNode[gameMovement[j+1]].fen = chessGame.fen();
+            //
+            // }
+            // currentNode = currentNode[gameMovement[j+1]];
           }
+
+          console.log("narf");
+          console.log(_this.movementMatrix);
         } //                        console.log(this.movementMatrix)
         //                        console.log(JSON.stringify(this.movementMatrix))
 
@@ -1755,6 +1788,127 @@ __webpack_require__.r(__webpack_exports__);
         _this.$emit('synced', _this.movementMatrix);
       });
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tree.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tree.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'tree',
+  emits: ['clickeado'],
+  props: {
+    'depth': Number,
+    'moves': Object,
+    'name': String,
+    'bus': Object()
+  },
+  data: function data() {
+    return {
+      showTree: false
+    };
+  },
+  methods: {
+    seeTree: function seeTree() {
+      this.showTree = !this.showTree; //true;
+
+      _app__WEBPACK_IMPORTED_MODULE_0__.EventBus.$emit('clickeado', this.moves);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/board.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/board.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_chessboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chessboard */ "./node_modules/vue-chessboard/index.js");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'board',
+  "extends": vue_chessboard__WEBPACK_IMPORTED_MODULE_0__.chessboard,
+  methods: {
+    userPlay: function userPlay() {
+      var _this = this;
+
+      return function (orig, dest) {
+        if (_this.isPromotion(orig, dest)) {
+          _this.promoteTo = _this.onPromotion();
+        }
+
+        _this.game.move({
+          from: orig,
+          to: dest,
+          promotion: _this.promoteTo
+        }); // promote to queen for simplicity
+
+
+        _this.board.set({
+          fen: _this.game.fen()
+        });
+
+        _this.calculatePromotions();
+
+        _this.aiNextMove();
+      };
+    },
+    aiNextMove: function aiNextMove() {
+      var moves = this.game.moves({
+        verbose: true
+      });
+      var randomMove = moves[Math.floor(Math.random() * moves.length)];
+      this.game.move(randomMove);
+      this.board.set({
+        fen: this.game.fen(),
+        turnColor: this.toColor(),
+        movable: {
+          color: this.toColor(),
+          dests: this.possibleMoves(),
+          events: {
+            after: this.userPlay()
+          }
+        }
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.board.set({
+      movable: {
+        events: {
+          after: this.userPlay()
+        }
+      }
+    });
   }
 });
 
@@ -1768,6 +1922,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "EventBus": () => (/* binding */ EventBus)
+/* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vue_chessboard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chessboard */ "./node_modules/vue-chessboard/index.js");
 /* harmony import */ var vue_chessboard_dist_vue_chessboard_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-chessboard/dist/vue-chessboard.css */ "./node_modules/vue-chessboard/dist/vue-chessboard.css");
@@ -1776,7 +1933,7 @@ __webpack_require__.r(__webpack_exports__);
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('chess-component', (__webpack_require__(/*! ./components/Chess.vue */ "./resources/js/components/Chess.vue")["default"]));
-vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('sync-account', (__webpack_require__(/*! ./components/SyncAccount.vue */ "./resources/js/components/SyncAccount.vue")["default"]));
+var EventBus = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]();
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   el: '#app'
 });
@@ -39563,6 +39720,83 @@ component.options.__file = "resources/js/components/SyncAccount.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Tree.vue":
+/*!******************************************!*\
+  !*** ./resources/js/components/Tree.vue ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Tree_vue_vue_type_template_id_138228ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tree.vue?vue&type=template&id=138228ee& */ "./resources/js/components/Tree.vue?vue&type=template&id=138228ee&");
+/* harmony import */ var _Tree_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tree.vue?vue&type=script&lang=js& */ "./resources/js/components/Tree.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Tree_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Tree_vue_vue_type_template_id_138228ee___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Tree_vue_vue_type_template_id_138228ee___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Tree.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/board.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/components/board.vue ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _board_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board.vue?vue&type=script&lang=js& */ "./resources/js/components/board.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+;
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _board_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/board.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Chess.vue?vue&type=script&lang=js&":
 /*!********************************************************************!*\
   !*** ./resources/js/components/Chess.vue?vue&type=script&lang=js& ***!
@@ -39592,6 +39826,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SyncAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SyncAccount.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SyncAccount.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SyncAccount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Tree.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./resources/js/components/Tree.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tree_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Tree.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tree.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tree_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/board.vue?vue&type=script&lang=js&":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/board.vue?vue&type=script&lang=js& ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_board_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./board.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/board.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_board_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -39629,6 +39895,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Tree.vue?vue&type=template&id=138228ee&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/Tree.vue?vue&type=template&id=138228ee& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tree_vue_vue_type_template_id_138228ee___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tree_vue_vue_type_template_id_138228ee___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tree_vue_vue_type_template_id_138228ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Tree.vue?vue&type=template&id=138228ee& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tree.vue?vue&type=template&id=138228ee&");
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Chess.vue?vue&type=template&id=05d6dfa5&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Chess.vue?vue&type=template&id=05d6dfa5& ***!
@@ -39656,43 +39939,41 @@ var render = function () {
         _c(
           "div",
           { staticClass: "w-full md:w-2/3" },
-          [_c("chessboard", { attrs: { fen: this.selectedFen } })],
+          [_c("board", { attrs: { id: "board", fen: this.selectedFen } })],
           1
         ),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "w-full md:w-1/3 bg-light" },
-          [
-            _vm._v("\n            Movements "),
-            _c("p", [_vm._v(_vm._s(this.sync))]),
-            _vm._v(
-              " | " + _vm._s(_vm.movementMatrix.length) + "\n            "
-            ),
-            _vm._l(_vm.movementMatrix, function (value, name) {
-              return _c("div", [
-                _c(
-                  "button",
-                  {
-                    on: {
-                      click: function ($event) {
-                        return _vm.changeBoard(value.fen)
-                      },
-                    },
-                  },
-                  [
-                    _vm._v(
-                      "Movement " + _vm._s(name) + " " + _vm._s(value.score)
-                    ),
-                  ]
-                ),
-                _vm._v(" "),
-                _c("br"),
-              ])
+        _c("div", { staticClass: "w-full md:w-1/3 bg-light" }, [
+          _vm._v("\n            Movements "),
+          _c("p", [_vm._v(_vm._s(this.sync))]),
+          _vm._v(
+            " | " +
+              _vm._s(_vm.movementMatrix.movements.length) +
+              "\n            "
+          ),
+          _c(
+            "div",
+            {
+              staticStyle: {
+                height: "400px",
+                width: "300px",
+                "overflow-y": "scroll",
+              },
+            },
+            _vm._l(_vm.movementMatrix.movements, function (value, name) {
+              return _c(
+                "div",
+                {
+                  key: name + value.score,
+                  staticClass: "border border-3 border-gray-500 bg-gray-200",
+                },
+                [_c("tree", { attrs: { name: name, moves: value, depth: 1 } })],
+                1
+              )
             }),
-          ],
-          2
-        ),
+            0
+          ),
+        ]),
       ]),
     ],
     1
@@ -39752,6 +40033,65 @@ var render = function () {
       _c("button", { on: { click: _vm.getGames } }, [_vm._v("Go!")]),
     ]),
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tree.vue?vue&type=template&id=138228ee&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tree.vue?vue&type=template&id=138228ee& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      style:
+        "background-color:" +
+        (_vm.depth % 2 === 1 ? "#afa" : "#fff") +
+        "; padding-left: " +
+        _vm.depth * 2 +
+        "px;",
+    },
+    [
+      _c("button", { on: { click: _vm.seeTree } }, [
+        _c("span", { staticClass: "font-bold" }, [
+          _vm._v(
+            _vm._s(_vm.depth) + " | #" + _vm._s(_vm.moves.repetition) + " |"
+          ),
+        ]),
+        _vm._v(". "),
+        _c("span", { staticClass: "font-bold" }, [_vm._v(_vm._s(_vm.name))]),
+        _vm._v("  | " + _vm._s(_vm.moves.score)),
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _vm._l(_vm.moves.movements, function (move, n) {
+        return _vm.showTree
+          ? _c("tree", {
+              key: n + move.score,
+              attrs: { name: n, moves: move, depth: _vm.depth + 1 },
+            })
+          : _vm._e()
+      }),
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

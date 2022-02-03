@@ -30,7 +30,7 @@
         methods: {
             getGames() {
                 axios
-                    .get('https://lichess.org/api/games/user/' + this.account + '?max=5&evals=true')
+                    .get('https://lichess.org/api/games/user/' + this.account + '?color=white&max=20&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"')
                     .then(response => {
 
                         console.log(response)
@@ -38,6 +38,11 @@
                         this.chessGames = this.chessGames.split("\n\n");
                         this.chessGamesParsed = [];
                         this.movementMatrix = {};
+                        this.movementMatrix.movements = new Object();
+                        this.movementMatrix.score = 0;
+                        this.movementMatrix.repetition = 1;
+                        this.movementMatrix.fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+
                         for(var i=1; i<this.chessGames.length; i+=2) {
                             this.chessGames[i] = this.chessGames[i].replaceAll('[%eval','');
                             this.chessGames[i] = this.chessGames[i].replaceAll(']','');
@@ -57,21 +62,45 @@
                             var Chess = require('chess.js/chess.js');
                             var chessGame = new Chess();
 
+
+
                             for (var j=0; j<gameMovement.length-1; j+=3) {
-                                if (Object.keys(currentNode).includes(gameMovement[j+1])) {
-                                    chessGame.move(currentNode[gameMovement[j+1]]);
-                                    currentNode[gameMovement[j+1]].repetition ++
+                                if (currentNode.movements == null) {
+                                    currentNode.movements = new Object();
+                                }
+
+                                if (Object.keys(currentNode.movements).includes(gameMovement[j+1])) {
+                                    chessGame.move(gameMovement[j+1]);
+                                    currentNode.movements[gameMovement[j+1]].repetition ++
                                 }
                                 else {
-                                    currentNode[gameMovement[j+1]] = new Object();
-                                    currentNode[gameMovement[j+1]].score = gameMovement[j+2];
-                                    currentNode[gameMovement[j+1]].repetition = 0;
+                                    currentNode.movements[gameMovement[j+1]] = new Object();
+                                    currentNode.movements[gameMovement[j+1]].score = gameMovement[j+2];
+                                    currentNode.movements[gameMovement[j+1]].repetition = 1;
                                     chessGame.move(gameMovement[j+1]);
-                                    currentNode[gameMovement[j+1]].fen = chessGame.fen();
+                                    currentNode.movements[gameMovement[j+1]].fen = chessGame.fen();
 
                                 }
-                                currentNode = currentNode[gameMovement[j+1]];
+                                currentNode = currentNode.movements[gameMovement[j+1]];
+
+                                // if (Object.keys(currentNode).includes(gameMovement[j+1])) {
+                                //     chessGame.move(currentNode[gameMovement[j+1]]);
+                                //     currentNode[gameMovement[j+1]].repetition ++
+                                // }
+                                // else {
+                                //     currentNode[gameMovement[j+1]] = new Object();
+                                //     currentNode[gameMovement[j+1]].score = gameMovement[j+2];
+                                //     currentNode[gameMovement[j+1]].repetition = 0;
+                                //     currentNode[gameMovement[j+1]].movements = ;
+                                //     chessGame.move(gameMovement[j+1]);
+                                //     currentNode[gameMovement[j+1]].fen = chessGame.fen();
+                                //
+                                // }
+                                // currentNode = currentNode[gameMovement[j+1]];
                             }
+
+                            console.log("narf");
+                            console.log(this.movementMatrix)
                         }
 
 //                        console.log(this.movementMatrix)
