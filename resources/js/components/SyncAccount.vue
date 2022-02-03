@@ -33,7 +33,7 @@
                     .get('https://lichess.org/api/games/user/' + this.account + '?color=white&max=20&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"')
                     .then(response => {
 
-                        console.log(response)
+                        // console.log(response)
                         this.chessGames = response.data;
                         this.chessGames = this.chessGames.split("\n\n");
                         this.chessGamesParsed = [];
@@ -56,7 +56,7 @@
 
                         for(var i=0; i<this.chessGamesParsed.length; i++) {
                             var gameMovement = this.chessGamesParsed[i].split(' ');
-                            console.log(gameMovement)
+                            // console.log(gameMovement)
                             var currentNode = this.movementMatrix;
 
                             var Chess = require('chess.js/chess.js');
@@ -99,8 +99,8 @@
                                 // currentNode = currentNode[gameMovement[j+1]];
                             }
 
-                            console.log("narf");
-                            console.log(this.movementMatrix)
+                            // console.log("narf");
+                            // console.log(this.movementMatrix)
                         }
 
 //                        console.log(this.movementMatrix)

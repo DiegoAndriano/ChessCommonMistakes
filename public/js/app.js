@@ -1716,7 +1716,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('https://lichess.org/api/games/user/' + this.account + '?color=white&max=20&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
-        console.log(response);
+        // console.log(response)
         _this.chessGames = response.data;
         _this.chessGames = _this.chessGames.split("\n\n");
         _this.chessGamesParsed = [];
@@ -1738,9 +1738,9 @@ __webpack_require__.r(__webpack_exports__);
         }
 
         for (var i = 0; i < _this.chessGamesParsed.length; i++) {
-          var gameMovement = _this.chessGamesParsed[i].split(' ');
+          var gameMovement = _this.chessGamesParsed[i].split(' '); // console.log(gameMovement)
 
-          console.log(gameMovement);
+
           var currentNode = _this.movementMatrix;
 
           var Chess = __webpack_require__(/*! chess.js/chess.js */ "./node_modules/chess.js/chess.js");
@@ -1777,10 +1777,9 @@ __webpack_require__.r(__webpack_exports__);
             //
             // }
             // currentNode = currentNode[gameMovement[j+1]];
-          }
+          } // console.log("narf");
+          // console.log(this.movementMatrix)
 
-          console.log("narf");
-          console.log(_this.movementMatrix);
         } //                        console.log(this.movementMatrix)
         //                        console.log(JSON.stringify(this.movementMatrix))
 
@@ -1857,6 +1856,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'board',
   "extends": vue_chessboard__WEBPACK_IMPORTED_MODULE_0__.chessboard,
+  data: function data() {
+    return {
+      prueba: 0
+    };
+  },
   methods: {
     userPlay: function userPlay() {
       var _this = this;
@@ -1902,12 +1906,31 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
+    this.prueba = 1;
+    console.log("Montado!!");
     this.board.set({
       movable: {
         events: {
           after: this.userPlay()
         }
+      },
+      brushes: {
+        orig: 'a1',
+        brush: 'yellow'
+      },
+      brush: {
+        orig: 'a1',
+        brush: 'yellow'
+      },
+      shape: {
+        orig: 'a1',
+        brush: 'yellow'
       }
+    });
+    this.board.setShapes({
+      orig: 'a1',
+      dest: 'a2',
+      brush: 'yellow'
     });
   }
 });

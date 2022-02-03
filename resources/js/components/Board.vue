@@ -4,6 +4,11 @@ import { chessboard }  from 'vue-chessboard'
 export default {
     name: 'board',
     extends: chessboard,
+    data() {
+        return {
+            prueba : 0,
+        }
+    },
     methods: {
         userPlay() {
             return (orig, dest) => {
@@ -36,6 +41,8 @@ export default {
     },
     mounted() {
 
+        this.prueba = 1;
+        console.log("Montado!!")
         this.board.set({
             movable: { events: { after: this.userPlay()} },
             brushes: {orig :'a1', brush:'yellow'},
