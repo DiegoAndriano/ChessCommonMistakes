@@ -59,9 +59,9 @@
                 id="account" type="text"
                 placeholder="Account"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
-            <button @click="getGames">Go!</button>
+            <button class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white" @click="getGames">Go!</button>
         </div>
-
+        !!! There is no loading bar or feedback, wait a few seconds after pressing "Go!" !!!
     </div>
 </template>
 

@@ -41591,8 +41591,19 @@ var render = function () {
         },
       }),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.getGames } }, [_vm._v("Go!")]),
+      _c(
+        "button",
+        {
+          staticClass:
+            "border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white",
+          on: { click: _vm.getGames },
+        },
+        [_vm._v("Go!")]
+      ),
     ]),
+    _vm._v(
+      '\n    !!! There is no loading bar or feedback, wait a few seconds after pressing "Go!" !!!\n'
+    ),
   ])
 }
 var staticRenderFns = []
