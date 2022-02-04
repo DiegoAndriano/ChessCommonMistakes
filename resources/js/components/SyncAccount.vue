@@ -21,6 +21,15 @@
                 type="number"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
         </div>
+        <label class="block" for="ignore_first_moves">How many first moves to ignore</label>
+        <div class="mb-4">
+            <input
+                v-model="ignore_first_moves"
+                id="ignore_first_moves"
+                placeholder="3"
+                type="number"
+                class="border transition ease-in-out focus:pl-4 pl-2 ">
+        </div>
         <label class="block" for="error">Score lost to consider an error</label>
         <div class="mb-4">
             <input
@@ -66,6 +75,7 @@ export default {
             movementMatrix: {},
             worsePlays: [],
             color: 'white',
+            ignore_first_moves:6,
             matches: 200,
             repetition: 2,
             errorScoreThreshold: 0.5,
@@ -150,19 +160,22 @@ export default {
                                 currentNode.movements[gameMovement[j + 1]].deltaScore = Math.round((gameMovement[j + 2] - previousScore) * 100) / 100;
                                 currentNode.movements[gameMovement[j + 1]].deltaRepetition = Math.round((gameMovement[j + 2] - previousScore) * 100) / 100;
                                 currentNode.movements[gameMovement[j + 1]].name = gameMovement[j + 1];
+                                currentNode.movements[gameMovement[j + 1]].moveNumber = currentMove;
                                 currentNode.movements[gameMovement[j + 1]].site_url = site_url + "/" + color + "/#" + currentMove;
                                 currentNode.movements[gameMovement[j + 1]].color = gameMovement[gameMovement.length - 1].split('!')[1];
                                 currentNode.movements[gameMovement[j + 1]].repetition = 1;
                                 chessGame.move(gameMovement[j + 1]);
                                 currentNode.movements[gameMovement[j + 1]].fen = chessGame.fen();
 
-                                if (currentNode.movements[gameMovement[j + 1]].color === "white") {
-                                    if (-this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                                        this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
-                                    }
-                                } else {
-                                    if (this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                                        this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                if (this.ignore_first_moves < currentMove) {
+                                    if (currentNode.movements[gameMovement[j + 1]].color === "white") {
+                                        if (-this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                                            this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                        }
+                                    } else {
+                                        if (this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                                            this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                        }
                                     }
                                 }
 
@@ -170,20 +183,6 @@ export default {
                             previousScore = gameMovement[j + 2];
                             currentNode = currentNode.movements[gameMovement[j + 1]];
 
-                            // if (Object.keys(currentNode).includes(gameMovement[j+1])) {
-                            //     chessGame.move(currentNode[gameMovement[j+1]]);
-                            //     currentNode[gameMovement[j+1]].repetition ++
-                            // }
-                            // else {
-                            //     currentNode[gameMovement[j+1]] = new Object();
-                            //     currentNode[gameMovement[j+1]].score = gameMovement[j+2];
-                            //     currentNode[gameMovement[j+1]].repetition = 0;
-                            //     currentNode[gameMovement[j+1]].movements = ;
-                            //     chessGame.move(gameMovement[j+1]);
-                            //     currentNode[gameMovement[j+1]].fen = chessGame.fen();
-                            //
-                            // }
-                            // currentNode = currentNode[gameMovement[j+1]];
                         }
 
                         // console.log("narf");
@@ -199,6 +198,7 @@ export default {
                             }
                         }
                     }
+
 
 //                        console.log(this.movementMatrix)
 //                        console.log(JSON.stringify(this.movementMatrix))

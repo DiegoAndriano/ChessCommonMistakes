@@ -1869,6 +1869,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1879,6 +1888,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       movementMatrix: {},
       worsePlays: [],
       color: 'white',
+      ignore_first_moves: 6,
       matches: 200,
       repetition: 2,
       errorScoreThreshold: 0.5
@@ -1974,38 +1984,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         currentNode.movements[gameMovement[j + 1]].deltaScore = Math.round((gameMovement[j + 2] - previousScore) * 100) / 100;
                         currentNode.movements[gameMovement[j + 1]].deltaRepetition = Math.round((gameMovement[j + 2] - previousScore) * 100) / 100;
                         currentNode.movements[gameMovement[j + 1]].name = gameMovement[j + 1];
+                        currentNode.movements[gameMovement[j + 1]].moveNumber = currentMove;
                         currentNode.movements[gameMovement[j + 1]].site_url = site_url + "/" + color + "/#" + currentMove;
                         currentNode.movements[gameMovement[j + 1]].color = gameMovement[gameMovement.length - 1].split('!')[1];
                         currentNode.movements[gameMovement[j + 1]].repetition = 1;
                         chessGame.move(gameMovement[j + 1]);
                         currentNode.movements[gameMovement[j + 1]].fen = chessGame.fen();
 
-                        if (currentNode.movements[gameMovement[j + 1]].color === "white") {
-                          if (-_this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                            _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
-                          }
-                        } else {
-                          if (_this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                            _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                        if (_this.ignore_first_moves < currentMove) {
+                          if (currentNode.movements[gameMovement[j + 1]].color === "white") {
+                            if (-_this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                              _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                            }
+                          } else {
+                            if (_this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                              _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                            }
                           }
                         }
                       }
 
                       previousScore = gameMovement[j + 2];
-                      currentNode = currentNode.movements[gameMovement[j + 1]]; // if (Object.keys(currentNode).includes(gameMovement[j+1])) {
-                      //     chessGame.move(currentNode[gameMovement[j+1]]);
-                      //     currentNode[gameMovement[j+1]].repetition ++
-                      // }
-                      // else {
-                      //     currentNode[gameMovement[j+1]] = new Object();
-                      //     currentNode[gameMovement[j+1]].score = gameMovement[j+2];
-                      //     currentNode[gameMovement[j+1]].repetition = 0;
-                      //     currentNode[gameMovement[j+1]].movements = ;
-                      //     chessGame.move(gameMovement[j+1]);
-                      //     currentNode[gameMovement[j+1]].fen = chessGame.fen();
-                      //
-                      // }
-                      // currentNode = currentNode[gameMovement[j+1]];
+                      currentNode = currentNode.movements[gameMovement[j + 1]];
                     } // console.log("narf");
                     // console.log(this.movementMatrix)
 
@@ -41465,6 +41465,36 @@ var render = function () {
             },
             _vm.limitMaxMatchesValue,
           ],
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c(
+      "label",
+      { staticClass: "block", attrs: { for: "ignore_first_moves" } },
+      [_vm._v("How many first moves to ignore")]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-4" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.ignore_first_moves,
+            expression: "ignore_first_moves",
+          },
+        ],
+        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
+        attrs: { id: "ignore_first_moves", placeholder: "3", type: "number" },
+        domProps: { value: _vm.ignore_first_moves },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.ignore_first_moves = $event.target.value
+          },
         },
       }),
     ]),
