@@ -2,13 +2,13 @@
     <div>
         <label class="block" for="account">Select color</label>
         <div class="mb-4">
-            <input type="radio" id="white" value="white" v-model="color" selected>
+            <input type="radio" id="white" value="white" v-model="color">
             <label for="white">White</label>
             <br>
             <input type="radio" id="black" value="black" v-model="color">
             <label for="black">Black</label>
             <br>
-            <input type="radio" id="both" value="both" v-model="color">
+            <input type="radio" id="both" value="both" v-model="color" selected>
             <label for="both">Both</label>
         </div>
         <label class="block" for="matches">Matches selected</label>
@@ -39,6 +39,15 @@
                 placeholder="2"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
         </div>
+        <label class="block" for="ignore_first_moves">How many first moves to ignore</label>
+        <div class="mb-4">
+            <input
+                v-model="ignore_first_moves"
+                id="ignore_first_moves"
+                placeholder="3"
+                type="number"
+                class="border transition ease-in-out focus:pl-4 pl-2 ">
+        </div>
         <label class="block" for="account">Select account</label>
         <div class="mb-4">
             <input
@@ -54,28 +63,22 @@
 
 <script>
 
-import '../classes.js';
+    import '../classes.js';
 
 
-export default {
-    data() {
-        return {
-            account: "DiegoAndriano",
-            chessGames: [],
-            chessGamesParsed: [],
-            movementMatrix: {},
-            worsePlays: [],
-            color: 'white',
-            matches: 200,
-            repetition: 2,
-            errorScoreThreshold: 0.5,
-        }
-    },
-    methods: {
-        limitMaxMatchesValue(event) {
-            const value = event.target.value
-            if (this.matches >= 500) {
-                this.matches = 500
+    export default {
+        data() {
+            return {
+                account: "DiegoAndriano",
+                chessGames: [],
+                chessGamesParsed: [],
+                movementMatrix:{},
+                worsePlays:[],
+                color:'white',
+                ignore_first_moves:3,
+                matches: 200,
+                repetition: 2,
+                errorScoreThreshold: 0.5,
             }
             this.$forceUpdate()
         },
@@ -139,30 +142,34 @@ export default {
                                 currentNode.movements = new Object();
                             }
 
-                            if (Object.keys(currentNode.movements).includes(gameMovement[j + 1])) {
-                                chessGame.move(gameMovement[j + 1]);
-                                currentNode.movements[gameMovement[j + 1]].repetition++
-                                currentNode.movements[gameMovement[j + 1]].deltaRepetition = currentNode.movements[gameMovement[j + 1]].repetition * (Math.round((gameMovement[j + 2] - previousScore) * 100) / 100);
-                                currentNode.movements[gameMovement[j + 1]].site_url = currentNode.movements[gameMovement[j + 1]].site_url + "!" + site_url + "/" + color + "/#" + currentMove;
-                            } else {
-                                currentNode.movements[gameMovement[j + 1]] = new Object();
-                                currentNode.movements[gameMovement[j + 1]].score = gameMovement[j + 2];
-                                currentNode.movements[gameMovement[j + 1]].deltaScore = Math.round((gameMovement[j + 2] - previousScore) * 100) / 100;
-                                currentNode.movements[gameMovement[j + 1]].deltaRepetition = Math.round((gameMovement[j + 2] - previousScore) * 100) / 100;
-                                currentNode.movements[gameMovement[j + 1]].name = gameMovement[j + 1];
-                                currentNode.movements[gameMovement[j + 1]].site_url = site_url + "/" + color + "/#" + currentMove;
-                                currentNode.movements[gameMovement[j + 1]].color = gameMovement[gameMovement.length - 1].split('!')[1];
-                                currentNode.movements[gameMovement[j + 1]].repetition = 1;
-                                chessGame.move(gameMovement[j + 1]);
-                                currentNode.movements[gameMovement[j + 1]].fen = chessGame.fen();
+                                if (Object.keys(currentNode.movements).includes(gameMovement[j+1])) {
+                                    chessGame.move(gameMovement[j+1]);
+                                    currentNode.movements[gameMovement[j+1]].repetition ++
+                                    currentNode.movements[gameMovement[j+1]].deltaRepetition =  currentNode.movements[gameMovement[j+1]].repetition * (Math.round((gameMovement[j+2] - previousScore)*100)/100);
+                                    currentNode.movements[gameMovement[j+1]].site_url = currentNode.movements[gameMovement[j+1]].site_url + "!" + site_url + "/" + color + "/#" + currentMove;
+                                }
+                                else {
+                                    currentNode.movements[gameMovement[j+1]] = new Object();
+                                    currentNode.movements[gameMovement[j+1]].score = gameMovement[j+2];
+                                    currentNode.movements[gameMovement[j+1]].deltaScore = Math.round((gameMovement[j+2] - previousScore)*100)/100;
+                                    currentNode.movements[gameMovement[j+1]].deltaRepetition =  Math.round((gameMovement[j+2] - previousScore)*100)/100;
+                                    currentNode.movements[gameMovement[j+1]].name =gameMovement[j+1];
+                                    currentNode.movements[gameMovement[j+1]].site_url = site_url+"/" + color + "/#" + currentMove;
+                                    currentNode.movements[gameMovement[j+1]].color = gameMovement[gameMovement.length-1].split('!')[1];
+                                    currentNode.movements[gameMovement[j+1]].repetition = 1;
+                                    chessGame.move(gameMovement[j+1]);
+                                    currentNode.movements[gameMovement[j+1]].fen = chessGame.fen();
 
-                                if (currentNode.movements[gameMovement[j + 1]].color === "white") {
-                                    if (-this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                                        this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
-                                    }
-                                } else {
-                                    if (this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                                        this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                    if (this.ignore_first_moves < currentMove) {
+                                        if (currentNode.movements[gameMovement[j + 1]].color === "white") {
+                                            if (-this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                                                this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                            }
+                                        } else {
+                                            if (this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                                                this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                            }
+                                        }
                                     }
                                 }
 
