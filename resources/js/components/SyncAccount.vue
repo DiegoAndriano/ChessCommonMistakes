@@ -53,15 +53,17 @@
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
         </div>
         <label class="block" for="account">Select account</label>
-        <div class="mb-4">
+        <div class="flex mb-4 items-center">
             <input
                 v-model="account"
                 id="account" type="text"
                 placeholder="Account"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
-            <button class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white" @click="getGames">Go!</button>
+            <button class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white" @click="getGames">Go!
+            </button>
+            <div class="px-4" v-if="loading" id="loading"></div>
         </div>
-        !!! There is no loading bar or feedback, wait a few seconds after pressing "Go!" !!!
+
     </div>
 </template>
 
@@ -79,10 +81,11 @@ export default {
             movementMatrix: {},
             worsePlays: [],
             color: 'both',
-            ignore_first_moves:6,
+            ignore_first_moves: 6,
             matches: 20,
             repetition: 2,
             errorScoreThreshold: 0.5,
+            loading: false,
         }
     },
     methods: {
@@ -94,7 +97,7 @@ export default {
             this.$forceUpdate()
         },
         async getGames() {
-
+            this.loading = true
             this.chessGames = []
             this.chessGamesParsed = []
             this.movementMatrix = {}
@@ -206,6 +209,7 @@ export default {
 
 //                        console.log(this.movementMatrix)
 //                        console.log(JSON.stringify(this.movementMatrix))
+                    this.loading = false
                     this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
 
                 })
@@ -216,3 +220,29 @@ export default {
 }
 </script>
 
+<style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:100);
+
+#loading {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 3px solid #86efac;
+    border-radius: 50%;
+    border-top-color: #15803d;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+</style>
