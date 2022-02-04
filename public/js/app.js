@@ -41221,9 +41221,9 @@ var render = function () {
                           _vm._v(
                             " | " +
                               _vm._s(worsePlay.deltaScore) +
-                              " |\n                        #" +
+                              " |\n                            #" +
                               _vm._s(worsePlay.repetition) +
-                              "\n                    "
+                              "\n                        "
                           ),
                         ]
                       ),
@@ -41241,16 +41241,6 @@ var render = function () {
           }),
           0
         ),
-        _vm._v(" "),
-        !_vm.itHasWorsePlays && _vm.sync > 0
-          ? _c("div", [
-              _c("p", { staticClass: "font-bold underlined" }, [
-                _vm._v(
-                  "No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!"
-                ),
-              ]),
-            ])
-          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "flex items-start mt-8" }, [
           _c(
@@ -41279,7 +41269,9 @@ var render = function () {
                       _vm._v(" " + _vm._s(move.score) + " | "),
                       _c("span", { staticClass: "font-bold" }, [_vm._v("ΔE:")]),
                       _vm._v(
-                        " " + _vm._s(move.deltaScore) + "\n                    "
+                        " " +
+                          _vm._s(move.deltaScore) +
+                          "\n                        "
                       ),
                     ]
                   ),

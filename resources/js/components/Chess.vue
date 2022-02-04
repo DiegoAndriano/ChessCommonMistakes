@@ -16,9 +16,9 @@
 
                 </div>
             </div>
-            <div v-if="(! itHasWorsePlays ) && (sync > 0)">
-                <p class="font-bold underlined">No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!</p>
-            </div>
+<!--            <div v-if="(! itHasWorsePlays ) && (sync > 0)">-->
+<!--                <p class="font-bold underlined">No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!</p>-->
+<!--            </div>-->
             <div class="flex items-start mt-8">
                 <div class="grid grid-cols-2 mx-4">
                     <movements-box class="cursor-pointer" v-for="(move, index) in played" :key="index">
