@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label class="block" for="account">Select color</label>
+        <label class="block" for="white">Select color</label>
         <div class="mb-4">
             <input type="radio" id="white" value="white" v-model="color">
             <label for="white">White</label>
