@@ -39,6 +39,15 @@
                 placeholder="2"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
         </div>
+        <label class="block" for="ignore_first_moves">How many first moves to ignore</label>
+        <div class="mb-4">
+            <input
+                v-model="ignore_first_moves"
+                id="ignore_first_moves"
+                placeholder="3"
+                type="number"
+                class="border transition ease-in-out focus:pl-4 pl-2 ">
+        </div>
         <label class="block" for="account">Select account</label>
         <div class="mb-4">
             <input
@@ -66,6 +75,7 @@
                 movementMatrix:{},
                 worsePlays:[],
                 color:'white',
+                ignore_first_moves:3,
                 matches: 200,
                 repetition: 2,
                 errorScoreThreshold: 0.5,
@@ -151,14 +161,15 @@
                                     chessGame.move(gameMovement[j+1]);
                                     currentNode.movements[gameMovement[j+1]].fen = chessGame.fen();
 
-                                    if (currentNode.movements[gameMovement[j+1]].color === "white") {
-                                        if (-this.errorScoreThreshold >= currentNode.movements[gameMovement[j+1]].deltaScore) {
-                                            this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
-                                        }
-                                    }
-                                    else {
-                                        if (this.errorScoreThreshold <= currentNode.movements[gameMovement[j+1]].deltaScore) {
-                                            this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                    if (this.ignore_first_moves < currentMove) {
+                                        if (currentNode.movements[gameMovement[j + 1]].color === "white") {
+                                            if (-this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                                                this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                            }
+                                        } else {
+                                            if (this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                                                this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                            }
                                         }
                                     }
 
