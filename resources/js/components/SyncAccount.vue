@@ -80,7 +80,7 @@ export default {
             worsePlays: [],
             color: 'both',
             ignore_first_moves:6,
-            matches: 200,
+            matches: 20,
             repetition: 2,
             errorScoreThreshold: 0.5,
         }
