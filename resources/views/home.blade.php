@@ -1,11 +1,17 @@
 <x-app>
-    <div id="app" class="bg-white py-3">
+    <div id="app" class="bg-white py-3 mt-3">
         <div class="flex justify-around">
 
             <div class="font-bold text-xl">
                 Chess Common Mistakes
             </div>
-            
+
+            <div>
+                <a class="text-xl font-bold hover:underline" href="https://github.com/DiegoAndriano/ChessCommonMistakes/">
+                    Repository
+                </a>
+            </div>
+
         </div>
     </div>
 
