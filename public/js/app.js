@@ -1893,7 +1893,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       worsePlays: [],
       color: 'both',
       ignore_first_moves: 6,
-      matches: 200,
+      matches: 20,
       repetition: 2,
       errorScoreThreshold: 0.5
     };
