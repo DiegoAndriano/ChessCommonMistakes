@@ -1878,6 +1878,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1887,7 +1891,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       chessGamesParsed: [],
       movementMatrix: {},
       worsePlays: [],
-      color: 'white',
+      color: 'both',
       ignore_first_moves: 6,
       matches: 200,
       repetition: 2,
@@ -41382,7 +41386,7 @@ var render = function () {
             expression: "color",
           },
         ],
-        attrs: { type: "radio", id: "white", value: "white", selected: "" },
+        attrs: { type: "radio", id: "white", value: "white" },
         domProps: { checked: _vm._q(_vm.color, "white") },
         on: {
           change: function ($event) {
@@ -41426,7 +41430,7 @@ var render = function () {
             expression: "color",
           },
         ],
-        attrs: { type: "radio", id: "both", value: "both" },
+        attrs: { type: "radio", id: "both", value: "both", checked: "" },
         domProps: { checked: _vm._q(_vm.color, "both") },
         on: {
           change: function ($event) {
@@ -41453,7 +41457,7 @@ var render = function () {
           },
         ],
         staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "matches", placeholder: "200", type: "number" },
+        attrs: { id: "matches", min: "0", placeholder: "200", type: "number" },
         domProps: { value: _vm.matches },
         on: {
           input: [
@@ -41486,7 +41490,12 @@ var render = function () {
           },
         ],
         staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "ignore_first_moves", placeholder: "3", type: "number" },
+        attrs: {
+          id: "ignore_first_moves",
+          placeholder: "3",
+          min: "0",
+          type: "number",
+        },
         domProps: { value: _vm.ignore_first_moves },
         on: {
           input: function ($event) {
@@ -41514,7 +41523,7 @@ var render = function () {
           },
         ],
         staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "error", placeholder: "0.5", type: "number" },
+        attrs: { id: "error", min: "0", placeholder: "0.5", type: "number" },
         domProps: { value: _vm.errorScoreThreshold },
         on: {
           input: function ($event) {
@@ -41542,7 +41551,7 @@ var render = function () {
           },
         ],
         staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "repetition", type: "number", placeholder: "2" },
+        attrs: { id: "repetition", type: "number", min: "0", placeholder: "2" },
         domProps: { value: _vm.repetition },
         on: {
           input: function ($event) {

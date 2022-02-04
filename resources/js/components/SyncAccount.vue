@@ -2,13 +2,13 @@
     <div>
         <label class="block" for="account">Select color</label>
         <div class="mb-4">
-            <input type="radio" id="white" value="white" v-model="color" selected>
+            <input type="radio" id="white" value="white" v-model="color">
             <label for="white">White</label>
             <br>
             <input type="radio" id="black" value="black" v-model="color">
             <label for="black">Black</label>
             <br>
-            <input type="radio" id="both" value="both" v-model="color">
+            <input type="radio" id="both" value="both" v-model="color" checked>
             <label for="both">Both</label>
         </div>
         <label class="block" for="matches">Matches selected</label>
@@ -16,6 +16,7 @@
             <input
                 v-model="matches"
                 id="matches"
+                min="0"
                 placeholder="200"
                 @input="limitMaxMatchesValue"
                 type="number"
@@ -27,6 +28,7 @@
                 v-model="ignore_first_moves"
                 id="ignore_first_moves"
                 placeholder="3"
+                min="0"
                 type="number"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
         </div>
@@ -35,6 +37,7 @@
             <input
                 v-model="errorScoreThreshold"
                 id="error"
+                min="0"
                 placeholder="0.5"
                 type="number"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
@@ -45,6 +48,7 @@
                 v-model="repetition"
                 id="repetition"
                 type="number"
+                min="0"
                 placeholder="2"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
         </div>
@@ -74,7 +78,7 @@ export default {
             chessGamesParsed: [],
             movementMatrix: {},
             worsePlays: [],
-            color: 'white',
+            color: 'both',
             ignore_first_moves:6,
             matches: 200,
             repetition: 2,
