@@ -124,7 +124,11 @@
 
                             var previousScore = 0;
                             var currentWorstPlay = 0;
+                            var color = gameMovement[gameMovement.length-1].split('!')[1];
+                            var site_url = gameMovement[gameMovement.length-1].split('!')[0];
+                            var currentMove = 0;
                             for (var j=0; j<gameMovement.length-1; j+=3) {
+                                currentMove++;
                                 if (currentNode.movements == null) {
                                     currentNode.movements = new Object();
                                 }
@@ -133,7 +137,7 @@
                                     chessGame.move(gameMovement[j+1]);
                                     currentNode.movements[gameMovement[j+1]].repetition ++
                                     currentNode.movements[gameMovement[j+1]].deltaRepetition =  currentNode.movements[gameMovement[j+1]].repetition * (Math.round((gameMovement[j+2] - previousScore)*100)/100);
-                                    currentNode.movements[gameMovement[j+1]].site_url = currentNode.movements[gameMovement[j+1]].site_url + "!" + gameMovement[gameMovement.length-1].split('!')[0];
+                                    currentNode.movements[gameMovement[j+1]].site_url = currentNode.movements[gameMovement[j+1]].site_url + "!" + site_url + "/" + color + "/#" + currentMove;
                                 }
                                 else {
                                     currentNode.movements[gameMovement[j+1]] = new Object();
@@ -141,7 +145,7 @@
                                     currentNode.movements[gameMovement[j+1]].deltaScore = Math.round((gameMovement[j+2] - previousScore)*100)/100;
                                     currentNode.movements[gameMovement[j+1]].deltaRepetition =  Math.round((gameMovement[j+2] - previousScore)*100)/100;
                                     currentNode.movements[gameMovement[j+1]].name =gameMovement[j+1];
-                                    currentNode.movements[gameMovement[j+1]].site_url = gameMovement[gameMovement.length-1].split('!')[0];
+                                    currentNode.movements[gameMovement[j+1]].site_url = site_url+"/" + color + "/#" + currentMove;
                                     currentNode.movements[gameMovement[j+1]].color = gameMovement[gameMovement.length-1].split('!')[1];
                                     currentNode.movements[gameMovement[j+1]].repetition = 1;
                                     chessGame.move(gameMovement[j+1]);
