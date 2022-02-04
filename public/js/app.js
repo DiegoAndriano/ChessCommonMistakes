@@ -1692,7 +1692,8 @@ __webpack_require__.r(__webpack_exports__);
       worsePlays: [],
       sync: 0,
       repetitionThreshold: 2,
-      played: []
+      played: [],
+      itHasWorsePlays: false
     };
   },
   components: {
@@ -1717,6 +1718,10 @@ __webpack_require__.r(__webpack_exports__);
       this.worsePlays = receivedMatrix[1];
       this.repetitionThreshold = parseInt(receivedMatrix[2]);
       this.sync++;
+
+      for (var i = 0; i < this.worsePlays.length; i++) {
+        itHasWorsePlays = itHasWorsePlays || this.worsePlays[i].repetition >= this.repetitionThreshold;
+      }
     },
     moveFromLeftTab: function moveFromLeftTab(val) {
       this.selectedFen = val.fen;
@@ -41237,11 +41242,11 @@ var render = function () {
           0
         ),
         _vm._v(" "),
-        _vm.worsePlays.length === 0 && _vm.movementMatrix.length > 0
+        !_vm.itHasWorsePlays && _vm.sync > 0
           ? _c("div", [
-              _c("p", { staticClass: "underlined" }, [
+              _c("p", { staticClass: "font-bold underlined" }, [
                 _vm._v(
-                  "No errors with configured repetitions have been found. "
+                  "No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!"
                 ),
               ]),
             ])

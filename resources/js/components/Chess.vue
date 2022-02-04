@@ -16,8 +16,8 @@
 
                 </div>
             </div>
-            <div v-if="(worsePlays.length === 0) && (movementMatrix.length >0)">
-                <p class="underlined">No errors with configured repetitions have been found. </p>
+            <div v-if="(! itHasWorsePlays ) && (sync > 0)">
+                <p class="font-bold underlined">No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!</p>
             </div>
             <div class="flex items-start mt-8">
                 <div class="grid grid-cols-2 mx-4">
@@ -64,6 +64,7 @@ export default {
             sync: 0,
             repetitionThreshold : 2,
             played: [],
+            itHasWorsePlays: false,
         }
     },
     components: {
@@ -94,6 +95,10 @@ export default {
             this.worsePlays = receivedMatrix[1];
             this.repetitionThreshold = parseInt(receivedMatrix[2]);
             this.sync++;
+
+            for (var i=0; i<this.worsePlays.length;i++) {
+                itHasWorsePlays = itHasWorsePlays || (this.worsePlays[i].repetition >= this.repetitionThreshold)
+            }
         },
         moveFromLeftTab(val) {
             this.selectedFen = val.fen
