@@ -4,7 +4,7 @@
 
             @click="seeTree" ><span class="font-bold">{{depth}} | #{{moves.repetition}} |</span>. <span class="font-bold">{{ name }}</span>  | {{ moves.score }}</button>
         <br>
-        <tree v-if="showTree" v-for="(move, n) in moves.movements" :name="n" :moves="move" :key="n + move.score" :depth="depth + 1"></tree>
+        <tree v-if="showTree" v-for="(move, n) in moves.movements" :story-received="story" :name="n" :moves="move" :key="n + move.score" :depth="depth + 1"></tree>
     </div>
 </template>
 
@@ -19,17 +19,26 @@ export default {
         'moves': Object,
         'name': String,
         'bus': Object(),
+        'storyReceived': [],
+    },
+    mounted() {
+        this.story = Array.from(this.storyReceived);
+        this.story.push(this.moves);
+        this.counter++;
+
     },
     data() {
         return {
+            story : [],
             showTree: false,
+            counter: 0,
         }
     },
     methods: {
         seeTree(){
-            this.showTree = !this.showTree;//true;
+            this.showTree = !this.showTree;
 
-            EventBus.$emit('clickeado', this.moves);
+            EventBus.$emit('clickeado', [this.moves, this.name, this.story]);
         }
     }
 }

@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="max-w-xl mx-auto">
+    <div class="max-w-4xl mx-auto">
         <h2 class="font-bold text-3xl mt-6">Select your account</h2>
         <p class="mb-4">Get your most common errors in the openings given a number of games.</p>
 
