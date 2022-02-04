@@ -2,10 +2,41 @@
     <div>
         <label class="block" for="account">Select color</label>
         <div class="mb-4">
+            <input type="radio" id="white" value="white" v-model="color" selected>
+            <label for="white">White</label>
+            <br>
+            <input type="radio" id="black" value="black" v-model="color">
+            <label for="black">Black</label>
+            <br>
+            <input type="radio" id="both" value="both" v-model="color">
+            <label for="both">Both</label>
+        </div>
+        <label class="block" for="matches">Matches selected</label>
+        <div class="mb-4">
             <input
-                v-model="color"
-                id="color" type="text"
-                placeholder="Select color"
+                v-model="matches"
+                id="matches"
+                placeholder="200"
+                @input="limitMaxMatchesValue"
+                type="number"
+                class="border transition ease-in-out focus:pl-4 pl-2 ">
+        </div>
+        <label class="block" for="error">Score lost to consider an error</label>
+        <div class="mb-4">
+            <input
+                v-model="errorScoreThreshold"
+                id="error"
+                placeholder="0.5"
+                type="number"
+                class="border transition ease-in-out focus:pl-4 pl-2 ">
+        </div>
+        <label class="block" for="account">Minimum times the error is repeated</label>
+        <div class="mb-4">
+            <input
+                v-model="repetition"
+                id="repetition"
+                type="number"
+                placeholder="2"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
         </div>
         <label class="block" for="account">Select account</label>
@@ -34,13 +65,23 @@
                 chessGamesParsed: [],
                 movementMatrix:{},
                 worsePlays:[],
-                color:'White',
+                color:'white',
+                matches: 200,
+                repetition: 2,
+                errorScoreThreshold: 0.5,
             }
         },
         methods: {
+            limitMaxMatchesValue(event) {
+                const value = event.target.value
+                if (this.matches >= 500) {
+                    this.matches = 500
+                }
+                this.$forceUpdate()
+            },
             async getGames() {
                 await axios
-                    .get('https://lichess.org/api/games/user/' + this.account + '?color=' + this.color + '&max=200&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"')
+                    .get('https://lichess.org/api/games/user/' + this.account + '?' + (this.color === 'both' ? '' : 'color=' + this.color + '&' )+ 'max='+ this.matches +'&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"')
                     .then(response => {
 
                         console.log(response.data)
@@ -57,6 +98,9 @@
                             var site_url = this.chessGames[i-1].substring(this.chessGames[i-1].indexOf('[Site '), 100);
                             site_url = site_url.substring(0, site_url.indexOf('\"]'));
                             site_url = site_url.substring(7, site_url.length);
+
+                            var current_color = this.chessGames[i-1].substring(this.chessGames[i-1].indexOf('[White '), this.chessGames[i-1].indexOf('[Black '));
+                            current_color = current_color.includes(this.account) ? "white" : "black";
                             // console.log(site_url);
                             this.chessGames[i] = this.chessGames[i].replaceAll('[%eval','');
                             this.chessGames[i] = this.chessGames[i].replaceAll(']','');
@@ -65,7 +109,7 @@
                             this.chessGames[i] = this.chessGames[i].replaceAll('  ',' ');
                             this.chessGames[i] = this.chessGames[i].replaceAll('  ',' ');
 
-                            this.chessGames[i] = this.chessGames[i] + " " + site_url;
+                            this.chessGames[i] = this.chessGames[i] + " " + site_url+"!"+current_color;
                             this.chessGamesParsed.push(this.chessGames[i]);
                         }
 
@@ -89,7 +133,7 @@
                                     chessGame.move(gameMovement[j+1]);
                                     currentNode.movements[gameMovement[j+1]].repetition ++
                                     currentNode.movements[gameMovement[j+1]].deltaRepetition =  currentNode.movements[gameMovement[j+1]].repetition * (Math.round((gameMovement[j+2] - previousScore)*100)/100);
-                                    currentNode.movements[gameMovement[j+1]].site_url = currentNode.movements[gameMovement[j+1]].site_url + "!" + gameMovement[gameMovement.length-1];
+                                    currentNode.movements[gameMovement[j+1]].site_url = currentNode.movements[gameMovement[j+1]].site_url + "!" + gameMovement[gameMovement.length-1].split('!')[0];
                                 }
                                 else {
                                     currentNode.movements[gameMovement[j+1]] = new Object();
@@ -97,15 +141,23 @@
                                     currentNode.movements[gameMovement[j+1]].deltaScore = Math.round((gameMovement[j+2] - previousScore)*100)/100;
                                     currentNode.movements[gameMovement[j+1]].deltaRepetition =  Math.round((gameMovement[j+2] - previousScore)*100)/100;
                                     currentNode.movements[gameMovement[j+1]].name =gameMovement[j+1];
-                                    currentNode.movements[gameMovement[j+1]].site_url =gameMovement[gameMovement.length-1];
+                                    currentNode.movements[gameMovement[j+1]].site_url = gameMovement[gameMovement.length-1].split('!')[0];
+                                    currentNode.movements[gameMovement[j+1]].color = gameMovement[gameMovement.length-1].split('!')[1];
                                     currentNode.movements[gameMovement[j+1]].repetition = 1;
                                     chessGame.move(gameMovement[j+1]);
                                     currentNode.movements[gameMovement[j+1]].fen = chessGame.fen();
 
-                                    if (-0.5 >= currentNode.movements[gameMovement[j+1]].deltaScore) {
-                                        this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
-
+                                    if (currentNode.movements[gameMovement[j+1]].color === "white") {
+                                        if (-this.errorScoreThreshold >= currentNode.movements[gameMovement[j+1]].deltaScore) {
+                                            this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                        }
                                     }
+                                    else {
+                                        if (this.errorScoreThreshold <= currentNode.movements[gameMovement[j+1]].deltaScore) {
+                                            this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                                        }
+                                    }
+
                                 }
                                 previousScore = gameMovement[j+2];
                                 currentNode = currentNode.movements[gameMovement[j+1]];
@@ -142,7 +194,7 @@
 
 //                        console.log(this.movementMatrix)
 //                        console.log(JSON.stringify(this.movementMatrix))
-                        this.$emit('synced', [this.movementMatrix, this.worsePlays])
+                        this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
 
                     })
 

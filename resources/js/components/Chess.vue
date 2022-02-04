@@ -4,7 +4,7 @@
         <br>
         <div class="">
             <div class="w-full flex overflow-x-scroll">
-                <div v-if="worsePlay.repetition > 1" v-for="worsePlay in worsePlays">
+                <div v-if="worsePlay.repetition >= repetitionThreshold" v-for="worsePlay in worsePlays">
                     <div>
                         <button @click="moveFromLeftTab(worsePlay)" class="space-x-3">
                             <span class="font-bold">{{ worsePlay.name }}</span> | {{ worsePlay.deltaScore }} |
@@ -63,6 +63,7 @@ export default {
             movementMatrix: [],
             worsePlays: [],
             sync: 0,
+            repetitionThreshold : 2,
             played: [],
         }
     },
@@ -91,6 +92,7 @@ export default {
         handleSync(receivedMatrix) {
             this.movementMatrix = receivedMatrix[0];
             this.worsePlays = receivedMatrix[1];
+            this.repetitionThreshold = parseInt(receivedMatrix[2]);
             this.sync++;
         },
         moveFromLeftTab(val) {
