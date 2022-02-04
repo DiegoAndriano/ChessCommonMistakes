@@ -21,6 +21,9 @@
         <div style="padding:10px; border-radius:10px; color:#fff; background-color:#333; text-align:center;">
             <a href="mailto:andrianodna@gmail.com">Made by the Filocode team! | andrianodna@gmail.com</a>
         </div>
+        <div style="padding:10px; border-radius:10px; color:#fff; background-color:#333; text-align:center; margin-top:5px">
+            <a href="https://www.paypal.com/donate/?hosted_button_id=9ZMQY27X9N6ZL">Buy us a coffee!</a>
+        </div>
         <h2 class="font-bold text-3xl mt-6">Select your account</h2>
         <p class="mb-4">Get your most common errors in the openings given a number of games.</p>
 
@@ -42,6 +45,13 @@
                 score is +3 after white moves, and black then moves and the score now is +6, then the score lost is 3.</li>
             <li>Minimum times the error is repeated: set this in at least two to get a nice feedback</li>
         </ul>
+
+        <div style="padding:10px; border-radius:10px; color:#fff; background-color:#333; text-align:center;">
+            <a href="mailto:andrianodna@gmail.com">Made by the Filocode team! | andrianodna@gmail.com</a>
+        </div>
+        <div style="padding:10px; border-radius:10px; color:#fff; background-color:#333; text-align:center; margin-top:5px; margin-bottom: 50px;">
+            <a href="https://www.paypal.com/donate/?hosted_button_id=9ZMQY27X9N6ZL">Buy us a coffee!</a>
+        </div>
 
     </div>
 
