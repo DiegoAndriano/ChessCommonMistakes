@@ -3,6 +3,8 @@
         <sync-account @synced="handleSync"/>
         <br>
         <div class="">
+            <p v-if="( itHasWorsePlays ) && (sync > 0)" class="font-bold block">We found these repeated mistakes!</p>
+
             <div class="w-full flex overflow-x-scroll">
                 <div v-if="worsePlay.repetition >= repetitionThreshold" v-for="worsePlay in worsePlays" class="space-x-4">
                     <div>
@@ -16,9 +18,9 @@
 
                 </div>
             </div>
-<!--            <div v-if="(! itHasWorsePlays ) && (sync > 0)">-->
-<!--                <p class="font-bold underlined">No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!</p>-->
-<!--            </div>-->
+            <div v-if="(! itHasWorsePlays ) && (sync > 0)">
+                <p class="font-bold underlined">No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!</p>
+            </div>
             <div class="flex items-start mt-8">
                 <div class="grid grid-cols-2 mx-4">
                     <movements-box class="cursor-pointer" v-for="(move, index) in played" :key="index">
@@ -97,7 +99,7 @@ export default {
             this.sync++;
 
             for (var i=0; i<this.worsePlays.length;i++) {
-                itHasWorsePlays = itHasWorsePlays || (this.worsePlays[i].repetition >= this.repetitionThreshold)
+                this.itHasWorsePlays = this.itHasWorsePlays || (this.worsePlays[i].repetition >= this.repetitionThreshold)
             }
         },
         moveFromLeftTab(val) {

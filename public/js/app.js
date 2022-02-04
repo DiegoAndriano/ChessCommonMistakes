@@ -1677,6 +1677,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -1720,7 +1722,7 @@ __webpack_require__.r(__webpack_exports__);
       this.sync++;
 
       for (var i = 0; i < this.worsePlays.length; i++) {
-        itHasWorsePlays = itHasWorsePlays || this.worsePlays[i].repetition >= this.repetitionThreshold;
+        this.itHasWorsePlays = this.itHasWorsePlays || this.worsePlays[i].repetition >= this.repetitionThreshold;
       }
     },
     moveFromLeftTab: function moveFromLeftTab(val) {
@@ -41194,6 +41196,12 @@ var render = function () {
       _c("br"),
       _vm._v(" "),
       _c("div", {}, [
+        _vm.itHasWorsePlays && _vm.sync > 0
+          ? _c("p", { staticClass: "font-bold block" }, [
+              _vm._v("We found these repeated mistakes!"),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "w-full flex overflow-x-scroll" },
@@ -41221,9 +41229,9 @@ var render = function () {
                           _vm._v(
                             " | " +
                               _vm._s(worsePlay.deltaScore) +
-                              " |\n                            #" +
+                              " |\n                        #" +
                               _vm._s(worsePlay.repetition) +
-                              "\n                        "
+                              "\n                    "
                           ),
                         ]
                       ),
@@ -41241,6 +41249,16 @@ var render = function () {
           }),
           0
         ),
+        _vm._v(" "),
+        !_vm.itHasWorsePlays && _vm.sync > 0
+          ? _c("div", [
+              _c("p", { staticClass: "font-bold underlined" }, [
+                _vm._v(
+                  "No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!"
+                ),
+              ]),
+            ])
+          : _vm._e(),
         _vm._v(" "),
         _c("div", { staticClass: "flex items-start mt-8" }, [
           _c(
@@ -41269,9 +41287,7 @@ var render = function () {
                       _vm._v(" " + _vm._s(move.score) + " | "),
                       _c("span", { staticClass: "font-bold" }, [_vm._v("ΔE:")]),
                       _vm._v(
-                        " " +
-                          _vm._s(move.deltaScore) +
-                          "\n                        "
+                        " " + _vm._s(move.deltaScore) + "\n                    "
                       ),
                     ]
                   ),
