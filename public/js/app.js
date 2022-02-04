@@ -1869,15 +1869,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1888,7 +1879,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       movementMatrix: {},
       worsePlays: [],
       color: 'white',
-      ignore_first_moves: 3,
       matches: 200,
       repetition: 2,
       errorScoreThreshold: 0.5
@@ -1912,7 +1902,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                _this.chessGames = [];
+                _this.chessGamesParsed = [];
+                _this.movementMatrix = {};
+                _this.worsePlays = [];
+                _context.next = 6;
                 return axios.get('https://lichess.org/api/games/user/' + _this.account + '?' + (_this.color === 'both' ? '' : 'color=' + _this.color + '&') + 'max=' + _this.matches + '&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
                   console.log(response.data);
                   _this.chessGames = response.data;
@@ -1986,15 +1980,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         chessGame.move(gameMovement[j + 1]);
                         currentNode.movements[gameMovement[j + 1]].fen = chessGame.fen();
 
-                        if (_this.ignore_first_moves < currentMove) {
-                          if (currentNode.movements[gameMovement[j + 1]].color === "white") {
-                            if (-_this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                              _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
-                            }
-                          } else {
-                            if (_this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                              _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
-                            }
+                        if (currentNode.movements[gameMovement[j + 1]].color === "white") {
+                          if (-_this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                            _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                          }
+                        } else {
+                          if (_this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                            _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
                           }
                         }
                       }
@@ -2036,7 +2028,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.$emit('synced', [_this.movementMatrix, _this.worsePlays, _this.repetition]);
                 });
 
-              case 2:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -41188,9 +41180,9 @@ var render = function () {
                         _vm._v(_vm._s(move.name)),
                       ]),
                       _vm._v(" | "),
-                      _c("span", { staticClass: "font-bold" }, [_vm._v("%:")]),
+                      _c("span", { staticClass: "font-bold" }, [_vm._v("E:")]),
                       _vm._v(" " + _vm._s(move.score) + " | "),
-                      _c("span", { staticClass: "font-bold" }, [_vm._v("Δ%:")]),
+                      _c("span", { staticClass: "font-bold" }, [_vm._v("ΔE:")]),
                       _vm._v(
                         " " + _vm._s(move.deltaScore) + "\n                    "
                       ),
@@ -41376,7 +41368,7 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("label", { staticClass: "block", attrs: { for: "white" } }, [
+    _c("label", { staticClass: "block", attrs: { for: "account" } }, [
       _vm._v("Select color"),
     ]),
     _vm._v(" "),
@@ -41390,7 +41382,7 @@ var render = function () {
             expression: "color",
           },
         ],
-        attrs: { type: "radio", id: "white", value: "white" },
+        attrs: { type: "radio", id: "white", value: "white", selected: "" },
         domProps: { checked: _vm._q(_vm.color, "white") },
         on: {
           change: function ($event) {
@@ -41434,7 +41426,7 @@ var render = function () {
             expression: "color",
           },
         ],
-        attrs: { type: "radio", id: "both", value: "both", selected: "" },
+        attrs: { type: "radio", id: "both", value: "both" },
         domProps: { checked: _vm._q(_vm.color, "both") },
         on: {
           change: function ($event) {
@@ -41528,36 +41520,6 @@ var render = function () {
               return
             }
             _vm.repetition = $event.target.value
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c(
-      "label",
-      { staticClass: "block", attrs: { for: "ignore_first_moves" } },
-      [_vm._v("How many first moves to ignore")]
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-4" }, [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.ignore_first_moves,
-            expression: "ignore_first_moves",
-          },
-        ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "ignore_first_moves", placeholder: "3", type: "number" },
-        domProps: { value: _vm.ignore_first_moves },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.ignore_first_moves = $event.target.value
           },
         },
       }),
