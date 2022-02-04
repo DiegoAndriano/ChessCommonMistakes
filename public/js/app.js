@@ -1679,6 +1679,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -41205,38 +41207,46 @@ var render = function () {
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "w-full flex overflow-x-scroll" },
+          { staticClass: "py-4 w-full flex overflow-x-scroll" },
           _vm._l(_vm.worsePlays, function (worsePlay) {
             return worsePlay.repetition >= _vm.repetitionThreshold
               ? _c(
                   "div",
-                  { staticClass: "space-x-4" },
+                  {
+                    staticClass: "px-1 space-x-4 items-center",
+                    staticStyle: {
+                      "background-color": "#ddd",
+                      padding: "10px",
+                      "border-radius": "5px",
+                      "min-width": "180px",
+                      "margin-right": "10px",
+                    },
+                  },
                   [
-                    _c("div", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "space-x-3",
-                          on: {
-                            click: function ($event) {
-                              return _vm.moveFromLeftTab(worsePlay)
-                            },
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
+                        on: {
+                          click: function ($event) {
+                            return _vm.moveFromLeftTab(worsePlay)
                           },
                         },
-                        [
-                          _c("span", { staticClass: "font-bold" }, [
-                            _vm._v(_vm._s(worsePlay.name)),
-                          ]),
-                          _vm._v(
-                            " | " +
-                              _vm._s(worsePlay.deltaScore) +
-                              " |\n                        #" +
-                              _vm._s(worsePlay.repetition) +
-                              "\n                    "
-                          ),
-                        ]
-                      ),
-                    ]),
+                      },
+                      [
+                        _c("span", { staticClass: "font-bold" }, [
+                          _vm._v(_vm._s(worsePlay.name)),
+                        ]),
+                        _vm._v(
+                          " | ΔE: " +
+                            _vm._s(worsePlay.deltaScore) +
+                            " |\n                    " +
+                            _vm._s(worsePlay.repetition) +
+                            " games\n                "
+                        ),
+                      ]
+                    ),
                     _vm._v(" "),
                     _c("hoverable", {
                       attrs: {
@@ -41255,7 +41265,7 @@ var render = function () {
           ? _c("div", [
               _c("p", { staticClass: "font-bold underlined" }, [
                 _vm._v(
-                  "No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!"
+                  "No errors with configured repetitions have been found. Try with more\n                games, or analyze more games on Lichess!"
                 ),
               ]),
             ])
@@ -41285,7 +41295,11 @@ var render = function () {
                       ]),
                       _vm._v(" | "),
                       _c("span", { staticClass: "font-bold" }, [_vm._v("E:")]),
-                      _vm._v(" " + _vm._s(move.score) + " | "),
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(move.score) +
+                          " | "
+                      ),
                       _c("span", { staticClass: "font-bold" }, [_vm._v("ΔE:")]),
                       _vm._v(
                         " " + _vm._s(move.deltaScore) + "\n                    "
@@ -41369,10 +41383,11 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticStyle: { margin: "0px" } }, [
     _c(
       "button",
       {
+        staticClass: "w-full",
         on: {
           click: function ($event) {
             _vm.showGames = !_vm.showGames
@@ -41380,7 +41395,14 @@ var render = function () {
         },
       },
       [
-        _c("p", [_vm._v("Show lichess games")]),
+        _c(
+          "button",
+          {
+            staticClass:
+              "w-full border border-2 bg-gray-100 hover:bg-green-500 hover:text-white transition ease-in duration-100",
+          },
+          [_vm._v("Show lichess games")]
+        ),
         _vm._v(" "),
         _vm.showGames
           ? _c(
@@ -41393,7 +41415,7 @@ var render = function () {
                 return _c(
                   "a",
                   {
-                    staticClass: "block w-full h-5 underline",
+                    staticClass: "block w-auto h-5 underline",
                     attrs: { href: url, target: "_blank" },
                   },
                   [

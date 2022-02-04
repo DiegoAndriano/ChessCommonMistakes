@@ -5,27 +5,29 @@
         <div class="">
             <p v-if="( itHasWorsePlays ) && (sync > 0)" class="font-bold block">We found these repeated mistakes!</p>
 
-            <div class="w-full flex overflow-x-scroll">
-                <div v-if="worsePlay.repetition >= repetitionThreshold" v-for="worsePlay in worsePlays" class="space-x-4">
-                    <div>
-                        <button @click="moveFromLeftTab(worsePlay)" class="space-x-3">
-                            <span class="font-bold">{{ worsePlay.name }}</span> | {{ worsePlay.deltaScore }} |
-                            #{{ worsePlay.repetition }}
-                        </button>
-                    </div>
+            <div class="py-4 w-full flex overflow-x-scroll">
+                <div  style="background-color: #ddd; padding:10px; border-radius:5px; min-width: 180px; margin-right:10px; " v-if="worsePlay.repetition >= repetitionThreshold"
+                     v-for="worsePlay in worsePlays" class="px-1 space-x-4 items-center">
+
+                    <button @click="moveFromLeftTab(worsePlay)" class="space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100">
+                        <span class="font-bold">{{ worsePlay.name }}</span> | ΔE: {{ worsePlay.deltaScore }} |
+                        {{ worsePlay.repetition }} games
+                    </button>
 
                     <hoverable :worse-play-url="worsePlay.site_url.split('!')"/>
 
                 </div>
             </div>
             <div v-if="(! itHasWorsePlays ) && (sync > 0)">
-                <p class="font-bold underlined">No errors with configured repetitions have been found. Try with more games, or analyze more games on Lichess!</p>
+                <p class="font-bold underlined">No errors with configured repetitions have been found. Try with more
+                    games, or analyze more games on Lichess!</p>
             </div>
             <div class="flex items-start mt-8">
                 <div class="grid grid-cols-2 mx-4">
                     <movements-box class="cursor-pointer" v-for="(move, index) in played" :key="index">
                         <button @click="moveFromLeftTab(move)">
-                            <span class="font-bold">{{ move.name }}</span> | <span class="font-bold">E:</span> {{ move.score }} | <span class="font-bold">ΔE:</span> {{ move.deltaScore }}
+                            <span class="font-bold">{{ move.name }}</span> | <span class="font-bold">E:</span>
+                            {{ move.score }} | <span class="font-bold">ΔE:</span> {{ move.deltaScore }}
                         </button>
                     </movements-box>
                 </div>
@@ -64,7 +66,7 @@ export default {
             movementMatrix: [],
             worsePlays: [],
             sync: 0,
-            repetitionThreshold : 2,
+            repetitionThreshold: 2,
             played: [],
             itHasWorsePlays: false,
         }
@@ -99,8 +101,8 @@ export default {
             this.repetitionThreshold = parseInt(receivedMatrix[2]);
             this.sync++;
             this.itHasWorsePlays = false;
-            
-            for (var i=0; i<this.worsePlays.length;i++) {
+
+            for (var i = 0; i < this.worsePlays.length; i++) {
                 this.itHasWorsePlays = this.itHasWorsePlays || (this.worsePlays[i].repetition >= this.repetitionThreshold)
             }
         },
