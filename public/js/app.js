@@ -1895,7 +1895,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       worsePlays: [],
       color: 'both',
       ignore_first_moves: 6,
-      matches: 20,
+      matches: 200,
       repetition: 2,
       errorScoreThreshold: 0.5,
       loading: false
@@ -41237,6 +41237,16 @@ var render = function () {
           0
         ),
         _vm._v(" "),
+        _vm.worsePlays.length === 0 && _vm.movementMatrix.length > 0
+          ? _c("div", [
+              _c("p", { staticClass: "underlined" }, [
+                _vm._v(
+                  "No errors with configured repetitions have been found. "
+                ),
+              ]),
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("div", { staticClass: "flex items-start mt-8" }, [
           _c(
             "div",
@@ -41282,13 +41292,8 @@ var render = function () {
           ),
           _vm._v(" "),
           _c("div", { staticClass: "w-full md:w-1/3 bg-light" }, [
-            _vm._v("\n                Movements "),
-            _c("p", [_vm._v(_vm._s(this.sync))]),
-            _vm._v(
-              " | " +
-                _vm._s(_vm.movementMatrix.movements.length) +
-                "\n                "
-            ),
+            _c("span", { staticClass: "font-bold" }, [_vm._v("Movements")]),
+            _vm._v(" "),
             _c(
               "div",
               {
@@ -41713,23 +41718,19 @@ var render = function () {
         "button",
         {
           style:
-            "background-color:" +
-            (_vm.depth % 2 === 1 ? "#afa" : "#fff") +
-            "; padding-left: " +
-            _vm.depth * 2 +
-            "px;",
+            "background-color:" + (_vm.depth % 2 === 1 ? "#afa" : "#fff") + ";",
           on: { click: _vm.seeTree },
         },
         [
           _c("span", { staticClass: "font-bold" }, [
             _vm._v(
               _vm._s(_vm.depth) +
-                " | # Repeated: " +
+                " | " +
                 _vm._s(_vm.moves.repetition) +
-                " |"
+                " Games |"
             ),
           ]),
-          _vm._v(". "),
+          _vm._v(" "),
           _c("span", { staticClass: "font-bold" }, [_vm._v(_vm._s(_vm.name))]),
           _vm._v("  | Eval: " + _vm._s(_vm.moves.score)),
         ]

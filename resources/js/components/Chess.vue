@@ -15,9 +15,9 @@
                     <hoverable :worse-play-url="worsePlay.site_url.split('!')"/>
 
                 </div>
-                <!--                <div v-else>-->
-                <!--                    <p>No errors with more than 1 repetition found</p>-->
-                <!--                </div>-->
+            </div>
+            <div v-if="(worsePlays.length === 0) && (movementMatrix.length >0)">
+                <p class="underlined">No errors with configured repetitions have been found. </p>
             </div>
             <div class="flex items-start mt-8">
                 <div class="grid grid-cols-2 mx-4">
@@ -31,7 +31,7 @@
                     <board id="board" :fen="this.selectedFen"/>
                 </div>
                 <div class="w-full md:w-1/3 bg-light">
-                    Movements <p>{{ this.sync }}</p> | {{ movementMatrix.movements.length }}
+                    <span class="font-bold">Movements</span>
                     <div style="height: 400px;width:250px; ;overflow-y:scroll;">
                         <div
                             class="border border-3 border-gray-500 bg-gray-200"

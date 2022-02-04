@@ -1,8 +1,8 @@
 <template>
     <div>
         <button
-            :style="'background-color:'+ (depth % 2 === 1 ? '#afa' : '#fff') +'; padding-left: ' + depth * 2 + 'px;'"
-            @click="seeTree" ><span class="font-bold">{{depth}} | # Repeated: {{moves.repetition}} |</span>. <span class="font-bold">{{ name }}</span>  | Eval: {{ moves.score }}</button>
+            :style="'background-color:'+ (depth % 2 === 1 ? '#afa' : '#fff') +';'"
+            @click="seeTree" ><span class="font-bold">{{depth}} | {{moves.repetition}} Games |</span> <span class="font-bold">{{ name }}</span>  | Eval: {{ moves.score }}</button>
         <br>
         <tree v-if="showTree" v-for="(move, n) in moves.movements" :story-received="story" :name="n" :moves="move" :key="n + move.score" :depth="depth + 1"></tree>
     </div>
