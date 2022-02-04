@@ -1,5 +1,5 @@
 <template>
-    <div class="flex h-10">
+    <div class="flex h-auto">
         <div class="border border-4 bg-gray-100">
             <slot />
         </div>

@@ -40,7 +40,7 @@
         methods: {
             async getGames() {
                 await axios
-                    .get('https://lichess.org/api/games/user/' + this.account + '?color=' + this.color + '&max=200&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"')
+                    .get('https://lichess.org/api/games/user/' + this.account + '?color=' + this.color + '&max=3&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"')
                     .then(response => {
 
                         console.log(response.data)

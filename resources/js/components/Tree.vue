@@ -1,7 +1,7 @@
 <template>
-    <div :style="'background-color:'+ (depth % 2 === 1 ? '#afa' : '#fff') +'; padding-left: ' + depth * 2 + 'px;'">
+    <div>
         <button
-
+            :style="'background-color:'+ (depth % 2 === 1 ? '#afa' : '#fff') +'; padding-left: ' + depth * 2 + 'px;'"
             @click="seeTree" ><span class="font-bold">{{depth}} | #{{moves.repetition}} |</span>. <span class="font-bold">{{ name }}</span>  | {{ moves.score }}</button>
         <br>
         <tree v-if="showTree" v-for="(move, n) in moves.movements" :story-received="story" :name="n" :moves="move" :key="n + move.score" :depth="depth + 1"></tree>
