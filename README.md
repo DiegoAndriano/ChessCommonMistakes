@@ -11,3 +11,9 @@ Made with love in ***4 days*** with a team of **2 developers**.
 - Laravel (not used in the long run
 - VueJS
 - Tailwindcss
+
+## TODO:
+- Styling
+- Tests
+- Fix spaghetti
+- Make request to Lichess's API better
