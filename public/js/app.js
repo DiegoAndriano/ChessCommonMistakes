@@ -1626,8 +1626,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SyncAccount__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SyncAccount */ "./resources/js/components/SyncAccount.vue");
 /* harmony import */ var _Tree__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tree */ "./resources/js/components/Tree.vue");
 /* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./board */ "./resources/js/components/board.vue");
-/* harmony import */ var vue_chessboard_dist_vue_chessboard_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-chessboard/dist/vue-chessboard.css */ "./node_modules/vue-chessboard/dist/vue-chessboard.css");
-/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
+/* harmony import */ var _Hoverable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Hoverable */ "./resources/js/components/Hoverable.vue");
+/* harmony import */ var vue_chessboard_dist_vue_chessboard_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-chessboard/dist/vue-chessboard.css */ "./node_modules/vue-chessboard/dist/vue-chessboard.css");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
 //
 //
 //
@@ -1676,8 +1677,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
+
 
 
 
@@ -1698,12 +1698,13 @@ __webpack_require__.r(__webpack_exports__);
     board: _board__WEBPACK_IMPORTED_MODULE_3__["default"],
     'movements-box': _MovementsBox__WEBPACK_IMPORTED_MODULE_0__["default"],
     'sync-account': _SyncAccount__WEBPACK_IMPORTED_MODULE_1__["default"],
-    'tree': _Tree__WEBPACK_IMPORTED_MODULE_2__["default"]
+    'tree': _Tree__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'hoverable': _Hoverable__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   mounted: function mounted() {
     this.movementMatrix = new Object();
     this.movementMatrix.movements = new Object();
-    _app__WEBPACK_IMPORTED_MODULE_5__.EventBus.$on('clickeado', function (val) {
+    _app__WEBPACK_IMPORTED_MODULE_6__.EventBus.$on('clickeado', function (val) {
       // this.played.push(val[1]);
       this.selectedFen = val[0].fen;
       this.played = val[2];
@@ -1719,6 +1720,45 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedFen = val.fen;
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Hoverable.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Hoverable.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    worsePlayUrl: Array
+  },
+  data: function data() {
+    return {
+      showGames: false
+    };
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -1818,7 +1858,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get('https://lichess.org/api/games/user/' + _this.account + '?color=' + _this.color + '&max=200&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
+                return axios.get('https://lichess.org/api/games/user/' + _this.account + '?color=' + _this.color + '&max=3&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
                   console.log(response.data);
                   _this.chessGames = response.data;
                   _this.chessGames = _this.chessGames.split("\n\n");
@@ -40605,6 +40645,45 @@ component.options.__file = "resources/js/components/Chess.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Hoverable.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/Hoverable.vue ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Hoverable_vue_vue_type_template_id_675e608a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Hoverable.vue?vue&type=template&id=675e608a& */ "./resources/js/components/Hoverable.vue?vue&type=template&id=675e608a&");
+/* harmony import */ var _Hoverable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Hoverable.vue?vue&type=script&lang=js& */ "./resources/js/components/Hoverable.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Hoverable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Hoverable_vue_vue_type_template_id_675e608a___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Hoverable_vue_vue_type_template_id_675e608a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Hoverable.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/MovementsBox.vue":
 /*!**************************************************!*\
   !*** ./resources/js/components/MovementsBox.vue ***!
@@ -40776,6 +40855,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Hoverable.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/Hoverable.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Hoverable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Hoverable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Hoverable.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Hoverable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/MovementsBox.vue?vue&type=script&lang=js&":
 /*!***************************************************************************!*\
   !*** ./resources/js/components/MovementsBox.vue?vue&type=script&lang=js& ***!
@@ -40853,6 +40948,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Chess_vue_vue_type_template_id_05d6dfa5___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Chess_vue_vue_type_template_id_05d6dfa5___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Chess.vue?vue&type=template&id=05d6dfa5& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Chess.vue?vue&type=template&id=05d6dfa5&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Hoverable.vue?vue&type=template&id=675e608a&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/Hoverable.vue?vue&type=template&id=675e608a& ***!
+  \******************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Hoverable_vue_vue_type_template_id_675e608a___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Hoverable_vue_vue_type_template_id_675e608a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Hoverable_vue_vue_type_template_id_675e608a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Hoverable.vue?vue&type=template&id=675e608a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Hoverable.vue?vue&type=template&id=675e608a&");
 
 
 /***/ }),
@@ -40937,66 +41049,53 @@ var render = function () {
           { staticClass: "w-full flex overflow-x-scroll" },
           _vm._l(_vm.worsePlays, function (worsePlay) {
             return worsePlay.repetition > 1
-              ? _c("div", [
-                  _c("div", [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "space-x-3",
-                        on: {
-                          click: function ($event) {
-                            return _vm.moveFromLeftTab(worsePlay)
+              ? _c(
+                  "div",
+                  { staticClass: "space-x-4" },
+                  [
+                    _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "space-x-3",
+                          on: {
+                            click: function ($event) {
+                              return _vm.moveFromLeftTab(worsePlay)
+                            },
                           },
                         },
+                        [
+                          _c("span", { staticClass: "font-bold" }, [
+                            _vm._v(_vm._s(worsePlay.name)),
+                          ]),
+                          _vm._v(
+                            " | " +
+                              _vm._s(worsePlay.deltaScore) +
+                              " |\n                        #" +
+                              _vm._s(worsePlay.repetition) +
+                              "\n                    "
+                          ),
+                        ]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("hoverable", {
+                      attrs: {
+                        "worse-play-url": worsePlay.site_url.split("!"),
                       },
-                      [
-                        _c("span", { staticClass: "font-bold" }, [
-                          _vm._v(_vm._s(worsePlay.name)),
-                        ]),
-                        _vm._v(
-                          " | " +
-                            _vm._s(worsePlay.deltaScore) +
-                            " |\n                        #" +
-                            _vm._s(worsePlay.repetition) +
-                            "\n                    "
-                        ),
-                      ]
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    _vm._l(
-                      worsePlay.site_url.split("!"),
-                      function (link, index) {
-                        return _c(
-                          "a",
-                          {
-                            key: index,
-                            attrs: { href: link, target: "_blank" },
-                          },
-                          [
-                            _vm._v(
-                              "\n                        Lichess game #" +
-                                _vm._s(index) +
-                                "\n                    "
-                            ),
-                          ]
-                        )
-                      }
-                    ),
-                    0
-                  ),
-                ])
+                    }),
+                  ],
+                  1
+                )
               : _vm._e()
           }),
           0
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "flex" }, [
+        _c("div", { staticClass: "flex items-start mt-8" }, [
           _c(
             "div",
-            { staticClass: "grid grid-cols-2 mx-4 gap-2" },
+            { staticClass: "grid grid-cols-2 mx-4" },
             _vm._l(_vm.played, function (move, index) {
               return _c(
                 "movements-box",
@@ -41012,14 +41111,15 @@ var render = function () {
                       },
                     },
                     [
+                      _c("span", { staticClass: "font-bold" }, [
+                        _vm._v(_vm._s(move.name)),
+                      ]),
+                      _vm._v(" | "),
+                      _c("span", { staticClass: "font-bold" }, [_vm._v("%:")]),
+                      _vm._v(" " + _vm._s(move.score) + " | "),
+                      _c("span", { staticClass: "font-bold" }, [_vm._v("Δ%:")]),
                       _vm._v(
-                        "\n                        " +
-                          _vm._s(move.name) +
-                          " | " +
-                          _vm._s(move.score) +
-                          " |d " +
-                          _vm._s(move.deltaScore) +
-                          "\n                    "
+                        " " + _vm._s(move.deltaScore) + "\n                    "
                       ),
                     ]
                   ),
@@ -41089,6 +41189,71 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Hoverable.vue?vue&type=template&id=675e608a&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Hoverable.vue?vue&type=template&id=675e608a& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "button",
+      {
+        on: {
+          click: function ($event) {
+            _vm.showGames = !_vm.showGames
+          },
+        },
+      },
+      [
+        _c("p", [_vm._v("Show lichess games")]),
+        _vm._v(" "),
+        _vm.showGames
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "shadow-xl bg-white rounded-lg h-auto mx-auto w-56 z-10 relative py-6 border border-2",
+              },
+              _vm._l(_vm.worsePlayUrl, function (url, index) {
+                return _c(
+                  "a",
+                  {
+                    staticClass: "block w-full h-5 underline",
+                    attrs: { href: url, target: "_blank" },
+                  },
+                  [
+                    _vm._v("\n                Lichess game "),
+                    _c("span", { staticClass: "font-bold" }, [
+                      _vm._v("#" + _vm._s(index) + " "),
+                    ]),
+                  ]
+                )
+              }),
+              0
+            )
+          : _vm._e(),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MovementsBox.vue?vue&type=template&id=41d6941c&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/MovementsBox.vue?vue&type=template&id=41d6941c& ***!
@@ -41105,7 +41270,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "flex h-10" }, [
+  return _c("div", { staticClass: "flex h-auto" }, [
     _c(
       "div",
       { staticClass: "border border-4 bg-gray-100" },
@@ -41222,25 +41387,29 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {
-      style:
-        "background-color:" +
-        (_vm.depth % 2 === 1 ? "#afa" : "#fff") +
-        "; padding-left: " +
-        _vm.depth * 2 +
-        "px;",
-    },
     [
-      _c("button", { on: { click: _vm.seeTree } }, [
-        _c("span", { staticClass: "font-bold" }, [
-          _vm._v(
-            _vm._s(_vm.depth) + " | #" + _vm._s(_vm.moves.repetition) + " |"
-          ),
-        ]),
-        _vm._v(". "),
-        _c("span", { staticClass: "font-bold" }, [_vm._v(_vm._s(_vm.name))]),
-        _vm._v("  | " + _vm._s(_vm.moves.score)),
-      ]),
+      _c(
+        "button",
+        {
+          style:
+            "background-color:" +
+            (_vm.depth % 2 === 1 ? "#afa" : "#fff") +
+            "; padding-left: " +
+            _vm.depth * 2 +
+            "px;",
+          on: { click: _vm.seeTree },
+        },
+        [
+          _c("span", { staticClass: "font-bold" }, [
+            _vm._v(
+              _vm._s(_vm.depth) + " | #" + _vm._s(_vm.moves.repetition) + " |"
+            ),
+          ]),
+          _vm._v(". "),
+          _c("span", { staticClass: "font-bold" }, [_vm._v(_vm._s(_vm.name))]),
+          _vm._v("  | " + _vm._s(_vm.moves.score)),
+        ]
+      ),
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),

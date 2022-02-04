@@ -4,28 +4,26 @@
         <br>
         <div class="">
             <div class="w-full flex overflow-x-scroll">
-                <div v-if="worsePlay.repetition >= repetitionThreshold" v-for="worsePlay in worsePlays">
+                <div v-if="worsePlay.repetition >= repetitionThreshold" v-for="worsePlay in worsePlays" class="space-x-4">
                     <div>
                         <button @click="moveFromLeftTab(worsePlay)" class="space-x-3">
                             <span class="font-bold">{{ worsePlay.name }}</span> | {{ worsePlay.deltaScore }} |
                             #{{ worsePlay.repetition }}
                         </button>
                     </div>
-                    <button>
-                        <a v-for="(link, index) in (worsePlay.site_url.split('!'))" :key="index" :href="link" target="_blank">
-                            Lichess game #{{index}}
-                        </a>
-                    </button>
+
+                    <hoverable :worse-play-url="worsePlay.site_url.split('!')"/>
+
                 </div>
                 <!--                <div v-else>-->
                 <!--                    <p>No errors with more than 1 repetition found</p>-->
                 <!--                </div>-->
             </div>
-            <div class="flex">
-                <div class="grid grid-cols-2 mx-4 gap-2">
+            <div class="flex items-start mt-8">
+                <div class="grid grid-cols-2 mx-4">
                     <movements-box class="cursor-pointer" v-for="(move, index) in played" :key="index">
                         <button @click="moveFromLeftTab(move)">
-                            {{ move.name }} | {{ move.score }} |d {{ move.deltaScore }}
+                            <span class="font-bold">{{ move.name }}</span> | <span class="font-bold">%:</span> {{ move.score }} | <span class="font-bold">Δ%:</span> {{ move.deltaScore }}
                         </button>
                     </movements-box>
                 </div>
@@ -53,6 +51,7 @@ import MovementsBox from './MovementsBox'
 import SyncAccount from './SyncAccount'
 import Tree from './Tree'
 import board from './board'
+import Hoverable from './Hoverable'
 import 'vue-chessboard/dist/vue-chessboard.css'
 import {EventBus} from '../app';
 
@@ -72,6 +71,7 @@ export default {
         'movements-box': MovementsBox,
         'sync-account': SyncAccount,
         'tree': Tree,
+        'hoverable': Hoverable,
     },
     mounted() {
         this.movementMatrix = new Object();
@@ -97,7 +97,7 @@ export default {
         },
         moveFromLeftTab(val) {
             this.selectedFen = val.fen
-        }
+        },
     }
 
 }
