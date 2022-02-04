@@ -1691,6 +1691,7 @@ __webpack_require__.r(__webpack_exports__);
       movementMatrix: [],
       worsePlays: [],
       sync: 0,
+      repetitionThreshold: 2,
       played: []
     };
   },
@@ -1714,6 +1715,7 @@ __webpack_require__.r(__webpack_exports__);
     handleSync: function handleSync(receivedMatrix) {
       this.movementMatrix = receivedMatrix[0];
       this.worsePlays = receivedMatrix[1];
+      this.repetitionThreshold = parseInt(receivedMatrix[2]);
       this.sync++;
     },
     moveFromLeftTab: function moveFromLeftTab(val) {
@@ -1836,6 +1838,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1845,10 +1878,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       chessGamesParsed: [],
       movementMatrix: {},
       worsePlays: [],
-      color: 'White'
+      color: 'white',
+      matches: 200,
+      repetition: 2,
+      errorScoreThreshold: 0.5
     };
   },
   methods: {
+    limitMaxMatchesValue: function limitMaxMatchesValue(event) {
+      var value = event.target.value;
+
+      if (this.matches >= 500) {
+        this.matches = 500;
+      }
+
+      this.$forceUpdate();
+    },
     getGames: function getGames() {
       var _this = this;
 
@@ -1857,8 +1902,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return axios.get('https://lichess.org/api/games/user/' + _this.account + '?color=' + _this.color + '&max=3&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
+                _this.chessGames = [];
+                _this.chessGamesParsed = [];
+                _this.movementMatrix = {};
+                _this.worsePlays = [];
+                _context.next = 6;
+                return axios.get('https://lichess.org/api/games/user/' + _this.account + '?' + (_this.color === 'both' ? '' : 'color=' + _this.color + '&') + 'max=' + _this.matches + '&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
                   console.log(response.data);
                   _this.chessGames = response.data;
                   _this.chessGames = _this.chessGames.split("\n\n");
@@ -1873,7 +1922,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     var site_url = _this.chessGames[i - 1].substring(_this.chessGames[i - 1].indexOf('[Site '), 100);
 
                     site_url = site_url.substring(0, site_url.indexOf('\"]'));
-                    site_url = site_url.substring(7, site_url.length); // console.log(site_url);
+                    site_url = site_url.substring(7, site_url.length);
+
+                    var current_color = _this.chessGames[i - 1].substring(_this.chessGames[i - 1].indexOf('[White '), _this.chessGames[i - 1].indexOf('[Black '));
+
+                    current_color = current_color.includes(_this.account) ? "white" : "black"; // console.log(site_url);
 
                     // console.log(site_url);
                     _this.chessGames[i] = _this.chessGames[i].replaceAll('[%eval', '');
@@ -1882,7 +1935,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     _this.chessGames[i] = _this.chessGames[i].replaceAll('}', '');
                     _this.chessGames[i] = _this.chessGames[i].replaceAll('  ', ' ');
                     _this.chessGames[i] = _this.chessGames[i].replaceAll('  ', ' ');
-                    _this.chessGames[i] = _this.chessGames[i] + " " + site_url;
+                    _this.chessGames[i] = _this.chessGames[i] + " " + site_url + "!" + current_color;
 
                     _this.chessGamesParsed.push(_this.chessGames[i]);
                   }
@@ -1899,8 +1952,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     var chessGame = new Chess();
                     var previousScore = 0;
                     var currentWorstPlay = 0;
+                    var color = gameMovement[gameMovement.length - 1].split('!')[1];
+                    var site_url = gameMovement[gameMovement.length - 1].split('!')[0];
+                    var currentMove = 0;
 
                     for (var j = 0; j < gameMovement.length - 1; j += 3) {
+                      currentMove++;
+
                       if (currentNode.movements == null) {
                         currentNode.movements = new Object();
                       }
@@ -1909,20 +1967,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         chessGame.move(gameMovement[j + 1]);
                         currentNode.movements[gameMovement[j + 1]].repetition++;
                         currentNode.movements[gameMovement[j + 1]].deltaRepetition = currentNode.movements[gameMovement[j + 1]].repetition * (Math.round((gameMovement[j + 2] - previousScore) * 100) / 100);
-                        currentNode.movements[gameMovement[j + 1]].site_url = currentNode.movements[gameMovement[j + 1]].site_url + "!" + gameMovement[gameMovement.length - 1];
+                        currentNode.movements[gameMovement[j + 1]].site_url = currentNode.movements[gameMovement[j + 1]].site_url + "!" + site_url + "/" + color + "/#" + currentMove;
                       } else {
                         currentNode.movements[gameMovement[j + 1]] = new Object();
                         currentNode.movements[gameMovement[j + 1]].score = gameMovement[j + 2];
                         currentNode.movements[gameMovement[j + 1]].deltaScore = Math.round((gameMovement[j + 2] - previousScore) * 100) / 100;
                         currentNode.movements[gameMovement[j + 1]].deltaRepetition = Math.round((gameMovement[j + 2] - previousScore) * 100) / 100;
                         currentNode.movements[gameMovement[j + 1]].name = gameMovement[j + 1];
-                        currentNode.movements[gameMovement[j + 1]].site_url = gameMovement[gameMovement.length - 1];
+                        currentNode.movements[gameMovement[j + 1]].site_url = site_url + "/" + color + "/#" + currentMove;
+                        currentNode.movements[gameMovement[j + 1]].color = gameMovement[gameMovement.length - 1].split('!')[1];
                         currentNode.movements[gameMovement[j + 1]].repetition = 1;
                         chessGame.move(gameMovement[j + 1]);
                         currentNode.movements[gameMovement[j + 1]].fen = chessGame.fen();
 
-                        if (-0.5 >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
-                          _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                        if (currentNode.movements[gameMovement[j + 1]].color === "white") {
+                          if (-_this.errorScoreThreshold >= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                            _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                          }
+                        } else {
+                          if (_this.errorScoreThreshold <= currentNode.movements[gameMovement[j + 1]].deltaScore) {
+                            _this.worsePlays.unshift(currentNode.movements[gameMovement[j + 1]]);
+                          }
                         }
                       }
 
@@ -1960,10 +2025,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   //                        console.log(this.movementMatrix)
                   //                        console.log(JSON.stringify(this.movementMatrix))
-                  _this.$emit('synced', [_this.movementMatrix, _this.worsePlays]);
+                  _this.$emit('synced', [_this.movementMatrix, _this.worsePlays, _this.repetition]);
                 });
 
-              case 2:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -41048,7 +41113,7 @@ var render = function () {
           "div",
           { staticClass: "w-full flex overflow-x-scroll" },
           _vm._l(_vm.worsePlays, function (worsePlay) {
-            return worsePlay.repetition > 1
+            return worsePlay.repetition >= _vm.repetitionThreshold
               ? _c(
                   "div",
                   { staticClass: "space-x-4" },
@@ -41115,9 +41180,9 @@ var render = function () {
                         _vm._v(_vm._s(move.name)),
                       ]),
                       _vm._v(" | "),
-                      _c("span", { staticClass: "font-bold" }, [_vm._v("%:")]),
+                      _c("span", { staticClass: "font-bold" }, [_vm._v("E:")]),
                       _vm._v(" " + _vm._s(move.score) + " | "),
-                      _c("span", { staticClass: "font-bold" }, [_vm._v("Δ%:")]),
+                      _c("span", { staticClass: "font-bold" }, [_vm._v("ΔE:")]),
                       _vm._v(
                         " " + _vm._s(move.deltaScore) + "\n                    "
                       ),
@@ -41317,15 +41382,144 @@ var render = function () {
             expression: "color",
           },
         ],
+        attrs: { type: "radio", id: "white", value: "white", selected: "" },
+        domProps: { checked: _vm._q(_vm.color, "white") },
+        on: {
+          change: function ($event) {
+            _vm.color = "white"
+          },
+        },
+      }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "white" } }, [_vm._v("White")]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.color,
+            expression: "color",
+          },
+        ],
+        attrs: { type: "radio", id: "black", value: "black" },
+        domProps: { checked: _vm._q(_vm.color, "black") },
+        on: {
+          change: function ($event) {
+            _vm.color = "black"
+          },
+        },
+      }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "black" } }, [_vm._v("Black")]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.color,
+            expression: "color",
+          },
+        ],
+        attrs: { type: "radio", id: "both", value: "both" },
+        domProps: { checked: _vm._q(_vm.color, "both") },
+        on: {
+          change: function ($event) {
+            _vm.color = "both"
+          },
+        },
+      }),
+      _vm._v(" "),
+      _c("label", { attrs: { for: "both" } }, [_vm._v("Both")]),
+    ]),
+    _vm._v(" "),
+    _c("label", { staticClass: "block", attrs: { for: "matches" } }, [
+      _vm._v("Matches selected"),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-4" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.matches,
+            expression: "matches",
+          },
+        ],
         staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "color", type: "text", placeholder: "Select color" },
-        domProps: { value: _vm.color },
+        attrs: { id: "matches", placeholder: "200", type: "number" },
+        domProps: { value: _vm.matches },
+        on: {
+          input: [
+            function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.matches = $event.target.value
+            },
+            _vm.limitMaxMatchesValue,
+          ],
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("label", { staticClass: "block", attrs: { for: "error" } }, [
+      _vm._v("Score lost to consider an error"),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-4" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.errorScoreThreshold,
+            expression: "errorScoreThreshold",
+          },
+        ],
+        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
+        attrs: { id: "error", placeholder: "0.5", type: "number" },
+        domProps: { value: _vm.errorScoreThreshold },
         on: {
           input: function ($event) {
             if ($event.target.composing) {
               return
             }
-            _vm.color = $event.target.value
+            _vm.errorScoreThreshold = $event.target.value
+          },
+        },
+      }),
+    ]),
+    _vm._v(" "),
+    _c("label", { staticClass: "block", attrs: { for: "account" } }, [
+      _vm._v("Minimum times the error is repeated"),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "mb-4" }, [
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.repetition,
+            expression: "repetition",
+          },
+        ],
+        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
+        attrs: { id: "repetition", type: "number", placeholder: "2" },
+        domProps: { value: _vm.repetition },
+        on: {
+          input: function ($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.repetition = $event.target.value
           },
         },
       }),

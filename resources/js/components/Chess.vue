@@ -23,7 +23,7 @@
                 <div class="grid grid-cols-2 mx-4">
                     <movements-box class="cursor-pointer" v-for="(move, index) in played" :key="index">
                         <button @click="moveFromLeftTab(move)">
-                            <span class="font-bold">{{ move.name }}</span> | <span class="font-bold">%:</span> {{ move.score }} | <span class="font-bold">Δ%:</span> {{ move.deltaScore }}
+                            <span class="font-bold">{{ move.name }}</span> | <span class="font-bold">E:</span> {{ move.score }} | <span class="font-bold">ΔE:</span> {{ move.deltaScore }}
                         </button>
                     </movements-box>
                 </div>
