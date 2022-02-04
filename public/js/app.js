@@ -41676,7 +41676,7 @@ var render = function () {
         "button",
         {
           staticClass:
-            "border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white",
+            "border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
           on: { click: _vm.getGames },
         },
         [_vm._v("Go!\n        ")]

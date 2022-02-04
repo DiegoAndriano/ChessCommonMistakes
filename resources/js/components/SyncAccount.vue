@@ -59,7 +59,7 @@
                 id="account" type="text"
                 placeholder="Account"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
-            <button class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white" @click="getGames">Go!
+            <button class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100" @click="getGames">Go!
             </button>
             <div class="px-4" v-if="loading" id="loading"></div>
         </div>
