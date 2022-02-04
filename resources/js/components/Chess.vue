@@ -6,10 +6,10 @@
             <p v-if="( itHasWorsePlays ) && (sync > 0)" class="font-bold block">We found these repeated mistakes!</p>
 
             <div class="py-4 w-full flex overflow-x-scroll">
-                <div  style="background-color: #ddd; padding:10px; border-radius:5px; min-width: 180px; margin-right:10px; " v-if="worsePlay.repetition >= repetitionThreshold"
+                <div  style="background-color: #ddd; padding:10px; border-radius:5px; min-width: 244px; margin-right:10px; " v-if="worsePlay.repetition >= repetitionThreshold"
                      v-for="worsePlay in worsePlays" class="px-1 space-x-4 items-center">
 
-                    <button @click="moveFromLeftTab(worsePlay)" class="space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100">
+                    <button @click="moveFromLeftTab(worsePlay)" class="w-full space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100">
                         <span class="font-bold">{{ worsePlay.name }}</span> | ΔE: {{ worsePlay.deltaScore }} |
                         {{ worsePlay.repetition }} games
                     </button>

@@ -41218,7 +41218,7 @@ var render = function () {
                       "background-color": "#ddd",
                       padding: "10px",
                       "border-radius": "5px",
-                      "min-width": "180px",
+                      "min-width": "244px",
                       "margin-right": "10px",
                     },
                   },
@@ -41227,7 +41227,7 @@ var render = function () {
                       "button",
                       {
                         staticClass:
-                          "space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
+                          "w-full space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
                         on: {
                           click: function ($event) {
                             return _vm.moveFromLeftTab(worsePlay)
