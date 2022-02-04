@@ -2,13 +2,13 @@
     <div>
         <label class="block" for="account">Select color</label>
         <div class="mb-4">
-            <input type="radio" id="white" value="white" v-model="color" selected>
+            <input type="radio" id="white" value="white" v-model="color">
             <label for="white">White</label>
             <br>
             <input type="radio" id="black" value="black" v-model="color">
             <label for="black">Black</label>
             <br>
-            <input type="radio" id="both" value="both" v-model="color">
+            <input type="radio" id="both" value="both" v-model="color" selected>
             <label for="both">Both</label>
         </div>
         <label class="block" for="matches">Matches selected</label>
