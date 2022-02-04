@@ -41723,12 +41723,15 @@ var render = function () {
         [
           _c("span", { staticClass: "font-bold" }, [
             _vm._v(
-              _vm._s(_vm.depth) + " | #" + _vm._s(_vm.moves.repetition) + " |"
+              _vm._s(_vm.depth) +
+                " | # Repeated: " +
+                _vm._s(_vm.moves.repetition) +
+                " |"
             ),
           ]),
           _vm._v(". "),
           _c("span", { staticClass: "font-bold" }, [_vm._v(_vm._s(_vm.name))]),
-          _vm._v("  | " + _vm._s(_vm.moves.score)),
+          _vm._v("  | Eval: " + _vm._s(_vm.moves.score)),
         ]
       ),
       _vm._v(" "),
