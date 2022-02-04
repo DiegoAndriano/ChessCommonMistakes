@@ -1720,6 +1720,7 @@ __webpack_require__.r(__webpack_exports__);
       this.worsePlays = receivedMatrix[1];
       this.repetitionThreshold = parseInt(receivedMatrix[2]);
       this.sync++;
+      this.itHasWorsePlays = false;
 
       for (var i = 0; i < this.worsePlays.length; i++) {
         this.itHasWorsePlays = this.itHasWorsePlays || this.worsePlays[i].repetition >= this.repetitionThreshold;
