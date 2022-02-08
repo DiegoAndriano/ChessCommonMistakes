@@ -34,3 +34,4 @@ A working analyzing tool, to check which mistakes any given lichess user repeats
 - Fix spaghetti
 - Make request to Lichess's API better
 - Add more filters
+- Video GIF tutorial
