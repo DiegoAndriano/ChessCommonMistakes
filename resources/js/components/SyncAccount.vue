@@ -61,8 +61,11 @@
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
             <button class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100" @click="getGames">Go!
             </button>
-            <div class="px-4" v-if="loading" id="loading"></div>
+            <p
+                @click="clearAccount"
+                class="text-blue-500 mx-4 cursor-pointer text-sm">clear</p>
         </div>
+        <div class="mx-4 px-4 w-full mx-auto" v-if="loading" id="loading"></div>
 
     </div>
 </template>
@@ -96,6 +99,9 @@ export default {
             }
             this.$forceUpdate()
         },
+        clearAccount() {
+          this.account = "";
+        },
         async getGames() {
             this.loading = true
             this.chessGames = []
@@ -107,7 +113,6 @@ export default {
                 .get('https://lichess.org/api/games/user/' + this.account + '?' + (this.color === 'both' ? '' : 'color=' + this.color + '&') + 'max=' + this.matches + '&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"')
                 .then(response => {
 
-                    console.log(response.data)
                     this.chessGames = response.data;
                     this.chessGames = this.chessGames.split("\n\n");
                     this.chessGamesParsed = [];
@@ -124,7 +129,6 @@ export default {
 
                         var current_color = this.chessGames[i - 1].substring(this.chessGames[i - 1].indexOf('[White '), this.chessGames[i - 1].indexOf('[Black '));
                         current_color = current_color.includes(this.account) ? "white" : "black";
-                        // console.log(site_url);
                         this.chessGames[i] = this.chessGames[i].replaceAll('[%eval', '');
                         this.chessGames[i] = this.chessGames[i].replaceAll(']', '');
                         this.chessGames[i] = this.chessGames[i].replaceAll('{', '');
@@ -139,7 +143,6 @@ export default {
 
                     for (var i = 0; i < this.chessGamesParsed.length; i++) {
                         var gameMovement = this.chessGamesParsed[i].split(' ');
-                        // console.log(gameMovement)
                         var currentNode = this.movementMatrix;
 
                         var Chess = require('chess.js/chess.js');
@@ -192,8 +195,6 @@ export default {
 
                         }
 
-                        // console.log("narf");
-                        // console.log(this.movementMatrix)
                     }
 
                     for (var i = 0; i < this.worsePlays.length; i++) {
@@ -207,8 +208,6 @@ export default {
                     }
 
 
-//                        console.log(this.movementMatrix)
-//                        console.log(JSON.stringify(this.movementMatrix))
                     this.loading = false
                     this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
 

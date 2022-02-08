@@ -1894,6 +1894,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1921,6 +1924,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.$forceUpdate();
     },
+    clearAccount: function clearAccount() {
+      this.account = "";
+    },
     getGames: function getGames() {
       var _this = this;
 
@@ -1936,7 +1942,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.worsePlays = [];
                 _context.next = 7;
                 return axios.get('https://lichess.org/api/games/user/' + _this.account + '?' + (_this.color === 'both' ? '' : 'color=' + _this.color + '&') + 'max=' + _this.matches + '&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
-                  console.log(response.data);
                   _this.chessGames = response.data;
                   _this.chessGames = _this.chessGames.split("\n\n");
                   _this.chessGamesParsed = [];
@@ -1954,9 +1959,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                     var current_color = _this.chessGames[i - 1].substring(_this.chessGames[i - 1].indexOf('[White '), _this.chessGames[i - 1].indexOf('[Black '));
 
-                    current_color = current_color.includes(_this.account) ? "white" : "black"; // console.log(site_url);
-
-                    // console.log(site_url);
+                    current_color = current_color.includes(_this.account) ? "white" : "black";
                     _this.chessGames[i] = _this.chessGames[i].replaceAll('[%eval', '');
                     _this.chessGames[i] = _this.chessGames[i].replaceAll(']', '');
                     _this.chessGames[i] = _this.chessGames[i].replaceAll('{', '');
@@ -1969,10 +1972,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   }
 
                   for (var i = 0; i < _this.chessGamesParsed.length; i++) {
-                    var gameMovement = _this.chessGamesParsed[i].split(' '); // console.log(gameMovement)
+                    var gameMovement = _this.chessGamesParsed[i].split(' ');
 
-
-                    // console.log(gameMovement)
                     var currentNode = _this.movementMatrix;
 
                     var Chess = __webpack_require__(/*! chess.js/chess.js */ "./node_modules/chess.js/chess.js");
@@ -2024,9 +2025,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                       previousScore = gameMovement[j + 2];
                       currentNode = currentNode.movements[gameMovement[j + 1]];
-                    } // console.log("narf");
-                    // console.log(this.movementMatrix)
-
+                    }
                   }
 
                   for (var i = 0; i < _this.worsePlays.length; i++) {
@@ -2037,12 +2036,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                         _this.worsePlays[j] = temp;
                       }
                     }
-                  } //                        console.log(this.movementMatrix)
-                  //                        console.log(JSON.stringify(this.movementMatrix))
+                  }
 
-
-                  //                        console.log(this.movementMatrix)
-                  //                        console.log(JSON.stringify(this.movementMatrix))
                   _this.loading = false;
 
                   _this.$emit('synced', [_this.movementMatrix, _this.worsePlays, _this.repetition]);
@@ -41718,10 +41713,22 @@ var render = function () {
         [_vm._v("Go!\n        ")]
       ),
       _vm._v(" "),
-      _vm.loading
-        ? _c("div", { staticClass: "px-4", attrs: { id: "loading" } })
-        : _vm._e(),
+      _c(
+        "p",
+        {
+          staticClass: "text-blue-500 mx-4 cursor-pointer text-sm",
+          on: { click: _vm.clearAccount },
+        },
+        [_vm._v("clear")]
+      ),
     ]),
+    _vm._v(" "),
+    _vm.loading
+      ? _c("div", {
+          staticClass: "mx-4 px-4 w-full mx-auto",
+          attrs: { id: "loading" },
+        })
+      : _vm._e(),
   ])
 }
 var staticRenderFns = []
