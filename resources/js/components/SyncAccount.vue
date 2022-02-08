@@ -59,13 +59,17 @@
                 id="account" type="text"
                 placeholder="Account"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
-            <button class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100" @click="getGames">Go!
+            <button
+                class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100"
+                @click="getGames">Go!
             </button>
             <p
                 @click="clearAccount"
                 class="text-blue-500 mx-4 cursor-pointer text-sm">clear</p>
         </div>
-        <div class="mx-4 px-4 w-full mx-auto" v-if="loading" id="loading"></div>
+        <div class="w-full flex justify-center">
+            <div v-if="loading" id="loading"></div>
+        </div>
 
     </div>
 </template>
@@ -100,7 +104,7 @@ export default {
             this.$forceUpdate()
         },
         clearAccount() {
-          this.account = "";
+            this.account = "";
         },
         async getGames() {
             this.loading = true

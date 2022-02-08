@@ -32,7 +32,9 @@
                     </movements-box>
                 </div>
                 <div class="w-full md:w-2/3">
-                    <board id="board" :fen="this.selectedFen"/>
+
+                    <board id="board" :fen="this.selectedFen" :orientation="color"/>
+
                 </div>
                 <div class="w-full md:w-1/3 bg-light">
                     <span class="font-bold">Movements</span>
@@ -69,6 +71,7 @@ export default {
             repetitionThreshold: 2,
             played: [],
             itHasWorsePlays: false,
+            color: "white"
         }
     },
     components: {
@@ -107,6 +110,13 @@ export default {
             }
         },
         moveFromLeftTab(val) {
+
+            if(val.site_url.includes("black")){
+                this.color = "black"
+            }else{
+                this.color = "white"
+            }
+
             this.selectedFen = val.fen
         },
     }

@@ -1681,6 +1681,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -1697,7 +1699,8 @@ __webpack_require__.r(__webpack_exports__);
       sync: 0,
       repetitionThreshold: 2,
       played: [],
-      itHasWorsePlays: false
+      itHasWorsePlays: false,
+      color: "white"
     };
   },
   components: {
@@ -1729,6 +1732,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     moveFromLeftTab: function moveFromLeftTab(val) {
+      if (val.site_url.includes("black")) {
+        this.color = "black";
+      } else {
+        this.color = "white";
+      }
+
       this.selectedFen = val.fen;
     }
   }
@@ -1825,6 +1834,10 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -41310,7 +41323,15 @@ var render = function () {
           _c(
             "div",
             { staticClass: "w-full md:w-2/3" },
-            [_c("board", { attrs: { id: "board", fen: this.selectedFen } })],
+            [
+              _c("board", {
+                attrs: {
+                  id: "board",
+                  fen: this.selectedFen,
+                  orientation: _vm.color,
+                },
+              }),
+            ],
             1
           ),
           _vm._v(" "),
@@ -41723,12 +41744,9 @@ var render = function () {
       ),
     ]),
     _vm._v(" "),
-    _vm.loading
-      ? _c("div", {
-          staticClass: "mx-4 px-4 w-full mx-auto",
-          attrs: { id: "loading" },
-        })
-      : _vm._e(),
+    _c("div", { staticClass: "w-full flex justify-center" }, [
+      _vm.loading ? _c("div", { attrs: { id: "loading" } }) : _vm._e(),
+    ]),
   ])
 }
 var staticRenderFns = []
