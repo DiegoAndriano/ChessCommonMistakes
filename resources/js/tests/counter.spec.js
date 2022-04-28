@@ -1,4 +1,3 @@
-// tests/js/Counter.spec.js
 import { mount } from '@vue/test-utils'
 import Counter from '../components/Counter.vue'
 

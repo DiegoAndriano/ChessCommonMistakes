@@ -60,6 +60,7 @@
                 placeholder="Account"
                 class="border transition ease-in-out focus:pl-4 pl-2 ">
             <button
+                id="submit"
                 class="border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100"
                 @click="getGames">Go!
             </button>
@@ -77,7 +78,7 @@
 <script>
 
 import '../classes.js';
-
+import axios from 'axios'
 
 export default {
     data() {
@@ -211,10 +212,8 @@ export default {
                         }
                     }
 
-
                     this.loading = false
                     this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
-
                 })
 
         }

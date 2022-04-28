@@ -1828,6 +1828,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _classes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../classes.js */ "./resources/js/classes.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -1910,6 +1912,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1954,7 +1958,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.movementMatrix = {};
                 _this.worsePlays = [];
                 _context.next = 7;
-                return axios.get('https://lichess.org/api/games/user/' + _this.account + '?' + (_this.color === 'both' ? '' : 'color=' + _this.color + '&') + 'max=' + _this.matches + '&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get('https://lichess.org/api/games/user/' + _this.account + '?' + (_this.color === 'both' ? '' : 'color=' + _this.color + '&') + 'max=' + _this.matches + '&analysed=true&evals=true&perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence"').then(function (response) {
                   _this.chessGames = response.data;
                   _this.chessGames = _this.chessGames.split("\n\n");
                   _this.chessGamesParsed = [];
@@ -41729,6 +41733,7 @@ var render = function () {
         {
           staticClass:
             "border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
+          attrs: { id: "submit" },
           on: { click: _vm.getGames },
         },
         [_vm._v("Go!\n        ")]
