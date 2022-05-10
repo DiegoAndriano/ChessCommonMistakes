@@ -1,50 +1,78 @@
 <template>
     <div>
         <sync-account @synced="handleSync"/>
-        <br>
+
         <div class="">
-            <p v-if="( itHasWorsePlays ) && (sync > 0)" class="font-bold block">We found these repeated mistakes!</p>
+            <!--     text found games       -->
+            <div class="flex justify-center items-center py-5">
+                <p v-if="( itHasWorsePlays ) && (sync > 0)" class="font-bold block">We found these repeated
+                    mistakes!</p>
+            </div>
 
+            <!--     access to lichess games       -->
             <div class="py-4 w-full flex overflow-x-scroll">
-                <div  style="background-color: #ddd; padding:10px; border-radius:5px; min-width: 244px; margin-right:10px; " v-if="worsePlay.repetition >= repetitionThreshold"
-                     v-for="worsePlay in worsePlays" class="px-1 space-x-4 items-center">
+                <div
+                    style="min-width: 244px;" v-if="worsePlay.repetition >= repetitionThreshold"
+                    v-for="worsePlay in worsePlays"
+                    class="mr-3 border border-4 border-black  items-center bg-[#F07F8A]">
 
-                    <button @click="moveFromLeftTab(worsePlay)" class="w-full space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100">
-                        <span class="font-bold">{{ worsePlay.name }}</span> | ΔE: {{ worsePlay.deltaScore }} |
-                        {{ worsePlay.repetition }} games
+                    <button @click="moveFromLeftTab(worsePlay)" class="hover:bg-[#E41B2E] hover:text-white transition ease-in duration-100 px-4 pt-6 w-full bg-[#F07F8A] pb-2">
+                        <span class="font-bold">{{ worsePlay.name }}</span>
+                        <span>|</span>
+                        <span class="font-bold">ΔE: {{ worsePlay.deltaScore }}</span>
+                        <span>|</span>
+                        <span>{{ worsePlay.repetition }} games</span>
                     </button>
+
+                    <div class="w-full bg-black h-1"></div>
 
                     <hoverable :worse-play-url="worsePlay.site_url.split('!')"/>
 
                 </div>
             </div>
-            <div v-if="(! itHasWorsePlays ) && (sync > 0)">
+
+            <!--    text didn't found games        -->
+            <div class="flex justify-center items-center py-5" v-if="(! itHasWorsePlays ) && (sync > 0)">
                 <p class="font-bold underlined">No errors with configured repetitions have been found. Try with more
                     games, or analyze more games on Lichess!</p>
             </div>
-            <div class="flex items-start mt-8">
-                <div class="grid grid-cols-2 mx-4">
-                    <movements-box class="cursor-pointer" v-for="(move, index) in played" :key="index">
-                        <button @click="moveFromLeftTab(move)">
-                            <span class="font-bold">{{ move.name }}</span> | <span class="font-bold">E:</span>
-                            {{ move.score }} | <span class="font-bold">ΔE:</span> {{ move.deltaScore }}
-                        </button>
-                    </movements-box>
-                </div>
-                <div class="w-full md:w-2/3">
 
-                    <board id="board" :fen="this.selectedFen" :orientation="color"/>
+            <!--    movements box + delta errores + tablero    -->
+            <div class="w-full flex flex-col justify-center items-center md:flex-row md:items-start mt-8">
 
-                </div>
-                <div class="w-full md:w-1/3 bg-light">
-                    <span class="font-bold">Movements</span>
-                    <div style="height: 400px;width:250px; ;overflow-y:scroll;">
+                <!--     movements box           -->
+                <div class="w-full md:w-1/3 bg-light flex flex-col items-center justify-center">
+                    <div class="bg-[#333333] px-4 py-5 w-full mb-4"
+                         style="height: 400px; ;overflow-y:scroll;">
+                        <span class="font-bold text-[#E2E2E2]">Movements</span>
+                        <div class="flex space-x-2">
+                            <p class="text-[#E2E2E2]">Move</p>
+                            <p class="text-[#E2E2E2]">Games</p>
+                            <p class="text-[#E2E2E2]">Eval</p>
+                            <p class="text-[#E2E2E2]">Results</p>
+                        </div>
                         <div
                             class="border border-3 border-gray-500 bg-gray-200"
                             v-for="(value, name) in movementMatrix.movements" :key="name + value.score">
                             <tree :story-received="[]" :name="name" :moves="value" :depth="1"/>
                         </div>
                     </div>
+
+                    <!--     tablero           -->
+                    <div class="w-full md:w-2/3 flex justify-center">
+                        <board id="board" :fen="this.selectedFen" :orientation="color"/>
+                    </div>
+
+                    <!--     delta errores           -->
+                    <div class="grid grid-cols-2 mx-4">
+                        <movements-box class="cursor-pointer" v-for="(move, index) in played" :key="index">
+                            <button @click="moveFromLeftTab(move)">
+                                <span class="font-bold">{{ move.name }}</span> | <span class="font-bold">E:</span>
+                                {{ move.score }} | <span class="font-bold">ΔE:</span> {{ move.deltaScore }}
+                            </button>
+                        </movements-box>
+                    </div>
+
 
                 </div>
             </div>
@@ -111,9 +139,9 @@ export default {
         },
         moveFromLeftTab(val) {
 
-            if(val.site_url.includes("black")){
+            if (val.site_url.includes("black")) {
                 this.color = "black"
-            }else{
+            } else {
                 this.color = "white"
             }
 

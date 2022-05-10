@@ -1683,6 +1683,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1910,6 +1938,74 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -1921,9 +2017,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       worsePlays: [],
       color: 'both',
       ignore_first_moves: 6,
-      matches: 200,
-      repetition: 2,
-      errorScoreThreshold: 0.5,
+      matches: 1,
+      repetition: 1,
+      errorScoreThreshold: 0.1,
       loading: false
     };
   },
@@ -41204,14 +41300,14 @@ var render = function () {
     [
       _c("sync-account", { on: { synced: _vm.handleSync } }),
       _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
       _c("div", {}, [
-        _vm.itHasWorsePlays && _vm.sync > 0
-          ? _c("p", { staticClass: "font-bold block" }, [
-              _vm._v("We found these repeated mistakes!"),
-            ])
-          : _vm._e(),
+        _c("div", { staticClass: "flex justify-center items-center py-5" }, [
+          _vm.itHasWorsePlays && _vm.sync > 0
+            ? _c("p", { staticClass: "font-bold block" }, [
+                _vm._v("We found these repeated\n                mistakes!"),
+              ])
+            : _vm._e(),
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -41221,21 +41317,16 @@ var render = function () {
               ? _c(
                   "div",
                   {
-                    staticClass: "px-1 space-x-4 items-center",
-                    staticStyle: {
-                      "background-color": "#ddd",
-                      padding: "10px",
-                      "border-radius": "5px",
-                      "min-width": "244px",
-                      "margin-right": "10px",
-                    },
+                    staticClass:
+                      "mr-3 border border-4 border-black  items-center bg-[#F07F8A]",
+                    staticStyle: { "min-width": "244px" },
                   },
                   [
                     _c(
                       "button",
                       {
                         staticClass:
-                          "w-full space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
+                          "hover:bg-[#E41B2E] hover:text-white transition ease-in duration-100 px-4 pt-6 w-full bg-[#F07F8A] pb-2",
                         on: {
                           click: function ($event) {
                             return _vm.moveFromLeftTab(worsePlay)
@@ -41246,15 +41337,22 @@ var render = function () {
                         _c("span", { staticClass: "font-bold" }, [
                           _vm._v(_vm._s(worsePlay.name)),
                         ]),
-                        _vm._v(
-                          " | ΔE: " +
-                            _vm._s(worsePlay.deltaScore) +
-                            " |\n                    " +
-                            _vm._s(worsePlay.repetition) +
-                            " games\n                "
-                        ),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("|")]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "font-bold" }, [
+                          _vm._v("ΔE: " + _vm._s(worsePlay.deltaScore)),
+                        ]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("|")]),
+                        _vm._v(" "),
+                        _c("span", [
+                          _vm._v(_vm._s(worsePlay.repetition) + " games"),
+                        ]),
                       ]
                     ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-full bg-black h-1" }),
                     _vm._v(" "),
                     _c("hoverable", {
                       attrs: {
@@ -41270,113 +41368,159 @@ var render = function () {
         ),
         _vm._v(" "),
         !_vm.itHasWorsePlays && _vm.sync > 0
-          ? _c("div", [
-              _c("p", { staticClass: "font-bold underlined" }, [
-                _vm._v(
-                  "No errors with configured repetitions have been found. Try with more\n                games, or analyze more games on Lichess!"
-                ),
-              ]),
-            ])
+          ? _c(
+              "div",
+              { staticClass: "flex justify-center items-center py-5" },
+              [
+                _c("p", { staticClass: "font-bold underlined" }, [
+                  _vm._v(
+                    "No errors with configured repetitions have been found. Try with more\n                games, or analyze more games on Lichess!"
+                  ),
+                ]),
+              ]
+            )
           : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "flex items-start mt-8" }, [
-          _c(
-            "div",
-            { staticClass: "grid grid-cols-2 mx-4" },
-            _vm._l(_vm.played, function (move, index) {
-              return _c(
-                "movements-box",
-                { key: index, staticClass: "cursor-pointer" },
-                [
-                  _c(
-                    "button",
-                    {
-                      on: {
-                        click: function ($event) {
-                          return _vm.moveFromLeftTab(move)
-                        },
-                      },
-                    },
-                    [
-                      _c("span", { staticClass: "font-bold" }, [
-                        _vm._v(_vm._s(move.name)),
-                      ]),
-                      _vm._v(" | "),
-                      _c("span", { staticClass: "font-bold" }, [_vm._v("E:")]),
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(move.score) +
-                          " | "
-                      ),
-                      _c("span", { staticClass: "font-bold" }, [_vm._v("ΔE:")]),
-                      _vm._v(
-                        " " + _vm._s(move.deltaScore) + "\n                    "
-                      ),
-                    ]
-                  ),
-                ]
-              )
-            }),
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "w-full md:w-2/3" },
-            [
-              _c("board", {
-                attrs: {
-                  id: "board",
-                  fen: this.selectedFen,
-                  orientation: _vm.color,
-                },
-              }),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-full md:w-1/3 bg-light" }, [
-            _c("span", { staticClass: "font-bold" }, [_vm._v("Movements")]),
-            _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "w-full flex flex-col justify-center items-center md:flex-row md:items-start mt-8",
+          },
+          [
             _c(
               "div",
               {
-                staticStyle: {
-                  height: "400px",
-                  width: "250px",
-                  "overflow-y": "scroll",
-                },
+                staticClass:
+                  "w-full md:w-1/3 bg-light flex flex-col items-center justify-center",
               },
-              _vm._l(_vm.movementMatrix.movements, function (value, name) {
-                return _c(
+              [
+                _c(
                   "div",
                   {
-                    key: name + value.score,
-                    staticClass: "border border-3 border-gray-500 bg-gray-200",
+                    staticClass: "bg-[#333333] px-4 py-5 w-full mb-4",
+                    staticStyle: { height: "400px", "overflow-y": "scroll" },
                   },
                   [
-                    _c("tree", {
+                    _c("span", { staticClass: "font-bold text-[#E2E2E2]" }, [
+                      _vm._v("Movements"),
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _vm._l(
+                      _vm.movementMatrix.movements,
+                      function (value, name) {
+                        return _c(
+                          "div",
+                          {
+                            key: name + value.score,
+                            staticClass:
+                              "border border-3 border-gray-500 bg-gray-200",
+                          },
+                          [
+                            _c("tree", {
+                              attrs: {
+                                "story-received": [],
+                                name: name,
+                                moves: value,
+                                depth: 1,
+                              },
+                            }),
+                          ],
+                          1
+                        )
+                      }
+                    ),
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "w-full md:w-2/3 flex justify-center" },
+                  [
+                    _c("board", {
                       attrs: {
-                        "story-received": [],
-                        name: name,
-                        moves: value,
-                        depth: 1,
+                        id: "board",
+                        fen: this.selectedFen,
+                        orientation: _vm.color,
                       },
                     }),
                   ],
                   1
-                )
-              }),
-              0
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "grid grid-cols-2 mx-4" },
+                  _vm._l(_vm.played, function (move, index) {
+                    return _c(
+                      "movements-box",
+                      { key: index, staticClass: "cursor-pointer" },
+                      [
+                        _c(
+                          "button",
+                          {
+                            on: {
+                              click: function ($event) {
+                                return _vm.moveFromLeftTab(move)
+                              },
+                            },
+                          },
+                          [
+                            _c("span", { staticClass: "font-bold" }, [
+                              _vm._v(_vm._s(move.name)),
+                            ]),
+                            _vm._v(" | "),
+                            _c("span", { staticClass: "font-bold" }, [
+                              _vm._v("E:"),
+                            ]),
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(move.score) +
+                                " | "
+                            ),
+                            _c("span", { staticClass: "font-bold" }, [
+                              _vm._v("ΔE:"),
+                            ]),
+                            _vm._v(
+                              " " +
+                                _vm._s(move.deltaScore) +
+                                "\n                        "
+                            ),
+                          ]
+                        ),
+                      ]
+                    )
+                  }),
+                  1
+                ),
+              ]
             ),
-          ]),
-        ]),
+          ]
+        ),
       ]),
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex space-x-2" }, [
+      _c("p", { staticClass: "text-[#E2E2E2]" }, [_vm._v("Move")]),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-[#E2E2E2]" }, [_vm._v("Games")]),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-[#E2E2E2]" }, [_vm._v("Eval")]),
+      _vm._v(" "),
+      _c("p", { staticClass: "text-[#E2E2E2]" }, [_vm._v("Results")]),
+    ])
+  },
+]
 render._withStripped = true
 
 
@@ -41415,7 +41559,7 @@ var render = function () {
           "button",
           {
             staticClass:
-              "w-full border border-2 bg-gray-100 hover:bg-green-500 hover:text-white transition ease-in duration-100",
+              "py-4 w-full bg-[#F07F8A] hover:bg-[#E41B2E] hover:text-white transition ease-in duration-100",
           },
           [_vm._v("Show lichess games")]
         ),
@@ -41425,7 +41569,7 @@ var render = function () {
               "div",
               {
                 staticClass:
-                  "shadow-xl bg-white rounded-lg h-auto mx-auto w-56 z-10 relative py-6 border border-2",
+                  "shadow-xl bg-white rounded-lg h-auto mx-auto w-56 z-10 relative py-6 border border-2 my-2",
               },
               _vm._l(_vm.worsePlayUrl, function (url, index) {
                 return _c(
@@ -41509,70 +41653,426 @@ var render = function () {
       _vm._v("Select color"),
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "mb-4" }, [
-      _c("input", {
-        directives: [
+    _c("div", { staticClass: "mb-4 flex justify-evenly" }, [
+      _c("div", { staticClass: "flex flex-col justify-center" }, [
+        _c(
+          "svg",
           {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.color,
-            expression: "color",
+            attrs: {
+              width: "40",
+              height: "40",
+              viewBox: "0 0 40 40",
+              fill: "none",
+              xmlns: "http://www.w3.org/2000/svg",
+            },
           },
-        ],
-        attrs: { type: "radio", id: "white", value: "white" },
-        domProps: { checked: _vm._q(_vm.color, "white") },
-        on: {
-          change: function ($event) {
-            _vm.color = "white"
+          [
+            _c("rect", {
+              attrs: {
+                x: "2",
+                y: "2",
+                width: "36",
+                height: "36",
+                fill: "white",
+                stroke: "#333333",
+                "stroke-width": "4",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M16.018 24.0495H23.9823V23.3986L22.3522 21.6744H17.6019L16.018 23.2584L16.018 24.0495Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M15.5281 24.702H24.4695V25.6792H15.5281V24.702Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M17.7344 20.2784H22.2656C22.4161 20.2784 22.5383 20.429 22.5383 20.5511V20.7969C22.5383 20.9474 22.4163 21.0695 22.2656 21.0695H17.7344C17.5839 21.0695 17.4617 20.919 17.4617 20.7969V20.5511C17.4617 20.4006 17.5837 20.2784 17.7344 20.2784V20.2784Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M21.3978 14.6432H18.6022L18.0436 19.6716H21.9563L21.3978 14.6432Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M21.1194 13.3856C21.6353 13.0599 21.9837 12.5257 22.0737 11.9223C22.1638 11.319 21.9865 10.7062 21.5883 10.2441C21.19 9.78199 20.6101 9.51617 20.0001 9.51617C19.39 9.51617 18.8101 9.78202 18.4118 10.2441C18.0136 10.7062 17.8363 11.319 17.9265 11.9223C18.0165 12.5257 18.3648 13.0599 18.8807 13.3856H18.1128C17.9399 13.3856 17.7742 13.4542 17.6518 13.5762C17.5294 13.6982 17.4604 13.8638 17.4599 14.0365H22.5383C22.5377 13.8638 22.4688 13.6982 22.3465 13.5762C22.2241 13.4542 22.0583 13.3856 21.8855 13.3856H21.1194Z",
+                fill: "#333333",
+              },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "white" } }, [_vm._v("White")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.color,
+              expression: "color",
+            },
+          ],
+          attrs: { type: "radio", id: "white", value: "white" },
+          domProps: { checked: _vm._q(_vm.color, "white") },
+          on: {
+            change: function ($event) {
+              _vm.color = "white"
+            },
           },
-        },
-      }),
+        }),
+      ]),
       _vm._v(" "),
-      _c("label", { attrs: { for: "white" } }, [_vm._v("White")]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
+      _c("div", { staticClass: "flex flex-col justify-center" }, [
+        _c(
+          "svg",
           {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.color,
-            expression: "color",
+            attrs: {
+              width: "40",
+              height: "40",
+              viewBox: "0 0 40 40",
+              fill: "none",
+              xmlns: "http://www.w3.org/2000/svg",
+            },
           },
-        ],
-        attrs: { type: "radio", id: "black", value: "black" },
-        domProps: { checked: _vm._q(_vm.color, "black") },
-        on: {
-          change: function ($event) {
-            _vm.color = "black"
+          [
+            _c("rect", {
+              attrs: {
+                x: "2",
+                y: "2",
+                width: "36",
+                height: "36",
+                fill: "#333333",
+                stroke: "white",
+                "stroke-width": "4",
+              },
+            }),
+            _vm._v(" "),
+            _c("g", { attrs: { filter: "url(#filter0_d_156_2)" } }, [
+              _c("path", {
+                attrs: {
+                  d: "M16.0181 24.0495H23.9823V23.3986L22.3522 21.6744H17.6019L16.018 23.2584L16.0181 24.0495Z",
+                  fill: "white",
+                },
+              }),
+              _vm._v(" "),
+              _c("path", {
+                attrs: {
+                  d: "M15.5281 24.702H24.4695V25.6792H15.5281V24.702Z",
+                  fill: "white",
+                },
+              }),
+              _vm._v(" "),
+              _c("path", {
+                attrs: {
+                  d: "M17.7344 20.2784H22.2656C22.4161 20.2784 22.5383 20.429 22.5383 20.5511V20.7969C22.5383 20.9474 22.4163 21.0695 22.2656 21.0695H17.7344C17.5839 21.0695 17.4617 20.919 17.4617 20.7969V20.5511C17.4617 20.4006 17.5837 20.2784 17.7344 20.2784Z",
+                  fill: "white",
+                },
+              }),
+              _vm._v(" "),
+              _c("path", {
+                attrs: {
+                  d: "M21.3978 14.6432H18.6022L18.0436 19.6716H21.9563L21.3978 14.6432Z",
+                  fill: "white",
+                },
+              }),
+              _vm._v(" "),
+              _c("path", {
+                attrs: {
+                  d: "M21.1194 13.3856C21.6353 13.0599 21.9837 12.5257 22.0737 11.9223C22.1638 11.319 21.9865 10.7062 21.5883 10.2441C21.19 9.78199 20.6101 9.51617 20.0001 9.51617C19.39 9.51617 18.8101 9.78202 18.4118 10.2441C18.0137 10.7062 17.8363 11.319 17.9265 11.9223C18.0165 12.5257 18.3648 13.0599 18.8807 13.3856H18.1128C17.9399 13.3856 17.7742 13.4542 17.6518 13.5762C17.5294 13.6982 17.4604 13.8638 17.4599 14.0365H22.5383C22.5378 13.8638 22.4688 13.6982 22.3465 13.5762C22.2241 13.4542 22.0583 13.3856 21.8855 13.3856H21.1194Z",
+                  fill: "white",
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c("defs", [
+              _c(
+                "filter",
+                {
+                  attrs: {
+                    id: "filter0_d_156_2",
+                    x: "8",
+                    y: "8",
+                    width: "37",
+                    height: "32",
+                    filterUnits: "userSpaceOnUse",
+                    "color-interpolation-filters": "sRGB",
+                  },
+                },
+                [
+                  _c("feFlood", {
+                    attrs: {
+                      "flood-opacity": "0",
+                      result: "BackgroundImageFix",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("feColorMatrix", {
+                    attrs: {
+                      in: "SourceAlpha",
+                      type: "matrix",
+                      values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0",
+                      result: "hardAlpha",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("feOffset", { attrs: { dx: "9", dy: "4" } }),
+                  _vm._v(" "),
+                  _c("feGaussianBlur", { attrs: { stdDeviation: "2" } }),
+                  _vm._v(" "),
+                  _c("feComposite", {
+                    attrs: { in2: "hardAlpha", operator: "out" },
+                  }),
+                  _vm._v(" "),
+                  _c("feColorMatrix", {
+                    attrs: {
+                      type: "matrix",
+                      values: "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("feBlend", {
+                    attrs: {
+                      mode: "normal",
+                      in2: "BackgroundImageFix",
+                      result: "effect1_dropShadow_156_2",
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("feBlend", {
+                    attrs: {
+                      mode: "normal",
+                      in: "SourceGraphic",
+                      in2: "effect1_dropShadow_156_2",
+                      result: "shape",
+                    },
+                  }),
+                ],
+                1
+              ),
+            ]),
+          ]
+        ),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "black" } }, [_vm._v("Black")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.color,
+              expression: "color",
+            },
+          ],
+          attrs: { type: "radio", id: "black", value: "black" },
+          domProps: { checked: _vm._q(_vm.color, "black") },
+          on: {
+            change: function ($event) {
+              _vm.color = "black"
+            },
           },
-        },
-      }),
+        }),
+      ]),
       _vm._v(" "),
-      _c("label", { attrs: { for: "black" } }, [_vm._v("Black")]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
+      _c("div", { staticClass: "flex flex-col justify-center" }, [
+        _c(
+          "svg",
           {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.color,
-            expression: "color",
+            attrs: {
+              width: "40",
+              height: "40",
+              viewBox: "0 0 40 40",
+              fill: "none",
+              xmlns: "http://www.w3.org/2000/svg",
+            },
           },
-        ],
-        attrs: { type: "radio", id: "both", value: "both", checked: "" },
-        domProps: { checked: _vm._q(_vm.color, "both") },
-        on: {
-          change: function ($event) {
-            _vm.color = "both"
+          [
+            _c("rect", {
+              attrs: {
+                x: "2",
+                y: "2",
+                width: "36",
+                height: "36",
+                fill: "#C4C4C4",
+                stroke: "#333333",
+                "stroke-width": "4",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M16.018 24.0495H23.9823V23.3986L22.3522 21.6744H17.6019L16.018 23.2584L16.018 24.0495Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M15.5281 24.702H24.4695V25.6792H15.5281V24.702Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M17.7344 20.2784H22.2656C22.4161 20.2784 22.5383 20.429 22.5383 20.5511V20.7969C22.5383 20.9474 22.4163 21.0695 22.2656 21.0695H17.7344C17.5839 21.0695 17.4617 20.919 17.4617 20.7969V20.5511C17.4617 20.4006 17.5837 20.2784 17.7344 20.2784Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M21.3978 14.6432H18.6022L18.0436 19.6716H21.9563L21.3978 14.6432Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c("path", {
+              attrs: {
+                d: "M21.1194 13.3856C21.6353 13.0599 21.9837 12.5257 22.0737 11.9223C22.1638 11.319 21.9865 10.7062 21.5883 10.2441C21.19 9.78199 20.6101 9.51617 20.0001 9.51617C19.39 9.51617 18.8101 9.78202 18.4118 10.2441C18.0137 10.7062 17.8363 11.319 17.9265 11.9223C18.0165 12.5257 18.3648 13.0599 18.8807 13.3856H18.1128C17.9399 13.3856 17.7742 13.4542 17.6518 13.5762C17.5294 13.6982 17.4604 13.8638 17.4599 14.0365H22.5383C22.5378 13.8638 22.4688 13.6982 22.3465 13.5762C22.2241 13.4542 22.0583 13.3856 21.8855 13.3856H21.1194Z",
+                fill: "#333333",
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "mask",
+              {
+                staticStyle: { "mask-type": "alpha" },
+                attrs: {
+                  id: "mask0_156_2",
+                  maskUnits: "userSpaceOnUse",
+                  x: "8",
+                  y: "8",
+                  width: "24",
+                  height: "24",
+                },
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    d: "M16.018 24.0495H23.9823V23.3986L22.3522 21.6744H17.6019L16.018 23.2584L16.018 24.0495Z",
+                    fill: "white",
+                  },
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M15.5281 24.702H24.4695V25.6792H15.5281V24.702Z",
+                    fill: "white",
+                  },
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M17.7344 20.2784H22.2656C22.4161 20.2784 22.5383 20.429 22.5383 20.5511V20.7969C22.5383 20.9474 22.4163 21.0695 22.2656 21.0695H17.7344C17.5839 21.0695 17.4617 20.919 17.4617 20.7969V20.5511C17.4617 20.4006 17.5837 20.2784 17.7344 20.2784Z",
+                    fill: "white",
+                  },
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M21.3978 14.6432H18.6022L18.0436 19.6716H21.9563L21.3978 14.6432Z",
+                    fill: "white",
+                  },
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M21.1194 13.3856C21.6353 13.0599 21.9837 12.5257 22.0737 11.9223C22.1638 11.319 21.9865 10.7062 21.5883 10.2441C21.19 9.78199 20.6101 9.51617 20.0001 9.51617C19.39 9.51617 18.8101 9.78202 18.4118 10.2441C18.0137 10.7062 17.8363 11.319 17.9265 11.9223C18.0165 12.5257 18.3648 13.0599 18.8807 13.3856H18.1128C17.9399 13.3856 17.7742 13.4542 17.6518 13.5762C17.5294 13.6982 17.4604 13.8638 17.4599 14.0365H22.5383C22.5378 13.8638 22.4688 13.6982 22.3465 13.5762C22.2241 13.4542 22.0583 13.3856 21.8855 13.3856H21.1194Z",
+                    fill: "white",
+                  },
+                }),
+              ]
+            ),
+            _vm._v(" "),
+            _c("g", { attrs: { mask: "url(#mask0_156_2)" } }, [
+              _c("rect", {
+                attrs: {
+                  x: "20",
+                  y: "9.59998",
+                  width: "8",
+                  height: "16",
+                  fill: "white",
+                },
+              }),
+            ]),
+            _vm._v(" "),
+            _c(
+              "mask",
+              {
+                staticStyle: { "mask-type": "alpha" },
+                attrs: {
+                  id: "mask1_156_2",
+                  maskUnits: "userSpaceOnUse",
+                  x: "0",
+                  y: "0",
+                  width: "40",
+                  height: "40",
+                },
+              },
+              [
+                _c("rect", {
+                  attrs: {
+                    x: "2",
+                    y: "2",
+                    width: "36",
+                    height: "36",
+                    stroke: "white",
+                    "stroke-width": "4",
+                  },
+                }),
+              ]
+            ),
+            _vm._v(" "),
+            _c("g", { attrs: { mask: "url(#mask1_156_2)" } }, [
+              _c("rect", {
+                attrs: {
+                  x: "20.8",
+                  width: "23.2",
+                  height: "40",
+                  fill: "white",
+                },
+              }),
+            ]),
+          ]
+        ),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "both" } }, [_vm._v("Both")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.color,
+              expression: "color",
+            },
+          ],
+          staticClass: "accent-[#667080]",
+          attrs: { type: "radio", id: "both", value: "both", checked: "" },
+          domProps: { checked: _vm._q(_vm.color, "both") },
+          on: {
+            change: function ($event) {
+              _vm.color = "both"
+            },
           },
-        },
-      }),
-      _vm._v(" "),
-      _c("label", { attrs: { for: "both" } }, [_vm._v("Both")]),
+        }),
+      ]),
     ]),
     _vm._v(" "),
     _c("label", { staticClass: "block", attrs: { for: "matches" } }, [
@@ -41589,7 +42089,8 @@ var render = function () {
             expression: "matches",
           },
         ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
+        staticClass:
+          "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-1.5",
         attrs: { id: "matches", min: "0", placeholder: "200", type: "number" },
         domProps: { value: _vm.matches },
         on: {
@@ -41622,7 +42123,8 @@ var render = function () {
             expression: "ignore_first_moves",
           },
         ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
+        staticClass:
+          "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-1.5",
         attrs: {
           id: "ignore_first_moves",
           placeholder: "3",
@@ -41655,7 +42157,8 @@ var render = function () {
             expression: "errorScoreThreshold",
           },
         ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
+        staticClass:
+          "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-1.5",
         attrs: { id: "error", min: "0", placeholder: "0.5", type: "number" },
         domProps: { value: _vm.errorScoreThreshold },
         on: {
@@ -41683,7 +42186,8 @@ var render = function () {
             expression: "repetition",
           },
         ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
+        staticClass:
+          "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-1.5",
         attrs: { id: "repetition", type: "number", min: "0", placeholder: "2" },
         domProps: { value: _vm.repetition },
         on: {
@@ -41711,7 +42215,8 @@ var render = function () {
             expression: "account",
           },
         ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
+        staticClass:
+          "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-1.5",
         attrs: { id: "account", type: "text", placeholder: "Account" },
         domProps: { value: _vm.account },
         on: {
@@ -41723,29 +42228,33 @@ var render = function () {
           },
         },
       }),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass:
-            "border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
-          on: { click: _vm.getGames },
-        },
-        [_vm._v("Go!\n        ")]
-      ),
-      _vm._v(" "),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "flex flex-col items-center w-full" }, [
       _c(
         "p",
         {
-          staticClass: "text-blue-500 mx-4 cursor-pointer text-sm",
+          staticClass: "pb-2 text-blue-500 mx-4 cursor-pointer text-sm",
           on: { click: _vm.clearAccount },
         },
-        [_vm._v("clear")]
+        [_vm._v("clear values")]
       ),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "w-full flex justify-center" }, [
-      _vm.loading ? _c("div", { attrs: { id: "loading" } }) : _vm._e(),
+      _vm._v(" "),
+      !_vm.loading
+        ? _c(
+            "button",
+            {
+              staticClass:
+                "bg-[#86A5D9] px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100 uppercase w-36 h-12",
+              on: { click: _vm.getGames },
+            },
+            [_vm._v("Go!\n        ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("div", { staticClass: "w-full flex justify-center" }, [
+        _vm.loading ? _c("div", { attrs: { id: "loading" } }) : _vm._e(),
+      ]),
     ]),
   ])
 }
