@@ -1683,34 +1683,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -41397,47 +41369,6 @@ var render = function () {
               [
                 _c(
                   "div",
-                  {
-                    staticClass: "bg-[#333333] px-4 py-5 w-full mb-4",
-                    staticStyle: { height: "400px", "overflow-y": "scroll" },
-                  },
-                  [
-                    _c("span", { staticClass: "font-bold text-[#E2E2E2]" }, [
-                      _vm._v("Movements"),
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(0),
-                    _vm._v(" "),
-                    _vm._l(
-                      _vm.movementMatrix.movements,
-                      function (value, name) {
-                        return _c(
-                          "div",
-                          {
-                            key: name + value.score,
-                            staticClass:
-                              "border border-3 border-gray-500 bg-gray-200",
-                          },
-                          [
-                            _c("tree", {
-                              attrs: {
-                                "story-received": [],
-                                name: name,
-                                moves: value,
-                                depth: 1,
-                              },
-                            }),
-                          ],
-                          1
-                        )
-                      }
-                    ),
-                  ],
-                  2
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
                   { staticClass: "w-full md:w-2/3 flex justify-center" },
                   [
                     _c("board", {
@@ -41450,52 +41381,6 @@ var render = function () {
                   ],
                   1
                 ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "grid grid-cols-2 mx-4" },
-                  _vm._l(_vm.played, function (move, index) {
-                    return _c(
-                      "movements-box",
-                      { key: index, staticClass: "cursor-pointer" },
-                      [
-                        _c(
-                          "button",
-                          {
-                            on: {
-                              click: function ($event) {
-                                return _vm.moveFromLeftTab(move)
-                              },
-                            },
-                          },
-                          [
-                            _c("span", { staticClass: "font-bold" }, [
-                              _vm._v(_vm._s(move.name)),
-                            ]),
-                            _vm._v(" | "),
-                            _c("span", { staticClass: "font-bold" }, [
-                              _vm._v("E:"),
-                            ]),
-                            _vm._v(
-                              "\n                            " +
-                                _vm._s(move.score) +
-                                " | "
-                            ),
-                            _c("span", { staticClass: "font-bold" }, [
-                              _vm._v("ΔE:"),
-                            ]),
-                            _vm._v(
-                              " " +
-                                _vm._s(move.deltaScore) +
-                                "\n                        "
-                            ),
-                          ]
-                        ),
-                      ]
-                    )
-                  }),
-                  1
-                ),
               ]
             ),
           ]
@@ -41505,22 +41390,7 @@ var render = function () {
     1
   )
 }
-var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex space-x-2" }, [
-      _c("p", { staticClass: "text-[#E2E2E2]" }, [_vm._v("Move")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "text-[#E2E2E2]" }, [_vm._v("Games")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "text-[#E2E2E2]" }, [_vm._v("Eval")]),
-      _vm._v(" "),
-      _c("p", { staticClass: "text-[#E2E2E2]" }, [_vm._v("Results")]),
-    ])
-  },
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

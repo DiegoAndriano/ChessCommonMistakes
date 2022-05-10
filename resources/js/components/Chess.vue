@@ -42,38 +42,10 @@
 
                 <!--     movements box           -->
                 <div class="w-full md:w-1/3 bg-light flex flex-col items-center justify-center">
-                    <div class="bg-[#333333] px-4 py-5 w-full mb-4"
-                         style="height: 400px; ;overflow-y:scroll;">
-                        <span class="font-bold text-[#E2E2E2]">Movements</span>
-                        <div class="flex space-x-2">
-                            <p class="text-[#E2E2E2]">Move</p>
-                            <p class="text-[#E2E2E2]">Games</p>
-                            <p class="text-[#E2E2E2]">Eval</p>
-                            <p class="text-[#E2E2E2]">Results</p>
-                        </div>
-                        <div
-                            class="border border-3 border-gray-500 bg-gray-200"
-                            v-for="(value, name) in movementMatrix.movements" :key="name + value.score">
-                            <tree :story-received="[]" :name="name" :moves="value" :depth="1"/>
-                        </div>
-                    </div>
-
                     <!--     tablero           -->
                     <div class="w-full md:w-2/3 flex justify-center">
                         <board id="board" :fen="this.selectedFen" :orientation="color"/>
                     </div>
-
-                    <!--     delta errores           -->
-                    <div class="grid grid-cols-2 mx-4">
-                        <movements-box class="cursor-pointer" v-for="(move, index) in played" :key="index">
-                            <button @click="moveFromLeftTab(move)">
-                                <span class="font-bold">{{ move.name }}</span> | <span class="font-bold">E:</span>
-                                {{ move.score }} | <span class="font-bold">ΔE:</span> {{ move.deltaScore }}
-                            </button>
-                        </movements-box>
-                    </div>
-
-
                 </div>
             </div>
         </div>
