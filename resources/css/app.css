@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    .highlight {
+        overflow: hidden;
+        font-weight: bold;
+        margin: 0;
+        background-image: linear-gradient(transparent calc(65% - 1px), #F16B6C 5px);
+    }
+}
 
+.tooltip-enter-active, .tooltip-leave-active {
+    @apply transition scale-100 transform scale-100 origin-center
+}
+
+.tooltip-enter, .tooltip-leave-to {
+    @apply transition transform scale-75 origin-center ease-in duration-200
+}
 
 @import "./components/autocomplete.css";

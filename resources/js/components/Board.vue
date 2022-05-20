@@ -40,18 +40,10 @@ export default {
         },
     },
     mounted() {
-
         this.prueba = 1;
-        console.log("Montado!!")
         this.board.set({
             movable: { events: { after: this.userPlay()} },
         })
-        // brushes: {orig :'a1', brush:'yellow'},
-        // brush: {orig :'a1', brush:'yellow'},
-        // shape: {orig :'a1', brush:'yellow'},
-
-        // this.board.setShapes({orig: 'a1', dest: 'a2', brush: 'yellow'})
-
     }
 }
 </script>
