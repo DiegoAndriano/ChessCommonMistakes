@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div ref="mainContainer" class="md:flex">
         <div class="w-full">
             <p class="text-center mb-4 pt-4 sm:mx-auto sm:w-3/5">Get your <span
                 class="highlight"> most common mistakes</span> in the openings
@@ -10,7 +10,8 @@
         </div>
 
         <div
-            v-if="synced">
+            class="w-full md:w-1/2"
+            v-show="synced">
             <!--     text found games       -->
             <div class="flex justify-center items-center py-5">
                 <p v-if="( itHasWorsePlays ) && (sync > 0)" class="font-bold block">We found these repeated
@@ -46,19 +47,18 @@
                     games, or analyze more games on Lichess!</p>
             </div>
 
-            <!--    movements box + delta errores + tablero    -->
-            <div class="w-full flex flex-col justify-center items-center md:flex-row md:items-start mt-8">
-
-                <!--     movements box           -->
-                <div class="w-full md:w-1/3 bg-light flex flex-col items-center justify-center">
-                    <!--     tablero           -->
-                    <div class="w-full md:w-2/3 flex justify-center">
-                        <board class="w-full h-auto" id="board" :fen="this.selectedFen" :orientation="color"/>
-                    </div>
-                </div>
+            <!--    tablero    -->
+            <div class="w-full">
+                <board class="mx-auto" id="board" :fen="this.selectedFen" :orientation="color"/>
             </div>
 
-
+<!--            <div class="w-full flex flex-row justify-center items-center md:flex-row md:justify-start mt-8">-->
+<!--                <div class="w-full md:w-1/3 bg-light flex flex-col items-center justify-center">-->
+<!--                    <div class="w-full md:w-2/3 flex justify-center">-->
+<!--                        <board class="w-full h-auto" id="board" :fen="this.selectedFen" :orientation="color"/>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <h2 class="font-bold text-xl flex items-center">
             <span class="pr-3">
@@ -90,6 +90,7 @@ import board from './board'
 import Hoverable from './Hoverable'
 import 'vue-chessboard/dist/vue-chessboard.css'
 import {EventBus} from '../app';
+import {Elastic, gsap} from "gsap";
 
 export default {
     data() {
@@ -130,6 +131,7 @@ export default {
     methods: {
         handleSync(receivedMatrix) {
             this.synced = true;
+
             this.movementMatrix = receivedMatrix[0];
             this.worsePlays = receivedMatrix[1];
             this.repetitionThreshold = parseInt(receivedMatrix[2]);
@@ -139,6 +141,7 @@ export default {
             for (var i = 0; i < this.worsePlays.length; i++) {
                 this.itHasWorsePlays = this.itHasWorsePlays || (this.worsePlays[i].repetition >= this.repetitionThreshold)
             }
+
         },
         moveFromLeftTab(val) {
 

@@ -11,8 +11,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ url("https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js") }}" defer></script>
-
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,7 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div class="" id="app">
         <nav class="bg-primary-500 flex">
 
         </nav>

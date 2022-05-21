@@ -1,13 +1,18 @@
 <template>
     <transition>
         <div
-            :class="synced ? 'md:w-1/2' : 'w-full'"
-            class="md:flex md:flex-col md:justify-center md:items-center w-full">
+            ref="syncContainer"
+            :class="mdClasses ? 'md:flex md:flex-col md:justify-center md:items-center' : ''"
+            class="w-full">
 
-            <div class="md:w-full mb-4 md:flex md:justify-evenly pt-2 md:items-center md:px-16">
+            <div
+                :class="mdClasses ? 'md:w-full md:flex md:justify-evenly md:items-center md:px-16' : ''"
+                class="mb-4 pt-2">
                 <label class="block" for="account">Select color</label>
 
-                <div class="flex justify-evenly items-center md:w-2/3">
+                <div
+                    :class="mdClasses ? 'md:w-2/3' : ''"
+                    class="flex justify-evenly items-center">
                     <div class="flex flex-col justify-center">
                         <input type="radio" class="hidden" id="white" value="white" v-model="color">
                         <label for="white">
@@ -138,9 +143,13 @@
 
             </div>
 
-            <div class="mb-4 md:flex md:w-full md:px-16">
+            <div
+                :class="mdClasses ? 'md:flex md:w-full md:px-16' : ''"
+                class="mb-4">
 
-                <div class="flex items-center relative md:w-1/2 md:px-4">
+                <div
+                    :class="mdClasses ? ' md:w-1/2 md:px-4' : ''"
+                    class="flex items-center relative">
                     <label class="block w-full" for="matches">Matches selected</label>
                     <tooltip tabindex=[0|-1] role="tooltip">
                         It uses <span class="font-bold">only analyzed games.</span> <br> <span
@@ -156,11 +165,16 @@
                     placeholder="200"
                     type="number"
                     @input="limitMaxMatchesValue"
-                    class="border transition ease-in-out focus:pl-4 pl-2 w-full md:w-1/2 bg-[#FEFEFE] border-[#333333] border-2">
+                    :class="mdClasses ? 'md:w-1/2' : ''"
+                    class="border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2">
             </div>
 
-            <div class="mb-4 md:flex md:w-full md:px-16">
-                <div class="flex items-center relative md:w-1/2 md:px-4">
+            <div
+                :class="mdClasses ? 'md:flex md:w-full md:px-16' : ''"
+                class="mb-4">
+                <div
+                    :class="mdClasses ? 'md:w-1/2 md:px-4' : ''"
+                    class="flex items-center relative">
                     <label class="block w-full" for="ignore_first_moves">How many first moves to ignore</label>
                     <tooltip tabindex=[0|-1] role="tooltip">
                         <span class="font-bold">Ignore first 4 moves</span> <br>
@@ -174,12 +188,17 @@
                     placeholder="3"
                     min="0"
                     type="number"
-                    class="border transition ease-in-out focus:pl-4 pl-2 w-full md:w-1/2 bg-[#FEFEFE] border-[#333333] border-2">
+                    :class="mdClasses ? 'md:w-1/2' : ''"
+                    class="border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2">
             </div>
 
-            <div class="mb-4 md:flex md:w-full md:px-16">
+            <div
+                :class="mdClasses ? 'md:flex md:w-full md:px-16' : ''"
+                class="mb-4">
 
-                <div class="flex items-center relative md:w-1/2 md:px-4">
+                <div
+                    :class="mdClasses ? 'md:w-1/2 md:px-4' : ''"
+                    class="flex items-center relative">
                     <label class="block w-full" for="error">Score lost to consider an error</label>
                     <tooltip tabindex=[0|-1] role="tooltip">
                         Means <span
@@ -197,11 +216,16 @@
                     min="0"
                     placeholder="0.5"
                     type="number"
-                    class="border transition ease-in-out focus:pl-4 pl-2 w-full md:w-1/2 bg-[#FEFEFE] border-[#333333] border-2">
+                    :class="mdClasses ? 'md:w-1/2' : ''"
+                    class="border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2">
             </div>
 
-            <div class="mb-4 md:flex md:w-full md:px-16">
-                <div class="flex items-center relative md:w-1/2 md:px-4">
+            <div
+                :class="mdClasses ? 'md:flex md:w-full md:px-16' : ''"
+                class="mb-4">
+                <div
+                    :class="mdClasses ? 'md:w-1/2 md:px-4' : ''"
+                    class="flex items-center relative">
                     <label class="w-full block" for="account">Minimum times the error is repeated</label>
                     <tooltip tabindex=[0|-1] role="tooltip" aria-live="polite">
                         Set this minimum to two to get a nice feedback
@@ -213,11 +237,16 @@
                     type="number"
                     min="0"
                     placeholder="2"
-                    class="border transition ease-in-out focus:pl-4 pl-2 w-full md:w-1/2 bg-[#FEFEFE] border-[#333333] border-2">
+                    :class="mdClasses ? 'md:w-1/2' : ''"
+                    class="border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2">
             </div>
 
-            <div class="mb-4 md:flex md:w-full md:px-16">
-                <div class="flex items-center relative md:w-1/2 md:px-4">
+            <div
+                :class="mdClasses ? 'md:flex md:w-full md:px-16' : ''"
+                class="mb-4">
+                <div
+                    :class="mdClasses ? 'md:w-1/2 md:px-4' : ''"
+                    class="flex items-center relative">
 
                     <label class="w-full block" for="account">Select account</label>
                     <tooltip tabindex=[0|-1] role="tooltip" aria-live="polite">
@@ -229,11 +258,14 @@
                     v-model="account"
                     id="account" type="text"
                     placeholder="Account"
-                    class="border transition ease-in-out focus:pl-4 pl-2 w-full md:w-1/2 bg-[#FEFEFE] border-[#333333] border-2">
+                    :class="mdClasses ? 'md:w-1/2' : ''"
+                    class="border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2">
 
             </div>
 
-            <div class="flex flex-col items-center w-full md:pt-4">
+            <div
+                :class="mdClasses ? 'md:pt-4' : ''"
+                class="flex flex-col items-center w-full">
                 <p
                     @click="clear"
                     class="pb-2 text-blue-500 mx-4 cursor-pointer text-sm text-[#F16B6C] flex">
@@ -280,6 +312,7 @@
 
 import '../classes.js';
 import Tooltip from './Tooltip'
+import { gsap, Elastic } from 'gsap'
 
 export default {
     components: {
@@ -298,10 +331,35 @@ export default {
             repetition: 1,
             errorScoreThreshold: 0.1,
             loading: false,
+            mdClasses: true,
             synced: false,
+            animating: false
         }
     },
     methods: {
+        animateSyncedAndSync(){
+            var s_width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+            if(s_width >= 760){
+
+                if(this.$refs.syncContainer.offsetWidth <= 760){
+                    this.mdClasses = false
+
+                }
+
+                this.animating = true
+                const propsIn = {
+                    duration: 1,
+                    width: this.$refs.syncContainer.offsetWidth / 2 ,
+                    ease: Elastic.easeOut.config(1, 0.9),
+                    onComplete: this.emitSynced()
+                }
+
+                gsap.to(this.$refs.syncContainer, propsIn)
+            }else{
+                this.synced = true
+                this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
+            }
+        },
         limitMaxMatchesValue(event) {
             const value = event.target.value
             if (this.matches >= 500) {
@@ -423,10 +481,20 @@ export default {
 
 
                     this.loading = false
-                    this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
 
-                    this.synced = true;
+                    this.animateSyncedAndSync();
+
                 })
+
+        },
+        emitSynced(){
+            setTimeout(function(){
+                this.animating = false
+                this.synced = true
+
+                this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
+            }.bind(this), 10);
+
 
         }
     }
