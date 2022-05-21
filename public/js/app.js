@@ -2145,7 +2145,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -42993,7 +42992,7 @@ var render = function () {
                       ]
                     ),
                     _vm._v(
-                      "\n                            White\n                        "
+                      "\n                        White\n                    "
                     ),
                   ]),
                 ]),
@@ -43173,7 +43172,7 @@ var render = function () {
                       ]
                     ),
                     _vm._v(
-                      "\n                            Black\n                        "
+                      "\n                        Black\n                    "
                     ),
                   ]),
                 ]),
@@ -43377,7 +43376,7 @@ var render = function () {
                       ]
                     ),
                     _vm._v(
-                      "\n                            Both\n                        "
+                      "\n                        Both\n                    "
                     ),
                   ]),
                 ]),
@@ -43401,7 +43400,7 @@ var render = function () {
                 "tooltip",
                 { attrs: { tabindex: "[0|-1]", role: "tooltip" } },
                 [
-                  _vm._v("\n                        It uses "),
+                  _vm._v("\n                    It uses "),
                   _c("span", { staticClass: "font-bold" }, [
                     _vm._v("only analyzed games."),
                   ]),
@@ -43412,7 +43411,7 @@ var render = function () {
                     _vm._v("Use > 50"),
                   ]),
                   _vm._v(
-                    "\n                        numbers of games\n                    "
+                    "\n                    numbers of games\n                "
                   ),
                 ]
               ),
@@ -43529,7 +43528,7 @@ var render = function () {
                 "tooltip",
                 { attrs: { tabindex: "[0|-1]", role: "tooltip" } },
                 [
-                  _vm._v("\n                        Means "),
+                  _vm._v("\n                    Means "),
                   _c("span", { staticClass: "font-bold" }, [
                     _vm._v(
                       "the score lost from the previous move to the actual move made."
@@ -43538,7 +43537,7 @@ var render = function () {
                   _vm._v(" "),
                   _c("br"),
                   _vm._v(
-                    "\n                        If the score is +3 after white moves, and black then moves and the score now is +6, then the\n                        score\n                        lost\n                        is 3.\n                    "
+                    "\n                    If the score is +3 after white moves, and black then moves and the score now is +6, then the\n                    score\n                    lost\n                    is 3.\n                "
                   ),
                 ]
               ),
@@ -43597,7 +43596,7 @@ var render = function () {
                 },
                 [
                   _vm._v(
-                    "\n                        Set this minimum to two to get a nice feedback\n                    "
+                    "\n                    Set this minimum to two to get a nice feedback\n                "
                   ),
                 ]
               ),
@@ -43656,7 +43655,7 @@ var render = function () {
                 },
                 [
                   _vm._v(
-                    "\n                        Select your Lichess account\n                    "
+                    "\n                    Select your Lichess account\n                "
                   ),
                 ]
               ),
@@ -43772,7 +43771,7 @@ var render = function () {
                     ]
                   ),
                 ]),
-                _vm._v("\n                    clear values\n                "),
+                _vm._v("\n                clear values\n            "),
               ]
             ),
             _vm._v(" "),
@@ -43784,7 +43783,7 @@ var render = function () {
                       "bg-[#86A5D9] px-3 hover:bg-[#1f4481] hover:text-white transition ease-in duration-100 uppercase w-36 h-12",
                     on: { click: _vm.getGames },
                   },
-                  [_vm._v("Go!\n                ")]
+                  [_vm._v("Go!\n            ")]
                 )
               : _vm._e(),
             _vm._v(" "),

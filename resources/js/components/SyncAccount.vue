@@ -1,5 +1,4 @@
 <template>
-<!--    https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js     -->
     <transition>
         <div
             :class="synced ? 'md:w-1/2' : 'w-full'"
