@@ -20,11 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="" id="app">
-        <nav class="bg-primary-500 flex">
-
-        </nav>
-
+    <div class="min-h-screen bg-[#EEE]" id="app">
         <main class="py-4 bg-[#EEE]">
             {{ $slot }}
         </main>

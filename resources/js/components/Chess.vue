@@ -48,17 +48,9 @@
             </div>
 
             <!--    tablero    -->
-            <div class="w-full">
-                <board class="mx-auto" id="board" :fen="this.selectedFen" :orientation="color"/>
+            <div class="w-full flex justify-center items-center ">
+                <board class="" id="board" :fen="this.selectedFen" :orientation="color"/>
             </div>
-
-<!--            <div class="w-full flex flex-row justify-center items-center md:flex-row md:justify-start mt-8">-->
-<!--                <div class="w-full md:w-1/3 bg-light flex flex-col items-center justify-center">-->
-<!--                    <div class="w-full md:w-2/3 flex justify-center">-->
-<!--                        <board class="w-full h-auto" id="board" :fen="this.selectedFen" :orientation="color"/>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
 
             <h2 class="font-bold text-xl flex items-center">
             <span class="pr-3">

@@ -146,7 +146,6 @@
             <div
                 :class="mdClasses ? 'md:flex md:w-full md:px-16' : ''"
                 class="mb-4">
-
                 <div
                     :class="mdClasses ? ' md:w-1/2 md:px-4' : ''"
                     class="flex items-center relative">
@@ -312,7 +311,7 @@
 
 import '../classes.js';
 import Tooltip from './Tooltip'
-import { gsap, Elastic } from 'gsap'
+import {gsap, Elastic} from 'gsap'
 
 export default {
     components: {
@@ -333,31 +332,36 @@ export default {
             loading: false,
             mdClasses: true,
             synced: false,
-            animating: false
+            animating: false,
+            animated: false,
         }
     },
     methods: {
-        animateSyncedAndSync(){
-            var s_width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-            if(s_width >= 760){
+        animateSyncedAndSync() {
+            if (!this.animated) {
+                var s_width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+                if (s_width >= 760) {
 
-                if(this.$refs.syncContainer.offsetWidth <= 760){
-                    this.mdClasses = false
+                    if (this.$refs.syncContainer.offsetWidth / 2 <= 760) {
+                        console.log("Hola!")
+                        this.mdClasses = false
 
+                    }
+
+                    this.animating = true
+                    const propsIn = {
+                        duration: 1,
+                        width: this.$refs.syncContainer.offsetWidth / 2,
+                        ease: Elastic.easeOut.config(1, 0.9),
+                        onComplete: this.emitSynced()
+                    }
+
+                    gsap.to(this.$refs.syncContainer, propsIn)
+                    this.animated = true;
+                } else {
+                    this.synced = true
+                    this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
                 }
-
-                this.animating = true
-                const propsIn = {
-                    duration: 1,
-                    width: this.$refs.syncContainer.offsetWidth / 2 ,
-                    ease: Elastic.easeOut.config(1, 0.9),
-                    onComplete: this.emitSynced()
-                }
-
-                gsap.to(this.$refs.syncContainer, propsIn)
-            }else{
-                this.synced = true
-                this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
             }
         },
         limitMaxMatchesValue(event) {
@@ -487,13 +491,13 @@ export default {
                 })
 
         },
-        emitSynced(){
-            setTimeout(function(){
+        emitSynced() {
+            setTimeout(function () {
                 this.animating = false
                 this.synced = true
 
                 this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
-            }.bind(this), 10);
+            }.bind(this), 100);
 
 
         }

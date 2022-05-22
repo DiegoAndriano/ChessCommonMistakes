@@ -18,8 +18,7 @@
     <div class="w-full">
         <logosmall-component></logosmall-component>
         <logomedium-component></logomedium-component>
-        {{--        <logodesktop-component></logodesktop-component>--}}
-
+        <logodesktop-component></logodesktop-component>
     </div>
 
     <div class="px-4 py-2 mx-auto">
