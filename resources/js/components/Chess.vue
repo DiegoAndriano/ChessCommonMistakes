@@ -1,7 +1,7 @@
 <template>
     <div ref="mainContainer" class="md:flex">
         <div class="w-full">
-            <p class="text-center mb-4 pt-4 sm:mx-auto sm:w-3/5">Get your <span
+            <p class="text-center mb-4 pt-4">Get your <span
                 class="highlight"> most common mistakes</span> in the openings
                 given <span class="font-bold">a number of Lichess games.</span></p>
 

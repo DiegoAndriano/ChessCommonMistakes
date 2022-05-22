@@ -2170,7 +2170,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -25500,9 +25499,8 @@ __webpack_require__.r(__webpack_exports__);
 // Imports
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto:100);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#loading {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    border: 3px solid #86efac;\n    border-radius: 50%;\n    border-top-color: #15803d;\n    animation: spin 1s ease-in-out infinite;\n    -webkit-animation: spin 1s ease-in-out infinite;\n}\n@keyframes spin {\nto {\n        -webkit-transform: rotate(360deg);\n}\n}\n@-webkit-keyframes spin {\nto {\n        -webkit-transform: rotate(360deg);\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput[type=number] {\n    -moz-appearance: textfield;\n}\n#loading {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    border: 3px solid #1f4481;\n    border-radius: 50%;\n    border-top-color: #86A5D9;\n    animation: spin 1s ease-in-out infinite;\n    -webkit-animation: spin 1s ease-in-out infinite;\n}\n@keyframes spin {\nto {\n        -webkit-transform: rotate(360deg);\n}\n}\n@-webkit-keyframes spin {\nto {\n        -webkit-transform: rotate(360deg);\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -49293,20 +49291,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "p",
-      { staticClass: "text-center mb-4 pt-4 sm:mx-auto sm:w-3/5" },
-      [
-        _vm._v("Get your "),
-        _c("span", { staticClass: "highlight" }, [
-          _vm._v(" most common mistakes"),
-        ]),
-        _vm._v(" in the openings\n            given "),
-        _c("span", { staticClass: "font-bold" }, [
-          _vm._v("a number of Lichess games."),
-        ]),
-      ]
-    )
+    return _c("p", { staticClass: "text-center mb-4 pt-4" }, [
+      _vm._v("Get your "),
+      _c("span", { staticClass: "highlight" }, [
+        _vm._v(" most common mistakes"),
+      ]),
+      _vm._v(" in the openings\n            given "),
+      _c("span", { staticClass: "font-bold" }, [
+        _vm._v("a number of Lichess games."),
+      ]),
+    ])
   },
   function () {
     var _vm = this

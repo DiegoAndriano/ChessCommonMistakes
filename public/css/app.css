@@ -609,6 +609,15 @@ Ensure the default browser behavior of the `hidden` attribute.
 .w-\[300px\] {
   width: 300px;
 }
+.max-w-xl {
+  max-width: 36rem;
+}
+.max-w-3xl {
+  max-width: 48rem;
+}
+.max-w-7xl {
+  max-width: 80rem;
+}
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }

@@ -21,7 +21,7 @@
         <logodesktop-component></logodesktop-component>
     </div>
 
-    <div class="px-4 py-2 mx-auto">
+    <div class="px-4 py-2 mx-auto max-w-7xl">
 
         <chess-component></chess-component>
 

@@ -4,7 +4,6 @@
             ref="syncContainer"
             :class="mdClasses ? 'md:flex md:flex-col md:justify-center md:items-center' : ''"
             class="w-full">
-
             <div
                 :class="mdClasses ? 'md:w-full md:flex md:justify-evenly md:items-center md:px-16' : ''"
                 class="mb-4 pt-2">
@@ -507,15 +506,18 @@ export default {
 </script>
 
 <style>
-@import url(https://fonts.googleapis.com/css?family=Roboto:100);
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
 
 #loading {
     display: inline-block;
     width: 50px;
     height: 50px;
-    border: 3px solid #86efac;
+    border: 3px solid #1f4481;
     border-radius: 50%;
-    border-top-color: #15803d;
+    border-top-color: #86A5D9;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
 }
