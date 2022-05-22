@@ -3,15 +3,19 @@
         <div
             ref="syncContainer"
             :class="mdClasses ? 'md:flex md:flex-col md:justify-center md:items-center' : ''"
-            class="w-full">
+            class="w-full px-3 lg:px-0">
+            <!--     select color       -->
             <div
                 :class="mdClasses ? 'md:w-full md:flex md:justify-evenly md:items-center md:px-16' : ''"
                 class="mb-4 pt-2">
-                <label class="block" for="account">Select color</label>
+
+                <div class="lg:w-1/2 lg:px-4">
+                    <label class="block" for="account">Select color</label>
+                </div>
 
                 <div
                     :class="mdClasses ? 'md:w-2/3' : ''"
-                    class="flex justify-evenly items-center">
+                    class="flex lg:justify-between justify-evenly items-center lg:w-1/2">
                     <div class="flex flex-col justify-center">
                         <input type="radio" class="hidden" id="white" value="white" v-model="color">
                         <label for="white">
@@ -141,7 +145,8 @@
 
 
             </div>
-
+            <!--     Known issue: responsiveness won't resist resizing from browser tablet to mobile.       -->
+            <!--     The problem is the animation fixes the width of the container element.       -->
             <div
                 :class="mdClasses ? 'md:flex md:w-full md:px-16' : ''"
                 class="mb-4">
@@ -341,10 +346,8 @@ export default {
                 var s_width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
                 if (s_width >= 760) {
 
-                    if (this.$refs.syncContainer.offsetWidth / 2 <= 760) {
-                        console.log("Hola!")
+                    if (this.$refs.syncContainer.offsetWidth / 2 < 496) {
                         this.mdClasses = false
-
                     }
 
                     this.animating = true

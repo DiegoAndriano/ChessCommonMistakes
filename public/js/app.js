@@ -1755,6 +1755,8 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.worsePlays.length; i++) {
         this.itHasWorsePlays = this.itHasWorsePlays || this.worsePlays[i].repetition >= this.repetitionThreshold;
       }
+
+      this.moveFromLeftTab(this.worsePlays[0]);
     },
     moveFromLeftTab: function moveFromLeftTab(val) {
       if (val.site_url.includes("black")) {
@@ -2170,6 +2172,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2202,8 +2209,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         var s_width = window.innerWidth > 0 ? window.innerWidth : screen.width;
 
         if (s_width >= 760) {
-          if (this.$refs.syncContainer.offsetWidth / 2 <= 760) {
-            console.log("Hola!");
+          if (this.$refs.syncContainer.offsetWidth / 2 < 496) {
             this.mdClasses = false;
           }
 
@@ -49458,7 +49464,7 @@ var render = function () {
       "div",
       {
         ref: "syncContainer",
-        staticClass: "w-full",
+        staticClass: "w-full px-3 lg:px-0",
         class: _vm.mdClasses
           ? "md:flex md:flex-col md:justify-center md:items-center"
           : "",
@@ -49473,14 +49479,17 @@ var render = function () {
               : "",
           },
           [
-            _c("label", { staticClass: "block", attrs: { for: "account" } }, [
-              _vm._v("Select color"),
+            _c("div", { staticClass: "lg:w-1/2 lg:px-4" }, [
+              _c("label", { staticClass: "block", attrs: { for: "account" } }, [
+                _vm._v("Select color"),
+              ]),
             ]),
             _vm._v(" "),
             _c(
               "div",
               {
-                staticClass: "flex justify-evenly items-center",
+                staticClass:
+                  "flex lg:justify-between justify-evenly items-center lg:w-1/2",
                 class: _vm.mdClasses ? "md:w-2/3" : "",
               },
               [

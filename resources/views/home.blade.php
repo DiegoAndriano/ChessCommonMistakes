@@ -19,6 +19,7 @@
         <logosmall-component></logosmall-component>
         <logomedium-component></logomedium-component>
         <logodesktop-component></logodesktop-component>
+        <logodesktopxxl-component></logodesktopxxl-component>
     </div>
 
     <div class="px-4 py-2 mx-auto max-w-7xl">

@@ -26,7 +26,8 @@ module.exports = {
         },
         extend: {
             screens: {
-                'xs': '500px'
+                'xs': '500px',
+                '3xl': '2000px'
             },
             transitionProperty: {
                 DEFAULT: 'padding, box-shadow,background-color, border-color, color, fill, stroke, opacity, transform',

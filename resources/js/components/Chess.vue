@@ -134,6 +134,8 @@ export default {
                 this.itHasWorsePlays = this.itHasWorsePlays || (this.worsePlays[i].repetition >= this.repetitionThreshold)
             }
 
+            this.moveFromLeftTab(this.worsePlays[0])
+
         },
         moveFromLeftTab(val) {
 
