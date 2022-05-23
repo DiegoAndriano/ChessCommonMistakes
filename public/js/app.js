@@ -2577,6 +2577,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('logosmall-component', (__webpack_require__(/*! ./SVGs/LogoSmall.vue */ "./resources/js/SVGs/LogoSmall.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('logomedium-component', (__webpack_require__(/*! ./SVGs/LogoMedium.vue */ "./resources/js/SVGs/LogoMedium.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('logodesktop-component', (__webpack_require__(/*! ./SVGs/LogoDesktop.vue */ "./resources/js/SVGs/LogoDesktop.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('logodesktopxxl-component', (__webpack_require__(/*! ./SVGs/LogoDesktopXXL.vue */ "./resources/js/SVGs/LogoDesktopXXL.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('chess-component', (__webpack_require__(/*! ./components/Chess.vue */ "./resources/js/components/Chess.vue")["default"]));
 var EventBus = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]();
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
@@ -25465,6 +25466,30 @@ ___CSS_LOADER_EXPORT___.push([module.id, "/*\n * Chessground base css properties
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media screen and (min-width: 1025px) and (max-width: 2000px) {\n.lgSvg {\n        display: block;\n}\n}\n@media screen and (min-width: 0px) and (max-width: 1024px) {\n.lgSvg {\n        display: none;\n}\n}\n@media screen and (min-width: 2000px) {\n.lgSvg {\n        display: none;\n}\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css& ***!
@@ -46433,6 +46458,36 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoDesktop.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css& ***!
@@ -46818,14 +46873,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LogoDesktop.vue?vue&type=template&id=55e60c6f& */ "./resources/js/SVGs/LogoDesktop.vue?vue&type=template&id=55e60c6f&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LogoDesktop.vue?vue&type=style&index=0&lang=css& */ "./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 var script = {}
+;
 
 
 /* normalize component */
-;
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   script,
   _LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__.render,
   _LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
@@ -46839,6 +46896,43 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/SVGs/LogoDesktop.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoDesktopXXL.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/SVGs/LogoDesktopXXL.vue ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LogoDesktopXXL.vue?vue&type=template&id=d38776a6& */ "./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/SVGs/LogoDesktopXXL.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -47305,6 +47399,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoDesktop.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&":
 /*!***************************************************************************!*\
   !*** ./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css& ***!
@@ -47344,6 +47451,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoDesktop.vue?vue&type=template&id=55e60c6f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=template&id=55e60c6f&");
+
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoDesktopXXL.vue?vue&type=template&id=d38776a6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6&");
 
 
 /***/ }),
@@ -47500,7 +47624,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-full hidden lg:block" }, [
+  return _c("div", { staticClass: "w-full lgSvg" }, [
     _c(
       "svg",
       {
@@ -48223,6 +48347,1314 @@ var render = function () {
                 height: "123.168",
                 fill: "white",
                 transform: "matrix(-1 0 0 1 788.242 0.585266)",
+              },
+            }),
+          ]),
+        ]),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "w-full hidden 3xl:block" }, [
+    _c(
+      "svg",
+      {
+        staticClass: "w-full h-auto",
+        attrs: {
+          viewBox: "0 0 2460 276",
+          fill: "none",
+          xmlns: "http://www.w3.org/2000/svg",
+        },
+      },
+      [
+        _c("path", {
+          attrs: {
+            d: "M1148.85 202.63C1148.09 203.142 1147.04 203.718 1145.72 204.358C1144.4 204.998 1142.84 205.532 1141.05 205.958C1139.3 206.385 1137.38 206.598 1135.29 206.598C1131.7 206.556 1128.46 205.916 1125.56 204.678C1122.7 203.441 1120.27 201.756 1118.26 199.622C1116.26 197.489 1114.7 195.036 1113.59 192.262C1112.52 189.446 1111.99 186.46 1111.99 183.302C1111.99 179.846 1112.55 176.668 1113.65 173.766C1114.81 170.822 1116.41 168.284 1118.45 166.15C1120.5 163.974 1122.91 162.289 1125.69 161.094C1128.5 159.9 1131.57 159.302 1134.9 159.302C1137.68 159.302 1140.19 159.686 1142.45 160.454C1144.72 161.18 1146.66 162.054 1148.28 163.078L1145.78 168.838C1144.5 167.985 1142.95 167.174 1141.11 166.406C1139.32 165.638 1137.31 165.254 1135.09 165.254C1132.83 165.254 1130.7 165.702 1128.69 166.598C1126.69 167.494 1124.92 168.753 1123.38 170.374C1121.85 171.996 1120.63 173.894 1119.73 176.07C1118.88 178.204 1118.45 180.508 1118.45 182.982C1118.45 185.5 1118.84 187.846 1119.61 190.022C1120.42 192.156 1121.55 194.012 1123 195.59C1124.49 197.169 1126.28 198.406 1128.37 199.302C1130.47 200.198 1132.81 200.646 1135.41 200.646C1137.76 200.646 1139.85 200.284 1141.69 199.558C1143.52 198.833 1145.04 198.022 1146.23 197.126L1148.85 202.63ZM1195.92 159.814V206.086H1189.77V185.798H1165.52V206.086H1159.31V159.814H1165.52V179.91H1189.77V159.814H1195.92ZM1209.25 159.814H1239.33V165.766H1215.45V179.846H1236.77V185.798H1215.45V200.134H1240.22V206.086H1209.25V159.814ZM1274.93 168.07C1273.35 167.26 1271.62 166.556 1269.75 165.958C1267.87 165.361 1266.04 165.062 1264.24 165.062C1261.77 165.062 1259.78 165.638 1258.29 166.79C1256.84 167.942 1256.12 169.478 1256.12 171.398C1256.12 172.849 1256.58 174.086 1257.52 175.11C1258.46 176.092 1259.7 176.945 1261.24 177.67C1262.77 178.396 1264.37 179.078 1266.04 179.718C1267.49 180.273 1268.92 180.892 1270.32 181.574C1271.73 182.257 1272.99 183.11 1274.1 184.134C1275.25 185.158 1276.15 186.417 1276.79 187.91C1277.47 189.404 1277.81 191.26 1277.81 193.478C1277.81 195.91 1277.19 198.129 1275.96 200.134C1274.76 202.14 1273.03 203.718 1270.77 204.87C1268.51 206.022 1265.82 206.598 1262.71 206.598C1260.66 206.598 1258.7 206.364 1256.82 205.894C1254.98 205.425 1253.28 204.828 1251.7 204.102C1250.12 203.334 1248.71 202.545 1247.48 201.734L1250.23 196.87C1251.25 197.596 1252.42 198.3 1253.75 198.982C1255.07 199.622 1256.46 200.156 1257.91 200.582C1259.36 200.966 1260.77 201.158 1262.13 201.158C1263.58 201.158 1265.01 200.902 1266.42 200.39C1267.87 199.836 1269.06 199.004 1270 197.894C1270.94 196.785 1271.41 195.313 1271.41 193.478C1271.41 191.9 1270.98 190.598 1270.13 189.574C1269.32 188.508 1268.23 187.612 1266.87 186.886C1265.5 186.118 1264.05 185.436 1262.52 184.838C1261.06 184.284 1259.59 183.686 1258.1 183.046C1256.61 182.364 1255.22 181.553 1253.94 180.614C1252.66 179.633 1251.64 178.438 1250.87 177.03C1250.1 175.622 1249.72 173.916 1249.72 171.91C1249.72 169.478 1250.29 167.366 1251.44 165.574C1252.64 163.74 1254.26 162.31 1256.31 161.286C1258.36 160.22 1260.7 159.644 1263.35 159.558C1266.33 159.558 1268.96 159.921 1271.22 160.646C1273.52 161.372 1275.55 162.268 1277.3 163.334L1274.93 168.07ZM1312.18 168.07C1310.6 167.26 1308.87 166.556 1307 165.958C1305.12 165.361 1303.29 165.062 1301.49 165.062C1299.02 165.062 1297.03 165.638 1295.54 166.79C1294.09 167.942 1293.37 169.478 1293.37 171.398C1293.37 172.849 1293.83 174.086 1294.77 175.11C1295.71 176.092 1296.95 176.945 1298.49 177.67C1300.02 178.396 1301.62 179.078 1303.29 179.718C1304.74 180.273 1306.17 180.892 1307.57 181.574C1308.98 182.257 1310.24 183.11 1311.35 184.134C1312.5 185.158 1313.4 186.417 1314.04 187.91C1314.72 189.404 1315.06 191.26 1315.06 193.478C1315.06 195.91 1314.44 198.129 1313.21 200.134C1312.01 202.14 1310.28 203.718 1308.02 204.87C1305.76 206.022 1303.07 206.598 1299.96 206.598C1297.91 206.598 1295.95 206.364 1294.07 205.894C1292.23 205.425 1290.53 204.828 1288.95 204.102C1287.37 203.334 1285.96 202.545 1284.73 201.734L1287.48 196.87C1288.5 197.596 1289.67 198.3 1291 198.982C1292.32 199.622 1293.71 200.156 1295.16 200.582C1296.61 200.966 1298.02 201.158 1299.38 201.158C1300.83 201.158 1302.26 200.902 1303.67 200.39C1305.12 199.836 1306.31 199.004 1307.25 197.894C1308.19 196.785 1308.66 195.313 1308.66 193.478C1308.66 191.9 1308.23 190.598 1307.38 189.574C1306.57 188.508 1305.48 187.612 1304.12 186.886C1302.75 186.118 1301.3 185.436 1299.77 184.838C1298.31 184.284 1296.84 183.686 1295.35 183.046C1293.86 182.364 1292.47 181.553 1291.19 180.614C1289.91 179.633 1288.89 178.438 1288.12 177.03C1287.35 175.622 1286.97 173.916 1286.97 171.91C1286.97 169.478 1287.54 167.366 1288.69 165.574C1289.89 163.74 1291.51 162.31 1293.56 161.286C1295.61 160.22 1297.95 159.644 1300.6 159.558C1303.58 159.558 1306.21 159.921 1308.47 160.646C1310.77 161.372 1312.8 162.268 1314.55 163.334L1312.18 168.07Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M1109.8 244.439C1109.52 244.631 1109.12 244.847 1108.63 245.087C1108.13 245.327 1107.55 245.527 1106.88 245.687C1106.22 245.847 1105.5 245.927 1104.72 245.927C1103.37 245.911 1102.16 245.671 1101.07 245.207C1100 244.743 1099.08 244.111 1098.33 243.311C1097.58 242.511 1097 241.591 1096.58 240.551C1096.18 239.495 1095.98 238.375 1095.98 237.191C1095.98 235.895 1096.19 234.703 1096.6 233.615C1097.04 232.511 1097.64 231.559 1098.4 230.759C1099.17 229.943 1100.08 229.311 1101.12 228.863C1102.17 228.415 1103.32 228.191 1104.57 228.191C1105.61 228.191 1106.56 228.335 1107.4 228.623C1108.25 228.895 1108.98 229.223 1109.59 229.607L1108.65 231.767C1108.17 231.447 1107.59 231.143 1106.9 230.855C1106.23 230.567 1105.48 230.423 1104.64 230.423C1103.8 230.423 1103 230.591 1102.24 230.927C1101.49 231.263 1100.83 231.735 1100.25 232.343C1099.68 232.951 1099.22 233.663 1098.88 234.479C1098.56 235.279 1098.4 236.143 1098.4 237.071C1098.4 238.015 1098.55 238.895 1098.84 239.711C1099.14 240.511 1099.56 241.207 1100.11 241.799C1100.67 242.391 1101.34 242.855 1102.12 243.191C1102.91 243.527 1103.79 243.695 1104.76 243.695C1105.64 243.695 1106.43 243.559 1107.12 243.287C1107.8 243.015 1108.37 242.711 1108.82 242.375L1109.8 244.439ZM1112.64 237.071C1112.64 235.871 1112.87 234.743 1113.32 233.687C1113.78 232.615 1114.42 231.671 1115.24 230.855C1116.05 230.023 1116.99 229.375 1118.04 228.911C1119.12 228.431 1120.27 228.191 1121.5 228.191C1122.72 228.191 1123.85 228.431 1124.91 228.911C1125.98 229.375 1126.92 230.023 1127.74 230.855C1128.57 231.671 1129.22 232.615 1129.68 233.687C1130.15 234.743 1130.38 235.871 1130.38 237.071C1130.38 238.303 1130.15 239.455 1129.68 240.527C1129.22 241.599 1128.57 242.543 1127.74 243.359C1126.92 244.159 1125.98 244.791 1124.91 245.255C1123.85 245.703 1122.72 245.927 1121.5 245.927C1120.27 245.927 1119.12 245.703 1118.04 245.255C1116.99 244.807 1116.05 244.183 1115.24 243.383C1114.42 242.583 1113.78 241.647 1113.32 240.575C1112.87 239.503 1112.64 238.335 1112.64 237.071ZM1115.04 237.095C1115.04 238.007 1115.21 238.863 1115.55 239.663C1115.88 240.447 1116.35 241.143 1116.94 241.751C1117.53 242.359 1118.22 242.839 1119 243.191C1119.79 243.527 1120.64 243.695 1121.55 243.695C1122.44 243.695 1123.28 243.527 1124.07 243.191C1124.85 242.839 1125.53 242.359 1126.11 241.751C1126.68 241.143 1127.14 240.447 1127.48 239.663C1127.81 238.863 1127.98 237.999 1127.98 237.071C1127.98 236.159 1127.81 235.303 1127.48 234.503C1127.14 233.687 1126.68 232.975 1126.08 232.367C1125.49 231.759 1124.8 231.287 1124.02 230.951C1123.24 230.599 1122.4 230.423 1121.5 230.423C1120.59 230.423 1119.74 230.599 1118.96 230.951C1118.17 231.303 1117.48 231.783 1116.89 232.391C1116.3 232.999 1115.84 233.711 1115.52 234.527C1115.2 235.327 1115.04 236.183 1115.04 237.095ZM1134.3 245.735V227.831H1134.33L1143.42 240.743L1142.44 240.551L1151.51 227.831H1151.56V245.735H1149.25V233.111L1149.4 234.287L1142.85 243.551H1142.8L1136.15 234.287L1136.56 233.207V245.735H1134.3ZM1156.54 245.735V227.831H1156.57L1165.66 240.743L1164.68 240.551L1173.75 227.831H1173.8V245.735H1171.5V233.111L1171.64 234.287L1165.09 243.551H1165.04L1158.39 234.287L1158.8 233.207V245.735H1156.54ZM1177.71 237.071C1177.71 235.871 1177.93 234.743 1178.38 233.687C1178.84 232.615 1179.48 231.671 1180.3 230.855C1181.11 230.023 1182.05 229.375 1183.11 228.911C1184.18 228.431 1185.33 228.191 1186.56 228.191C1187.78 228.191 1188.91 228.431 1189.97 228.911C1191.04 229.375 1191.99 230.023 1192.8 230.855C1193.63 231.671 1194.28 232.615 1194.75 233.687C1195.21 234.743 1195.44 235.871 1195.44 237.071C1195.44 238.303 1195.21 239.455 1194.75 240.527C1194.28 241.599 1193.63 242.543 1192.8 243.359C1191.99 244.159 1191.04 244.791 1189.97 245.255C1188.91 245.703 1187.78 245.927 1186.56 245.927C1185.33 245.927 1184.18 245.703 1183.11 245.255C1182.05 244.807 1181.11 244.183 1180.3 243.383C1179.48 242.583 1178.84 241.647 1178.38 240.575C1177.93 239.503 1177.71 238.335 1177.71 237.071ZM1180.11 237.095C1180.11 238.007 1180.27 238.863 1180.61 239.663C1180.95 240.447 1181.41 241.143 1182 241.751C1182.59 242.359 1183.28 242.839 1184.07 243.191C1184.85 243.527 1185.7 243.695 1186.61 243.695C1187.51 243.695 1188.35 243.527 1189.13 243.191C1189.91 242.839 1190.59 242.359 1191.17 241.751C1191.75 241.143 1192.2 240.447 1192.54 239.663C1192.87 238.863 1193.04 237.999 1193.04 237.071C1193.04 236.159 1192.87 235.303 1192.54 234.503C1192.2 233.687 1191.74 232.975 1191.15 232.367C1190.55 231.759 1189.87 231.287 1189.08 230.951C1188.3 230.599 1187.46 230.423 1186.56 230.423C1185.65 230.423 1184.8 230.599 1184.02 230.951C1183.23 231.303 1182.55 231.783 1181.95 232.391C1181.36 232.999 1180.91 233.711 1180.59 234.527C1180.27 235.327 1180.11 236.183 1180.11 237.095ZM1214.39 246.287L1200.97 232.679L1201.64 232.847L1201.69 245.735H1199.36V227.855H1199.48L1212.76 241.511L1212.2 241.391L1212.16 228.383H1214.46V246.287H1214.39ZM1227.04 245.735V227.831H1227.07L1236.16 240.743L1235.18 240.551L1244.25 227.831H1244.3V245.735H1242V233.111L1242.14 234.287L1235.59 243.551H1235.54L1228.89 234.287L1229.3 233.207V245.735H1227.04ZM1249.29 228.383H1251.61V245.735H1249.29V228.383ZM1265.57 231.479C1264.98 231.175 1264.33 230.911 1263.63 230.687C1262.93 230.463 1262.24 230.351 1261.57 230.351C1260.64 230.351 1259.89 230.567 1259.33 230.999C1258.79 231.431 1258.52 232.007 1258.52 232.727C1258.52 233.271 1258.69 233.735 1259.05 234.119C1259.4 234.487 1259.86 234.807 1260.44 235.079C1261.01 235.351 1261.61 235.607 1262.24 235.847C1262.78 236.055 1263.32 236.287 1263.85 236.543C1264.37 236.799 1264.85 237.119 1265.26 237.503C1265.69 237.887 1266.03 238.359 1266.27 238.919C1266.53 239.479 1266.65 240.175 1266.65 241.007C1266.65 241.919 1266.42 242.751 1265.96 243.503C1265.51 244.255 1264.86 244.847 1264.01 245.279C1263.17 245.711 1262.16 245.927 1260.99 245.927C1260.22 245.927 1259.49 245.839 1258.78 245.663C1258.09 245.487 1257.45 245.263 1256.86 244.991C1256.27 244.703 1255.74 244.407 1255.28 244.103L1256.31 242.279C1256.69 242.551 1257.13 242.815 1257.63 243.071C1258.13 243.311 1258.65 243.511 1259.19 243.671C1259.73 243.815 1260.26 243.887 1260.77 243.887C1261.32 243.887 1261.85 243.791 1262.38 243.599C1262.93 243.391 1263.37 243.079 1263.73 242.663C1264.08 242.247 1264.25 241.695 1264.25 241.007C1264.25 240.415 1264.09 239.927 1263.77 239.543C1263.47 239.143 1263.06 238.807 1262.55 238.535C1262.04 238.247 1261.49 237.991 1260.92 237.767C1260.37 237.559 1259.82 237.335 1259.26 237.095C1258.7 236.839 1258.18 236.535 1257.7 236.183C1257.22 235.815 1256.84 235.367 1256.55 234.839C1256.26 234.311 1256.12 233.671 1256.12 232.919C1256.12 232.007 1256.33 231.215 1256.77 230.543C1257.21 229.855 1257.82 229.319 1258.59 228.935C1259.36 228.535 1260.24 228.319 1261.23 228.287C1262.35 228.287 1263.33 228.423 1264.18 228.695C1265.05 228.967 1265.81 229.303 1266.46 229.703L1265.57 231.479ZM1269.18 228.383H1280.7V230.615H1276.04V245.735H1273.71V230.615H1269.18V228.383ZM1281.31 245.735L1288.89 227.663H1289.04L1296.6 245.735H1293.93L1288.27 231.311L1289.92 230.231L1283.59 245.735H1281.31ZM1285.75 239.159H1292.2L1292.97 241.175H1285.08L1285.75 239.159ZM1302.22 235.367L1302.14 236.231L1302.46 235.799L1309.56 228.383H1312.56L1305.38 235.823L1312.97 245.735H1310.02L1303.68 237.311L1302.22 238.727V245.735H1299.86V228.383H1302.22V235.367ZM1316.15 228.383H1327.43V230.615H1318.48V235.895H1326.47V238.127H1318.48V243.503H1327.77V245.735H1316.15V228.383ZM1340.79 231.479C1340.19 231.175 1339.55 230.911 1338.84 230.687C1338.14 230.463 1337.45 230.351 1336.78 230.351C1335.85 230.351 1335.11 230.567 1334.55 230.999C1334 231.431 1333.73 232.007 1333.73 232.727C1333.73 233.271 1333.91 233.735 1334.26 234.119C1334.61 234.487 1335.07 234.807 1335.65 235.079C1336.23 235.351 1336.83 235.607 1337.45 235.847C1337.99 236.055 1338.53 236.287 1339.06 236.543C1339.59 236.799 1340.06 237.119 1340.47 237.503C1340.91 237.887 1341.24 238.359 1341.48 238.919C1341.74 239.479 1341.87 240.175 1341.87 241.007C1341.87 241.919 1341.63 242.751 1341.17 243.503C1340.72 244.255 1340.07 244.847 1339.23 245.279C1338.38 245.711 1337.37 245.927 1336.2 245.927C1335.43 245.927 1334.7 245.839 1333.99 245.663C1333.31 245.487 1332.67 245.263 1332.07 244.991C1331.48 244.703 1330.95 244.407 1330.49 244.103L1331.52 242.279C1331.91 242.551 1332.35 242.815 1332.84 243.071C1333.34 243.311 1333.86 243.511 1334.4 243.671C1334.95 243.815 1335.47 243.887 1335.99 243.887C1336.53 243.887 1337.07 243.791 1337.59 243.599C1338.14 243.391 1338.59 243.079 1338.94 242.663C1339.29 242.247 1339.47 241.695 1339.47 241.007C1339.47 240.415 1339.31 239.927 1338.99 239.543C1338.68 239.143 1338.27 238.807 1337.76 238.535C1337.25 238.247 1336.71 237.991 1336.13 237.767C1335.59 237.559 1335.03 237.335 1334.47 237.095C1333.91 236.839 1333.39 236.535 1332.91 236.183C1332.43 235.815 1332.05 235.367 1331.76 234.839C1331.47 234.311 1331.33 233.671 1331.33 232.919C1331.33 232.007 1331.55 231.215 1331.98 230.543C1332.43 229.855 1333.03 229.319 1333.8 228.935C1334.57 228.535 1335.45 228.319 1336.44 228.287C1337.56 228.287 1338.55 228.423 1339.39 228.695C1340.26 228.967 1341.02 229.303 1341.67 229.703L1340.79 231.479Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip0_236_401)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M1206.26 78.4302H1158.15C1158.05 76.4767 1158.1 74.5978 1158.33 72.7912C1161.01 51.1985 1186.13 51.2877 1180.39 25.9035C1178.49 34.1754 1173.66 36.129 1166.35 35.1462L1161.94 39.4218C1157.22 43.9938 1150.59 35.9555 1154.94 31.0054C1164.02 21.4472 1166.78 15.4637 1170.07 12.9489C1171.33 11.9926 1172.87 12.036 1172.8 10.2197C1172.77 9.4489 1172.08 8.33844 1171.48 7.9988C1171.21 5.47195 1171.13 2.9451 1171.48 0.420654C1175.59 2.06106 1179.28 4.87938 1182.38 8.29267L1182.65 3.84359C1196.99 4.79266 1206.9 12.4214 1212.15 29.6179C1215.09 59.4319 1207.81 62.4092 1206.26 78.4302ZM1160.03 81.9688H1206.34C1208.45 81.9688 1210.19 83.7031 1210.19 85.8036C1210.19 87.9041 1208.45 89.6385 1206.34 89.6385H1160.03C1157.92 89.6385 1156.18 87.9137 1156.18 85.8036C1156.18 83.6935 1157.91 81.9688 1160.03 81.9688ZM1153.05 115.654H1213.32C1215.51 115.654 1217.3 117.439 1217.3 119.621C1217.3 121.803 1215.51 123.588 1213.32 123.588H1153.05C1150.85 123.588 1149.06 121.803 1149.06 119.621C1149.06 117.439 1150.85 115.654 1153.05 115.654ZM1205.42 93.1794C1208.64 98.8161 1213.92 104.523 1213.07 112.11H1153.29C1152.43 104.523 1158.42 98.8161 1161.65 93.1794H1205.42Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip1_236_401)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M1228.34 78.4302H1276.45C1276.56 76.4767 1276.5 74.5978 1276.28 72.7912C1273.59 51.1985 1248.47 51.2877 1254.21 25.9035C1256.11 34.1754 1260.95 36.129 1268.25 35.1462L1272.67 39.4218C1277.39 43.9938 1284.01 35.9555 1279.67 31.0054C1270.58 21.4472 1267.83 15.4637 1264.53 12.9489C1263.28 11.9926 1261.73 12.036 1261.8 10.2197C1261.84 9.4489 1262.52 8.33844 1263.12 7.9988C1263.4 5.47195 1263.48 2.9451 1263.12 0.420654C1259.01 2.06106 1255.32 4.87938 1252.22 8.29267L1251.96 3.84359C1237.61 4.79266 1227.7 12.4214 1222.46 29.6179C1219.52 59.4319 1226.8 62.4092 1228.34 78.4302ZM1274.58 81.9688H1228.27C1226.15 81.9688 1224.42 83.7031 1224.42 85.8036C1224.42 87.9041 1226.16 89.6385 1228.27 89.6385H1274.58C1276.69 89.6385 1278.43 87.9137 1278.43 85.8036C1278.43 83.6935 1276.7 81.9688 1274.58 81.9688ZM1281.56 115.654H1221.29C1219.1 115.654 1217.3 117.439 1217.3 119.621C1217.3 121.803 1219.1 123.588 1221.29 123.588H1281.56C1283.75 123.588 1285.54 121.803 1285.54 119.621C1285.54 117.439 1283.75 115.654 1281.56 115.654ZM1229.19 93.1794C1225.96 98.8161 1220.68 104.523 1221.54 112.11H1281.32C1282.18 104.523 1276.18 98.8161 1272.96 93.1794H1229.19Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M-16.7856 119.508L1099.3 119.509",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M-16.7856 273H2481.21",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M1335.8 119.991H2473.21",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "373.485",
+            y: "121.174",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "323.349",
+            y: "121.174",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "423.622",
+            y: "121.174",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "423.549",
+            y: "221.374",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 423.549 221.374)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "373.412",
+            y: "221.374",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 373.412 221.374)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "473.686",
+            y: "221.374",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 473.686 221.374)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "423.549",
+            y: "271.51",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 423.549 271.51)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "473.686",
+            y: "271.51",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 473.686 271.51)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "373.412",
+            y: "271.51",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 373.412 271.51)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "572.933",
+            y: "122.141",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "523.309",
+            y: "122.141",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "622.557",
+            y: "122.141",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "622.485",
+            y: "221.317",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 622.485 221.317)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "523.237",
+            y: "221.041",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 523.237 221.041)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "572.861",
+            y: "221.317",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 572.861 221.317)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "672.109",
+            y: "221.317",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 672.109 221.317)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "622.485",
+            y: "270.941",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 622.485 270.941)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "672.109",
+            y: "270.941",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 672.109 270.941)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "572.861",
+            y: "270.941",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 572.861 270.941)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "771.357",
+            y: "121.865",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "721.733",
+            y: "121.865",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "820.981",
+            y: "121.865",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "820.909",
+            y: "221.041",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 820.909 221.041)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "721.661",
+            y: "220.764",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 721.661 220.764)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "771.285",
+            y: "221.041",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 771.285 221.041)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "870.533",
+            y: "221.041",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 870.533 221.041)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "820.909",
+            y: "270.665",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 820.909 270.665)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "870.533",
+            y: "270.665",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 870.533 270.665)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "771.285",
+            y: "270.665",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 771.285 270.665)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "222.064",
+            y: "270.791",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 222.064 270.791)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "271.688",
+            y: "270.791",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 271.688 270.791)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "172.441",
+            y: "270.791",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 172.441 270.791)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "172.512",
+            y: "171.615",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "271.76",
+            y: "171.891",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "222.137",
+            y: "171.615",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "122.889",
+            y: "171.615",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "172.512",
+            y: "121.991",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "122.889",
+            y: "121.991",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "222.137",
+            y: "121.991",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "23.178",
+            y: "270.543",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 23.178 270.543)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "72.8021",
+            y: "270.543",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 72.8021 270.543)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "-26.3738",
+            y: "171.367",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "72.8741",
+            y: "171.644",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "23.2502",
+            y: "171.367",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "-26.3738",
+            y: "121.743",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "23.2502",
+            y: "121.743",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "969.781",
+            y: "121.711",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "920.156",
+            y: "121.711",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1019.4",
+            y: "121.711",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1019.33",
+            y: "220.886",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1019.33 220.886)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "920.084",
+            y: "220.61",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 920.084 220.61)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "969.708",
+            y: "220.886",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 969.708 220.886)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1068.96",
+            y: "220.886",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1068.96 220.886)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1019.33",
+            y: "270.51",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1019.33 270.51)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1068.96",
+            y: "270.51",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1068.96 270.51)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "969.708",
+            y: "270.51",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 969.708 270.51)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1840.53",
+            y: "121.588",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1790.39",
+            y: "121.588",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1890.66",
+            y: "121.588",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1890.59",
+            y: "221.789",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 1890.59 221.789)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1840.45",
+            y: "221.789",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 1840.45 221.789)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1940.73",
+            y: "221.789",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 1940.73 221.789)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1890.59",
+            y: "271.925",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 1890.59 271.925)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1940.73",
+            y: "271.925",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 1940.73 271.925)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1840.45",
+            y: "271.925",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 1840.45 271.925)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2039.97",
+            y: "122.556",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1990.35",
+            y: "122.556",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2089.6",
+            y: "122.556",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2089.53",
+            y: "221.732",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2089.53 221.732)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1990.28",
+            y: "221.456",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1990.28 221.456)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2039.9",
+            y: "221.732",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2039.9 221.732)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2139.15",
+            y: "221.732",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2139.15 221.732)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2089.53",
+            y: "271.356",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2089.53 271.356)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2139.15",
+            y: "271.356",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2139.15 271.356)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2039.9",
+            y: "271.356",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2039.9 271.356)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2238.4",
+            y: "122.28",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2188.77",
+            y: "122.28",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2288.02",
+            y: "122.28",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2287.95",
+            y: "221.455",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2287.95 221.455)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2188.7",
+            y: "221.179",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2188.7 221.179)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2238.33",
+            y: "221.455",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2238.33 221.455)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2337.57",
+            y: "221.455",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2337.57 221.455)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2287.95",
+            y: "271.08",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2287.95 271.08)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2337.57",
+            y: "271.08",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2337.57 271.08)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2238.33",
+            y: "271.08",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2238.33 271.08)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1689.11",
+            y: "271.205",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1689.11 271.205)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1738.73",
+            y: "271.205",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1738.73 271.205)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1639.48",
+            y: "271.205",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1639.48 271.205)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1639.55",
+            y: "172.03",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1738.8",
+            y: "172.306",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1689.18",
+            y: "172.03",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1589.93",
+            y: "172.03",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1639.55",
+            y: "122.405",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1589.93",
+            y: "122.405",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1689.18",
+            y: "122.405",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1490.22",
+            y: "270.958",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1490.22 270.958)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1539.84",
+            y: "270.958",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1539.84 270.958)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1440.6",
+            y: "270.958",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1440.6 270.958)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1440.67",
+            y: "171.782",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1539.92",
+            y: "172.058",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1490.29",
+            y: "171.782",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1391.04",
+            y: "171.782",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1440.67",
+            y: "122.158",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1391.04",
+            y: "122.158",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1490.29",
+            y: "122.158",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2436.82",
+            y: "122.125",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2387.2",
+            y: "122.125",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2486.37",
+            y: "221.301",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2486.37 221.301)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2387.13",
+            y: "221.025",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2387.13 221.025)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2436.75",
+            y: "221.301",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2436.75 221.301)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2486.37",
+            y: "270.925",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2486.37 270.925)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2436.75",
+            y: "270.925",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2436.75 270.925)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("defs", [
+          _c("clipPath", { attrs: { id: "clip0_236_401" } }, [
+            _c("rect", {
+              attrs: {
+                width: "68.2416",
+                height: "123.168",
+                fill: "white",
+                transform: "translate(1149.06 0.420654)",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("clipPath", { attrs: { id: "clip1_236_401" } }, [
+            _c("rect", {
+              attrs: {
+                width: "68.2416",
+                height: "123.168",
+                fill: "white",
+                transform: "matrix(-1 0 0 1 1285.54 0.420654)",
               },
             }),
           ]),

@@ -19,9 +19,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body class="2xl:flex 2xl:flex-col 2xl:items-center bg-[#EEE]">
-    <div class="min-h-screen bg-[#EEE] max-w-screen-2xl" id="app">
-        <main class="py-4 bg-[#EEE] w-full relative">
+<body class="">
+    <div class="min-h-screen bg-[#EEE]" id="app">
+        <main class="py-4 bg-[#EEE] relative">
             {{ $slot }}
         </main>
     </div>
