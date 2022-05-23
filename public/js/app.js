@@ -1683,6 +1683,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -1693,6 +1716,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      synced: false,
       selectedFen: '',
       movementMatrix: [],
       worsePlays: [],
@@ -1721,6 +1745,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     handleSync: function handleSync(receivedMatrix) {
+      this.synced = true;
       this.movementMatrix = receivedMatrix[0];
       this.worsePlays = receivedMatrix[1];
       this.repetitionThreshold = parseInt(receivedMatrix[2]);
@@ -1730,6 +1755,8 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.worsePlays.length; i++) {
         this.itHasWorsePlays = this.itHasWorsePlays || this.worsePlays[i].repetition >= this.repetitionThreshold;
       }
+
+      this.moveFromLeftTab(this.worsePlays[0]);
     },
     moveFromLeftTab: function moveFromLeftTab(val) {
       if (val.site_url.includes("black")) {
@@ -1828,6 +1855,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _classes_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../classes.js */ "./resources/js/classes.js");
+/* harmony import */ var _Tooltip__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Tooltip */ "./resources/js/components/Tooltip.vue");
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/gsap-core.js");
+/* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! gsap */ "./node_modules/gsap/index.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -1910,8 +1940,250 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    'tooltip': _Tooltip__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
   data: function data() {
     return {
       account: "DiegoAndriano",
@@ -1921,13 +2193,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       worsePlays: [],
       color: 'both',
       ignore_first_moves: 6,
-      matches: 200,
-      repetition: 2,
-      errorScoreThreshold: 0.5,
-      loading: false
+      matches: 1,
+      repetition: 1,
+      errorScoreThreshold: 0.1,
+      loading: false,
+      mdClasses: true,
+      synced: false,
+      animating: false,
+      animated: false
     };
   },
   methods: {
+    animateSyncedAndSync: function animateSyncedAndSync() {
+      if (!this.animated) {
+        var s_width = window.innerWidth > 0 ? window.innerWidth : screen.width;
+
+        if (s_width >= 760) {
+          if (this.$refs.syncContainer.offsetWidth / 2 < 496) {
+            this.mdClasses = false;
+          }
+
+          this.animating = true;
+          var propsIn = {
+            duration: 1,
+            width: this.$refs.syncContainer.offsetWidth / 2,
+            ease: gsap__WEBPACK_IMPORTED_MODULE_3__.Elastic.easeOut.config(1, 0.9),
+            onComplete: this.emitSynced()
+          };
+          gsap__WEBPACK_IMPORTED_MODULE_4__.gsap.to(this.$refs.syncContainer, propsIn);
+          this.animated = true;
+        } else {
+          this.synced = true;
+          this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition]);
+        }
+      }
+    },
     limitMaxMatchesValue: function limitMaxMatchesValue(event) {
       var value = event.target.value;
 
@@ -1937,8 +2237,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.$forceUpdate();
     },
-    clearAccount: function clearAccount() {
+    clear: function clear() {
       this.account = "";
+      this.ignore_first_moves = "";
+      this.matches = "";
+      this.repetition = "";
+      this.errorScoreThreshold = "";
     },
     getGames: function getGames() {
       var _this = this;
@@ -2053,7 +2357,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   _this.loading = false;
 
-                  _this.$emit('synced', [_this.movementMatrix, _this.worsePlays, _this.repetition]);
+                  _this.animateSyncedAndSync();
                 });
 
               case 7:
@@ -2063,7 +2367,56 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    emitSynced: function emitSynced() {
+      setTimeout(function () {
+        this.animating = false;
+        this.synced = true;
+        this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition]);
+      }.bind(this), 100);
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tooltip.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tooltip.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      show: false
+    };
   }
 });
 
@@ -2191,17 +2544,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.prueba = 1;
-    console.log("Montado!!");
     this.board.set({
       movable: {
         events: {
           after: this.userPlay()
         }
       }
-    }); // brushes: {orig :'a1', brush:'yellow'},
-    // brush: {orig :'a1', brush:'yellow'},
-    // shape: {orig :'a1', brush:'yellow'},
-    // this.board.setShapes({orig: 'a1', dest: 'a2', brush: 'yellow'})
+    });
   }
 });
 
@@ -2225,19 +2574,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('logosmall-component', (__webpack_require__(/*! ./SVGs/LogoSmall.vue */ "./resources/js/SVGs/LogoSmall.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('logomedium-component', (__webpack_require__(/*! ./SVGs/LogoMedium.vue */ "./resources/js/SVGs/LogoMedium.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('logodesktop-component', (__webpack_require__(/*! ./SVGs/LogoDesktop.vue */ "./resources/js/SVGs/LogoDesktop.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('logodesktopxxl-component', (__webpack_require__(/*! ./SVGs/LogoDesktopXXL.vue */ "./resources/js/SVGs/LogoDesktopXXL.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('chess-component', (__webpack_require__(/*! ./components/Chess.vue */ "./resources/js/components/Chess.vue")["default"]));
 var EventBus = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]();
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   el: '#app'
 });
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // const app = Vue({});
-// app
-//     .component('leaflet-geosearch', LeafletGeosearch)
-//     .component('vue-chessboard', chessboard)
-//     .component('chess-component', require('./components/Chess.vue').default)
-//     .mount('#app');
-//
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 /***/ }),
 
@@ -8546,6 +8893,5659 @@ if (true)
     return Chess
   }).call(exports, __webpack_require__, exports, module),
 		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__))
+
+
+/***/ }),
+
+/***/ "./node_modules/gsap/CSSPlugin.js":
+/*!****************************************!*\
+  !*** ./node_modules/gsap/CSSPlugin.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CSSPlugin": () => (/* binding */ CSSPlugin),
+/* harmony export */   "default": () => (/* binding */ CSSPlugin),
+/* harmony export */   "_getBBox": () => (/* binding */ _getBBox),
+/* harmony export */   "_createElement": () => (/* binding */ _createElement),
+/* harmony export */   "checkPrefix": () => (/* binding */ _checkPropPrefix)
+/* harmony export */ });
+/* harmony import */ var _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gsap-core.js */ "./node_modules/gsap/gsap-core.js");
+/*!
+ * CSSPlugin 3.10.4
+ * https://greensock.com
+ *
+ * Copyright 2008-2022, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/* eslint-disable */
+
+
+var _win,
+    _doc,
+    _docElement,
+    _pluginInitted,
+    _tempDiv,
+    _tempDivStyler,
+    _recentSetterPlugin,
+    _windowExists = function _windowExists() {
+  return typeof window !== "undefined";
+},
+    _transformProps = {},
+    _RAD2DEG = 180 / Math.PI,
+    _DEG2RAD = Math.PI / 180,
+    _atan2 = Math.atan2,
+    _bigNum = 1e8,
+    _capsExp = /([A-Z])/g,
+    _horizontalExp = /(left|right|width|margin|padding|x)/i,
+    _complexExp = /[\s,\(]\S/,
+    _propertyAliases = {
+  autoAlpha: "opacity,visibility",
+  scale: "scaleX,scaleY",
+  alpha: "opacity"
+},
+    _renderCSSProp = function _renderCSSProp(ratio, data) {
+  return data.set(data.t, data.p, Math.round((data.s + data.c * ratio) * 10000) / 10000 + data.u, data);
+},
+    _renderPropWithEnd = function _renderPropWithEnd(ratio, data) {
+  return data.set(data.t, data.p, ratio === 1 ? data.e : Math.round((data.s + data.c * ratio) * 10000) / 10000 + data.u, data);
+},
+    _renderCSSPropWithBeginning = function _renderCSSPropWithBeginning(ratio, data) {
+  return data.set(data.t, data.p, ratio ? Math.round((data.s + data.c * ratio) * 10000) / 10000 + data.u : data.b, data);
+},
+    //if units change, we need a way to render the original unit/value when the tween goes all the way back to the beginning (ratio:0)
+_renderRoundedCSSProp = function _renderRoundedCSSProp(ratio, data) {
+  var value = data.s + data.c * ratio;
+  data.set(data.t, data.p, ~~(value + (value < 0 ? -.5 : .5)) + data.u, data);
+},
+    _renderNonTweeningValue = function _renderNonTweeningValue(ratio, data) {
+  return data.set(data.t, data.p, ratio ? data.e : data.b, data);
+},
+    _renderNonTweeningValueOnlyAtEnd = function _renderNonTweeningValueOnlyAtEnd(ratio, data) {
+  return data.set(data.t, data.p, ratio !== 1 ? data.b : data.e, data);
+},
+    _setterCSSStyle = function _setterCSSStyle(target, property, value) {
+  return target.style[property] = value;
+},
+    _setterCSSProp = function _setterCSSProp(target, property, value) {
+  return target.style.setProperty(property, value);
+},
+    _setterTransform = function _setterTransform(target, property, value) {
+  return target._gsap[property] = value;
+},
+    _setterScale = function _setterScale(target, property, value) {
+  return target._gsap.scaleX = target._gsap.scaleY = value;
+},
+    _setterScaleWithRender = function _setterScaleWithRender(target, property, value, data, ratio) {
+  var cache = target._gsap;
+  cache.scaleX = cache.scaleY = value;
+  cache.renderTransform(ratio, cache);
+},
+    _setterTransformWithRender = function _setterTransformWithRender(target, property, value, data, ratio) {
+  var cache = target._gsap;
+  cache[property] = value;
+  cache.renderTransform(ratio, cache);
+},
+    _transformProp = "transform",
+    _transformOriginProp = _transformProp + "Origin",
+    _supports3D,
+    _createElement = function _createElement(type, ns) {
+  var e = _doc.createElementNS ? _doc.createElementNS((ns || "http://www.w3.org/1999/xhtml").replace(/^https/, "http"), type) : _doc.createElement(type); //some servers swap in https for http in the namespace which can break things, making "style" inaccessible.
+
+  return e.style ? e : _doc.createElement(type); //some environments won't allow access to the element's style when created with a namespace in which case we default to the standard createElement() to work around the issue. Also note that when GSAP is embedded directly inside an SVG file, createElement() won't allow access to the style object in Firefox (see https://greensock.com/forums/topic/20215-problem-using-tweenmax-in-standalone-self-containing-svg-file-err-cannot-set-property-csstext-of-undefined/).
+},
+    _getComputedProperty = function _getComputedProperty(target, property, skipPrefixFallback) {
+  var cs = getComputedStyle(target);
+  return cs[property] || cs.getPropertyValue(property.replace(_capsExp, "-$1").toLowerCase()) || cs.getPropertyValue(property) || !skipPrefixFallback && _getComputedProperty(target, _checkPropPrefix(property) || property, 1) || ""; //css variables may not need caps swapped out for dashes and lowercase.
+},
+    _prefixes = "O,Moz,ms,Ms,Webkit".split(","),
+    _checkPropPrefix = function _checkPropPrefix(property, element, preferPrefix) {
+  var e = element || _tempDiv,
+      s = e.style,
+      i = 5;
+
+  if (property in s && !preferPrefix) {
+    return property;
+  }
+
+  property = property.charAt(0).toUpperCase() + property.substr(1);
+
+  while (i-- && !(_prefixes[i] + property in s)) {}
+
+  return i < 0 ? null : (i === 3 ? "ms" : i >= 0 ? _prefixes[i] : "") + property;
+},
+    _initCore = function _initCore() {
+  if (_windowExists() && window.document) {
+    _win = window;
+    _doc = _win.document;
+    _docElement = _doc.documentElement;
+    _tempDiv = _createElement("div") || {
+      style: {}
+    };
+    _tempDivStyler = _createElement("div");
+    _transformProp = _checkPropPrefix(_transformProp);
+    _transformOriginProp = _transformProp + "Origin";
+    _tempDiv.style.cssText = "border-width:0;line-height:0;position:absolute;padding:0"; //make sure to override certain properties that may contaminate measurements, in case the user has overreaching style sheets.
+
+    _supports3D = !!_checkPropPrefix("perspective");
+    _pluginInitted = 1;
+  }
+},
+    _getBBoxHack = function _getBBoxHack(swapIfPossible) {
+  //works around issues in some browsers (like Firefox) that don't correctly report getBBox() on SVG elements inside a <defs> element and/or <mask>. We try creating an SVG, adding it to the documentElement and toss the element in there so that it's definitely part of the rendering tree, then grab the bbox and if it works, we actually swap out the original getBBox() method for our own that does these extra steps whenever getBBox is needed. This helps ensure that performance is optimal (only do all these extra steps when absolutely necessary...most elements don't need it).
+  var svg = _createElement("svg", this.ownerSVGElement && this.ownerSVGElement.getAttribute("xmlns") || "http://www.w3.org/2000/svg"),
+      oldParent = this.parentNode,
+      oldSibling = this.nextSibling,
+      oldCSS = this.style.cssText,
+      bbox;
+
+  _docElement.appendChild(svg);
+
+  svg.appendChild(this);
+  this.style.display = "block";
+
+  if (swapIfPossible) {
+    try {
+      bbox = this.getBBox();
+      this._gsapBBox = this.getBBox; //store the original
+
+      this.getBBox = _getBBoxHack;
+    } catch (e) {}
+  } else if (this._gsapBBox) {
+    bbox = this._gsapBBox();
+  }
+
+  if (oldParent) {
+    if (oldSibling) {
+      oldParent.insertBefore(this, oldSibling);
+    } else {
+      oldParent.appendChild(this);
+    }
+  }
+
+  _docElement.removeChild(svg);
+
+  this.style.cssText = oldCSS;
+  return bbox;
+},
+    _getAttributeFallbacks = function _getAttributeFallbacks(target, attributesArray) {
+  var i = attributesArray.length;
+
+  while (i--) {
+    if (target.hasAttribute(attributesArray[i])) {
+      return target.getAttribute(attributesArray[i]);
+    }
+  }
+},
+    _getBBox = function _getBBox(target) {
+  var bounds;
+
+  try {
+    bounds = target.getBBox(); //Firefox throws errors if you try calling getBBox() on an SVG element that's not rendered (like in a <symbol> or <defs>). https://bugzilla.mozilla.org/show_bug.cgi?id=612118
+  } catch (error) {
+    bounds = _getBBoxHack.call(target, true);
+  }
+
+  bounds && (bounds.width || bounds.height) || target.getBBox === _getBBoxHack || (bounds = _getBBoxHack.call(target, true)); //some browsers (like Firefox) misreport the bounds if the element has zero width and height (it just assumes it's at x:0, y:0), thus we need to manually grab the position in that case.
+
+  return bounds && !bounds.width && !bounds.x && !bounds.y ? {
+    x: +_getAttributeFallbacks(target, ["x", "cx", "x1"]) || 0,
+    y: +_getAttributeFallbacks(target, ["y", "cy", "y1"]) || 0,
+    width: 0,
+    height: 0
+  } : bounds;
+},
+    _isSVG = function _isSVG(e) {
+  return !!(e.getCTM && (!e.parentNode || e.ownerSVGElement) && _getBBox(e));
+},
+    //reports if the element is an SVG on which getBBox() actually works
+_removeProperty = function _removeProperty(target, property) {
+  if (property) {
+    var style = target.style;
+
+    if (property in _transformProps && property !== _transformOriginProp) {
+      property = _transformProp;
+    }
+
+    if (style.removeProperty) {
+      if (property.substr(0, 2) === "ms" || property.substr(0, 6) === "webkit") {
+        //Microsoft and some Webkit browsers don't conform to the standard of capitalizing the first prefix character, so we adjust so that when we prefix the caps with a dash, it's correct (otherwise it'd be "ms-transform" instead of "-ms-transform" for IE9, for example)
+        property = "-" + property;
+      }
+
+      style.removeProperty(property.replace(_capsExp, "-$1").toLowerCase());
+    } else {
+      //note: old versions of IE use "removeAttribute()" instead of "removeProperty()"
+      style.removeAttribute(property);
+    }
+  }
+},
+    _addNonTweeningPT = function _addNonTweeningPT(plugin, target, property, beginning, end, onlySetAtEnd) {
+  var pt = new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.PropTween(plugin._pt, target, property, 0, 1, onlySetAtEnd ? _renderNonTweeningValueOnlyAtEnd : _renderNonTweeningValue);
+  plugin._pt = pt;
+  pt.b = beginning;
+  pt.e = end;
+
+  plugin._props.push(property);
+
+  return pt;
+},
+    _nonConvertibleUnits = {
+  deg: 1,
+  rad: 1,
+  turn: 1
+},
+    //takes a single value like 20px and converts it to the unit specified, like "%", returning only the numeric amount.
+_convertToUnit = function _convertToUnit(target, property, value, unit) {
+  var curValue = parseFloat(value) || 0,
+      curUnit = (value + "").trim().substr((curValue + "").length) || "px",
+      // some browsers leave extra whitespace at the beginning of CSS variables, hence the need to trim()
+  style = _tempDiv.style,
+      horizontal = _horizontalExp.test(property),
+      isRootSVG = target.tagName.toLowerCase() === "svg",
+      measureProperty = (isRootSVG ? "client" : "offset") + (horizontal ? "Width" : "Height"),
+      amount = 100,
+      toPixels = unit === "px",
+      toPercent = unit === "%",
+      px,
+      parent,
+      cache,
+      isSVG;
+
+  if (unit === curUnit || !curValue || _nonConvertibleUnits[unit] || _nonConvertibleUnits[curUnit]) {
+    return curValue;
+  }
+
+  curUnit !== "px" && !toPixels && (curValue = _convertToUnit(target, property, value, "px"));
+  isSVG = target.getCTM && _isSVG(target);
+
+  if ((toPercent || curUnit === "%") && (_transformProps[property] || ~property.indexOf("adius"))) {
+    px = isSVG ? target.getBBox()[horizontal ? "width" : "height"] : target[measureProperty];
+    return (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(toPercent ? curValue / px * amount : curValue / 100 * px);
+  }
+
+  style[horizontal ? "width" : "height"] = amount + (toPixels ? curUnit : unit);
+  parent = ~property.indexOf("adius") || unit === "em" && target.appendChild && !isRootSVG ? target : target.parentNode;
+
+  if (isSVG) {
+    parent = (target.ownerSVGElement || {}).parentNode;
+  }
+
+  if (!parent || parent === _doc || !parent.appendChild) {
+    parent = _doc.body;
+  }
+
+  cache = parent._gsap;
+
+  if (cache && toPercent && cache.width && horizontal && cache.time === _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._ticker.time) {
+    return (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(curValue / cache.width * amount);
+  } else {
+    (toPercent || curUnit === "%") && (style.position = _getComputedProperty(target, "position"));
+    parent === target && (style.position = "static"); // like for borderRadius, if it's a % we must have it relative to the target itself but that may not have position: relative or position: absolute in which case it'd go up the chain until it finds its offsetParent (bad). position: static protects against that.
+
+    parent.appendChild(_tempDiv);
+    px = _tempDiv[measureProperty];
+    parent.removeChild(_tempDiv);
+    style.position = "absolute";
+
+    if (horizontal && toPercent) {
+      cache = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._getCache)(parent);
+      cache.time = _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._ticker.time;
+      cache.width = parent[measureProperty];
+    }
+  }
+
+  return (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(toPixels ? px * curValue / amount : px && curValue ? amount / px * curValue : 0);
+},
+    _get = function _get(target, property, unit, uncache) {
+  var value;
+  _pluginInitted || _initCore();
+
+  if (property in _propertyAliases && property !== "transform") {
+    property = _propertyAliases[property];
+
+    if (~property.indexOf(",")) {
+      property = property.split(",")[0];
+    }
+  }
+
+  if (_transformProps[property] && property !== "transform") {
+    value = _parseTransform(target, uncache);
+    value = property !== "transformOrigin" ? value[property] : value.svg ? value.origin : _firstTwoOnly(_getComputedProperty(target, _transformOriginProp)) + " " + value.zOrigin + "px";
+  } else {
+    value = target.style[property];
+
+    if (!value || value === "auto" || uncache || ~(value + "").indexOf("calc(")) {
+      value = _specialProps[property] && _specialProps[property](target, property, unit) || _getComputedProperty(target, property) || (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._getProperty)(target, property) || (property === "opacity" ? 1 : 0); // note: some browsers, like Firefox, don't report borderRadius correctly! Instead, it only reports every corner like  borderTopLeftRadius
+    }
+  }
+
+  return unit && !~(value + "").trim().indexOf(" ") ? _convertToUnit(target, property, value, unit) + unit : value;
+},
+    _tweenComplexCSSString = function _tweenComplexCSSString(target, prop, start, end) {
+  // note: we call _tweenComplexCSSString.call(pluginInstance...) to ensure that it's scoped properly. We may call it from within a plugin too, thus "this" would refer to the plugin.
+  if (!start || start === "none") {
+    // some browsers like Safari actually PREFER the prefixed property and mis-report the unprefixed value like clipPath (BUG). In other words, even though clipPath exists in the style ("clipPath" in target.style) and it's set in the CSS properly (along with -webkit-clip-path), Safari reports clipPath as "none" whereas WebkitClipPath reports accurately like "ellipse(100% 0% at 50% 0%)", so in this case we must SWITCH to using the prefixed property instead. See https://greensock.com/forums/topic/18310-clippath-doesnt-work-on-ios/
+    var p = _checkPropPrefix(prop, target, 1),
+        s = p && _getComputedProperty(target, p, 1);
+
+    if (s && s !== start) {
+      prop = p;
+      start = s;
+    } else if (prop === "borderColor") {
+      start = _getComputedProperty(target, "borderTopColor"); // Firefox bug: always reports "borderColor" as "", so we must fall back to borderTopColor. See https://greensock.com/forums/topic/24583-how-to-return-colors-that-i-had-after-reverse/
+    }
+  }
+
+  var pt = new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.PropTween(this._pt, target.style, prop, 0, 1, _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._renderComplexString),
+      index = 0,
+      matchIndex = 0,
+      a,
+      result,
+      startValues,
+      startNum,
+      color,
+      startValue,
+      endValue,
+      endNum,
+      chunk,
+      endUnit,
+      startUnit,
+      endValues;
+  pt.b = start;
+  pt.e = end;
+  start += ""; // ensure values are strings
+
+  end += "";
+
+  if (end === "auto") {
+    target.style[prop] = end;
+    end = _getComputedProperty(target, prop) || end;
+    target.style[prop] = start;
+  }
+
+  a = [start, end];
+
+  (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._colorStringFilter)(a); // pass an array with the starting and ending values and let the filter do whatever it needs to the values. If colors are found, it returns true and then we must match where the color shows up order-wise because for things like boxShadow, sometimes the browser provides the computed values with the color FIRST, but the user provides it with the color LAST, so flip them if necessary. Same for drop-shadow().
+
+
+  start = a[0];
+  end = a[1];
+  startValues = start.match(_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._numWithUnitExp) || [];
+  endValues = end.match(_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._numWithUnitExp) || [];
+
+  if (endValues.length) {
+    while (result = _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._numWithUnitExp.exec(end)) {
+      endValue = result[0];
+      chunk = end.substring(index, result.index);
+
+      if (color) {
+        color = (color + 1) % 5;
+      } else if (chunk.substr(-5) === "rgba(" || chunk.substr(-5) === "hsla(") {
+        color = 1;
+      }
+
+      if (endValue !== (startValue = startValues[matchIndex++] || "")) {
+        startNum = parseFloat(startValue) || 0;
+        startUnit = startValue.substr((startNum + "").length);
+        endValue.charAt(1) === "=" && (endValue = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._parseRelative)(startNum, endValue) + startUnit);
+        endNum = parseFloat(endValue);
+        endUnit = endValue.substr((endNum + "").length);
+        index = _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._numWithUnitExp.lastIndex - endUnit.length;
+
+        if (!endUnit) {
+          //if something like "perspective:300" is passed in and we must add a unit to the end
+          endUnit = endUnit || _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.units[prop] || startUnit;
+
+          if (index === end.length) {
+            end += endUnit;
+            pt.e += endUnit;
+          }
+        }
+
+        if (startUnit !== endUnit) {
+          startNum = _convertToUnit(target, prop, startValue, endUnit) || 0;
+        } // these nested PropTweens are handled in a special way - we'll never actually call a render or setter method on them. We'll just loop through them in the parent complex string PropTween's render method.
+
+
+        pt._pt = {
+          _next: pt._pt,
+          p: chunk || matchIndex === 1 ? chunk : ",",
+          //note: SVG spec allows omission of comma/space when a negative sign is wedged between two numbers, like 2.5-5.3 instead of 2.5,-5.3 but when tweening, the negative value may switch to positive, so we insert the comma just in case.
+          s: startNum,
+          c: endNum - startNum,
+          m: color && color < 4 || prop === "zIndex" ? Math.round : 0
+        };
+      }
+    }
+
+    pt.c = index < end.length ? end.substring(index, end.length) : ""; //we use the "c" of the PropTween to store the final part of the string (after the last number)
+  } else {
+    pt.r = prop === "display" && end === "none" ? _renderNonTweeningValueOnlyAtEnd : _renderNonTweeningValue;
+  }
+
+  _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._relExp.test(end) && (pt.e = 0); //if the end string contains relative values or dynamic random(...) values, delete the end it so that on the final render we don't actually set it to the string with += or -= characters (forces it to use the calculated value).
+
+  this._pt = pt; //start the linked list with this new PropTween. Remember, we call _tweenComplexCSSString.call(pluginInstance...) to ensure that it's scoped properly. We may call it from within another plugin too, thus "this" would refer to the plugin.
+
+  return pt;
+},
+    _keywordToPercent = {
+  top: "0%",
+  bottom: "100%",
+  left: "0%",
+  right: "100%",
+  center: "50%"
+},
+    _convertKeywordsToPercentages = function _convertKeywordsToPercentages(value) {
+  var split = value.split(" "),
+      x = split[0],
+      y = split[1] || "50%";
+
+  if (x === "top" || x === "bottom" || y === "left" || y === "right") {
+    //the user provided them in the wrong order, so flip them
+    value = x;
+    x = y;
+    y = value;
+  }
+
+  split[0] = _keywordToPercent[x] || x;
+  split[1] = _keywordToPercent[y] || y;
+  return split.join(" ");
+},
+    _renderClearProps = function _renderClearProps(ratio, data) {
+  if (data.tween && data.tween._time === data.tween._dur) {
+    var target = data.t,
+        style = target.style,
+        props = data.u,
+        cache = target._gsap,
+        prop,
+        clearTransforms,
+        i;
+
+    if (props === "all" || props === true) {
+      style.cssText = "";
+      clearTransforms = 1;
+    } else {
+      props = props.split(",");
+      i = props.length;
+
+      while (--i > -1) {
+        prop = props[i];
+
+        if (_transformProps[prop]) {
+          clearTransforms = 1;
+          prop = prop === "transformOrigin" ? _transformOriginProp : _transformProp;
+        }
+
+        _removeProperty(target, prop);
+      }
+    }
+
+    if (clearTransforms) {
+      _removeProperty(target, _transformProp);
+
+      if (cache) {
+        cache.svg && target.removeAttribute("transform");
+
+        _parseTransform(target, 1); // force all the cached values back to "normal"/identity, otherwise if there's another tween that's already set to render transforms on this element, it could display the wrong values.
+
+
+        cache.uncache = 1;
+      }
+    }
+  }
+},
+    // note: specialProps should return 1 if (and only if) they have a non-zero priority. It indicates we need to sort the linked list.
+_specialProps = {
+  clearProps: function clearProps(plugin, target, property, endValue, tween) {
+    if (tween.data !== "isFromStart") {
+      var pt = plugin._pt = new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.PropTween(plugin._pt, target, property, 0, 0, _renderClearProps);
+      pt.u = endValue;
+      pt.pr = -10;
+      pt.tween = tween;
+
+      plugin._props.push(property);
+
+      return 1;
+    }
+  }
+  /* className feature (about 0.4kb gzipped).
+  , className(plugin, target, property, endValue, tween) {
+  	let _renderClassName = (ratio, data) => {
+  			data.css.render(ratio, data.css);
+  			if (!ratio || ratio === 1) {
+  				let inline = data.rmv,
+  					target = data.t,
+  					p;
+  				target.setAttribute("class", ratio ? data.e : data.b);
+  				for (p in inline) {
+  					_removeProperty(target, p);
+  				}
+  			}
+  		},
+  		_getAllStyles = (target) => {
+  			let styles = {},
+  				computed = getComputedStyle(target),
+  				p;
+  			for (p in computed) {
+  				if (isNaN(p) && p !== "cssText" && p !== "length") {
+  					styles[p] = computed[p];
+  				}
+  			}
+  			_setDefaults(styles, _parseTransform(target, 1));
+  			return styles;
+  		},
+  		startClassList = target.getAttribute("class"),
+  		style = target.style,
+  		cssText = style.cssText,
+  		cache = target._gsap,
+  		classPT = cache.classPT,
+  		inlineToRemoveAtEnd = {},
+  		data = {t:target, plugin:plugin, rmv:inlineToRemoveAtEnd, b:startClassList, e:(endValue.charAt(1) !== "=") ? endValue : startClassList.replace(new RegExp("(?:\\s|^)" + endValue.substr(2) + "(?![\\w-])"), "") + ((endValue.charAt(0) === "+") ? " " + endValue.substr(2) : "")},
+  		changingVars = {},
+  		startVars = _getAllStyles(target),
+  		transformRelated = /(transform|perspective)/i,
+  		endVars, p;
+  	if (classPT) {
+  		classPT.r(1, classPT.d);
+  		_removeLinkedListItem(classPT.d.plugin, classPT, "_pt");
+  	}
+  	target.setAttribute("class", data.e);
+  	endVars = _getAllStyles(target, true);
+  	target.setAttribute("class", startClassList);
+  	for (p in endVars) {
+  		if (endVars[p] !== startVars[p] && !transformRelated.test(p)) {
+  			changingVars[p] = endVars[p];
+  			if (!style[p] && style[p] !== "0") {
+  				inlineToRemoveAtEnd[p] = 1;
+  			}
+  		}
+  	}
+  	cache.classPT = plugin._pt = new PropTween(plugin._pt, target, "className", 0, 0, _renderClassName, data, 0, -11);
+  	if (style.cssText !== cssText) { //only apply if things change. Otherwise, in cases like a background-image that's pulled dynamically, it could cause a refresh. See https://greensock.com/forums/topic/20368-possible-gsap-bug-switching-classnames-in-chrome/.
+  		style.cssText = cssText; //we recorded cssText before we swapped classes and ran _getAllStyles() because in cases when a className tween is overwritten, we remove all the related tweening properties from that class change (otherwise class-specific stuff can't override properties we've directly set on the target's style object due to specificity).
+  	}
+  	_parseTransform(target, true); //to clear the caching of transforms
+  	data.css = new gsap.plugins.css();
+  	data.css.init(target, changingVars, tween);
+  	plugin._props.push(...data.css._props);
+  	return 1;
+  }
+  */
+
+},
+
+/*
+ * --------------------------------------------------------------------------------------
+ * TRANSFORMS
+ * --------------------------------------------------------------------------------------
+ */
+_identity2DMatrix = [1, 0, 0, 1, 0, 0],
+    _rotationalProperties = {},
+    _isNullTransform = function _isNullTransform(value) {
+  return value === "matrix(1, 0, 0, 1, 0, 0)" || value === "none" || !value;
+},
+    _getComputedTransformMatrixAsArray = function _getComputedTransformMatrixAsArray(target) {
+  var matrixString = _getComputedProperty(target, _transformProp);
+
+  return _isNullTransform(matrixString) ? _identity2DMatrix : matrixString.substr(7).match(_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._numExp).map(_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round);
+},
+    _getMatrix = function _getMatrix(target, force2D) {
+  var cache = target._gsap || (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._getCache)(target),
+      style = target.style,
+      matrix = _getComputedTransformMatrixAsArray(target),
+      parent,
+      nextSibling,
+      temp,
+      addedToDOM;
+
+  if (cache.svg && target.getAttribute("transform")) {
+    temp = target.transform.baseVal.consolidate().matrix; //ensures that even complex values like "translate(50,60) rotate(135,0,0)" are parsed because it mashes it into a matrix.
+
+    matrix = [temp.a, temp.b, temp.c, temp.d, temp.e, temp.f];
+    return matrix.join(",") === "1,0,0,1,0,0" ? _identity2DMatrix : matrix;
+  } else if (matrix === _identity2DMatrix && !target.offsetParent && target !== _docElement && !cache.svg) {
+    //note: if offsetParent is null, that means the element isn't in the normal document flow, like if it has display:none or one of its ancestors has display:none). Firefox returns null for getComputedStyle() if the element is in an iframe that has display:none. https://bugzilla.mozilla.org/show_bug.cgi?id=548397
+    //browsers don't report transforms accurately unless the element is in the DOM and has a display value that's not "none". Firefox and Microsoft browsers have a partial bug where they'll report transforms even if display:none BUT not any percentage-based values like translate(-50%, 8px) will be reported as if it's translate(0, 8px).
+    temp = style.display;
+    style.display = "block";
+    parent = target.parentNode;
+
+    if (!parent || !target.offsetParent) {
+      // note: in 3.3.0 we switched target.offsetParent to _doc.body.contains(target) to avoid [sometimes unnecessary] MutationObserver calls but that wasn't adequate because there are edge cases where nested position: fixed elements need to get reparented to accurately sense transforms. See https://github.com/greensock/GSAP/issues/388 and https://github.com/greensock/GSAP/issues/375
+      addedToDOM = 1; //flag
+
+      nextSibling = target.nextSibling;
+
+      _docElement.appendChild(target); //we must add it to the DOM in order to get values properly
+
+    }
+
+    matrix = _getComputedTransformMatrixAsArray(target);
+    temp ? style.display = temp : _removeProperty(target, "display");
+
+    if (addedToDOM) {
+      nextSibling ? parent.insertBefore(target, nextSibling) : parent ? parent.appendChild(target) : _docElement.removeChild(target);
+    }
+  }
+
+  return force2D && matrix.length > 6 ? [matrix[0], matrix[1], matrix[4], matrix[5], matrix[12], matrix[13]] : matrix;
+},
+    _applySVGOrigin = function _applySVGOrigin(target, origin, originIsAbsolute, smooth, matrixArray, pluginToAddPropTweensTo) {
+  var cache = target._gsap,
+      matrix = matrixArray || _getMatrix(target, true),
+      xOriginOld = cache.xOrigin || 0,
+      yOriginOld = cache.yOrigin || 0,
+      xOffsetOld = cache.xOffset || 0,
+      yOffsetOld = cache.yOffset || 0,
+      a = matrix[0],
+      b = matrix[1],
+      c = matrix[2],
+      d = matrix[3],
+      tx = matrix[4],
+      ty = matrix[5],
+      originSplit = origin.split(" "),
+      xOrigin = parseFloat(originSplit[0]) || 0,
+      yOrigin = parseFloat(originSplit[1]) || 0,
+      bounds,
+      determinant,
+      x,
+      y;
+
+  if (!originIsAbsolute) {
+    bounds = _getBBox(target);
+    xOrigin = bounds.x + (~originSplit[0].indexOf("%") ? xOrigin / 100 * bounds.width : xOrigin);
+    yOrigin = bounds.y + (~(originSplit[1] || originSplit[0]).indexOf("%") ? yOrigin / 100 * bounds.height : yOrigin);
+  } else if (matrix !== _identity2DMatrix && (determinant = a * d - b * c)) {
+    //if it's zero (like if scaleX and scaleY are zero), skip it to avoid errors with dividing by zero.
+    x = xOrigin * (d / determinant) + yOrigin * (-c / determinant) + (c * ty - d * tx) / determinant;
+    y = xOrigin * (-b / determinant) + yOrigin * (a / determinant) - (a * ty - b * tx) / determinant;
+    xOrigin = x;
+    yOrigin = y;
+  }
+
+  if (smooth || smooth !== false && cache.smooth) {
+    tx = xOrigin - xOriginOld;
+    ty = yOrigin - yOriginOld;
+    cache.xOffset = xOffsetOld + (tx * a + ty * c) - tx;
+    cache.yOffset = yOffsetOld + (tx * b + ty * d) - ty;
+  } else {
+    cache.xOffset = cache.yOffset = 0;
+  }
+
+  cache.xOrigin = xOrigin;
+  cache.yOrigin = yOrigin;
+  cache.smooth = !!smooth;
+  cache.origin = origin;
+  cache.originIsAbsolute = !!originIsAbsolute;
+  target.style[_transformOriginProp] = "0px 0px"; //otherwise, if someone sets  an origin via CSS, it will likely interfere with the SVG transform attribute ones (because remember, we're baking the origin into the matrix() value).
+
+  if (pluginToAddPropTweensTo) {
+    _addNonTweeningPT(pluginToAddPropTweensTo, cache, "xOrigin", xOriginOld, xOrigin);
+
+    _addNonTweeningPT(pluginToAddPropTweensTo, cache, "yOrigin", yOriginOld, yOrigin);
+
+    _addNonTweeningPT(pluginToAddPropTweensTo, cache, "xOffset", xOffsetOld, cache.xOffset);
+
+    _addNonTweeningPT(pluginToAddPropTweensTo, cache, "yOffset", yOffsetOld, cache.yOffset);
+  }
+
+  target.setAttribute("data-svg-origin", xOrigin + " " + yOrigin);
+},
+    _parseTransform = function _parseTransform(target, uncache) {
+  var cache = target._gsap || new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.GSCache(target);
+
+  if ("x" in cache && !uncache && !cache.uncache) {
+    return cache;
+  }
+
+  var style = target.style,
+      invertedScaleX = cache.scaleX < 0,
+      px = "px",
+      deg = "deg",
+      origin = _getComputedProperty(target, _transformOriginProp) || "0",
+      x,
+      y,
+      z,
+      scaleX,
+      scaleY,
+      rotation,
+      rotationX,
+      rotationY,
+      skewX,
+      skewY,
+      perspective,
+      xOrigin,
+      yOrigin,
+      matrix,
+      angle,
+      cos,
+      sin,
+      a,
+      b,
+      c,
+      d,
+      a12,
+      a22,
+      t1,
+      t2,
+      t3,
+      a13,
+      a23,
+      a33,
+      a42,
+      a43,
+      a32;
+  x = y = z = rotation = rotationX = rotationY = skewX = skewY = perspective = 0;
+  scaleX = scaleY = 1;
+  cache.svg = !!(target.getCTM && _isSVG(target));
+  matrix = _getMatrix(target, cache.svg);
+
+  if (cache.svg) {
+    t1 = (!cache.uncache || origin === "0px 0px") && !uncache && target.getAttribute("data-svg-origin"); // if origin is 0,0 and cache.uncache is true, let the recorded data-svg-origin stay. Otherwise, whenever we set cache.uncache to true, we'd need to set element.style.transformOrigin = (cache.xOrigin - bbox.x) + "px " + (cache.yOrigin - bbox.y) + "px". Remember, to work around browser inconsistencies we always force SVG elements' transformOrigin to 0,0 and offset the translation accordingly.
+
+    _applySVGOrigin(target, t1 || origin, !!t1 || cache.originIsAbsolute, cache.smooth !== false, matrix);
+  }
+
+  xOrigin = cache.xOrigin || 0;
+  yOrigin = cache.yOrigin || 0;
+
+  if (matrix !== _identity2DMatrix) {
+    a = matrix[0]; //a11
+
+    b = matrix[1]; //a21
+
+    c = matrix[2]; //a31
+
+    d = matrix[3]; //a41
+
+    x = a12 = matrix[4];
+    y = a22 = matrix[5]; //2D matrix
+
+    if (matrix.length === 6) {
+      scaleX = Math.sqrt(a * a + b * b);
+      scaleY = Math.sqrt(d * d + c * c);
+      rotation = a || b ? _atan2(b, a) * _RAD2DEG : 0; //note: if scaleX is 0, we cannot accurately measure rotation. Same for skewX with a scaleY of 0. Therefore, we default to the previously recorded value (or zero if that doesn't exist).
+
+      skewX = c || d ? _atan2(c, d) * _RAD2DEG + rotation : 0;
+      skewX && (scaleY *= Math.abs(Math.cos(skewX * _DEG2RAD)));
+
+      if (cache.svg) {
+        x -= xOrigin - (xOrigin * a + yOrigin * c);
+        y -= yOrigin - (xOrigin * b + yOrigin * d);
+      } //3D matrix
+
+    } else {
+      a32 = matrix[6];
+      a42 = matrix[7];
+      a13 = matrix[8];
+      a23 = matrix[9];
+      a33 = matrix[10];
+      a43 = matrix[11];
+      x = matrix[12];
+      y = matrix[13];
+      z = matrix[14];
+      angle = _atan2(a32, a33);
+      rotationX = angle * _RAD2DEG; //rotationX
+
+      if (angle) {
+        cos = Math.cos(-angle);
+        sin = Math.sin(-angle);
+        t1 = a12 * cos + a13 * sin;
+        t2 = a22 * cos + a23 * sin;
+        t3 = a32 * cos + a33 * sin;
+        a13 = a12 * -sin + a13 * cos;
+        a23 = a22 * -sin + a23 * cos;
+        a33 = a32 * -sin + a33 * cos;
+        a43 = a42 * -sin + a43 * cos;
+        a12 = t1;
+        a22 = t2;
+        a32 = t3;
+      } //rotationY
+
+
+      angle = _atan2(-c, a33);
+      rotationY = angle * _RAD2DEG;
+
+      if (angle) {
+        cos = Math.cos(-angle);
+        sin = Math.sin(-angle);
+        t1 = a * cos - a13 * sin;
+        t2 = b * cos - a23 * sin;
+        t3 = c * cos - a33 * sin;
+        a43 = d * sin + a43 * cos;
+        a = t1;
+        b = t2;
+        c = t3;
+      } //rotationZ
+
+
+      angle = _atan2(b, a);
+      rotation = angle * _RAD2DEG;
+
+      if (angle) {
+        cos = Math.cos(angle);
+        sin = Math.sin(angle);
+        t1 = a * cos + b * sin;
+        t2 = a12 * cos + a22 * sin;
+        b = b * cos - a * sin;
+        a22 = a22 * cos - a12 * sin;
+        a = t1;
+        a12 = t2;
+      }
+
+      if (rotationX && Math.abs(rotationX) + Math.abs(rotation) > 359.9) {
+        //when rotationY is set, it will often be parsed as 180 degrees different than it should be, and rotationX and rotation both being 180 (it looks the same), so we adjust for that here.
+        rotationX = rotation = 0;
+        rotationY = 180 - rotationY;
+      }
+
+      scaleX = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(Math.sqrt(a * a + b * b + c * c));
+      scaleY = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(Math.sqrt(a22 * a22 + a32 * a32));
+      angle = _atan2(a12, a22);
+      skewX = Math.abs(angle) > 0.0002 ? angle * _RAD2DEG : 0;
+      perspective = a43 ? 1 / (a43 < 0 ? -a43 : a43) : 0;
+    }
+
+    if (cache.svg) {
+      //sense if there are CSS transforms applied on an SVG element in which case we must overwrite them when rendering. The transform attribute is more reliable cross-browser, but we can't just remove the CSS ones because they may be applied in a CSS rule somewhere (not just inline).
+      t1 = target.getAttribute("transform");
+      cache.forceCSS = target.setAttribute("transform", "") || !_isNullTransform(_getComputedProperty(target, _transformProp));
+      t1 && target.setAttribute("transform", t1);
+    }
+  }
+
+  if (Math.abs(skewX) > 90 && Math.abs(skewX) < 270) {
+    if (invertedScaleX) {
+      scaleX *= -1;
+      skewX += rotation <= 0 ? 180 : -180;
+      rotation += rotation <= 0 ? 180 : -180;
+    } else {
+      scaleY *= -1;
+      skewX += skewX <= 0 ? 180 : -180;
+    }
+  }
+
+  uncache = uncache || cache.uncache;
+  cache.x = x - ((cache.xPercent = x && (!uncache && cache.xPercent || (Math.round(target.offsetWidth / 2) === Math.round(-x) ? -50 : 0))) ? target.offsetWidth * cache.xPercent / 100 : 0) + px;
+  cache.y = y - ((cache.yPercent = y && (!uncache && cache.yPercent || (Math.round(target.offsetHeight / 2) === Math.round(-y) ? -50 : 0))) ? target.offsetHeight * cache.yPercent / 100 : 0) + px;
+  cache.z = z + px;
+  cache.scaleX = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(scaleX);
+  cache.scaleY = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(scaleY);
+  cache.rotation = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(rotation) + deg;
+  cache.rotationX = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(rotationX) + deg;
+  cache.rotationY = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(rotationY) + deg;
+  cache.skewX = skewX + deg;
+  cache.skewY = skewY + deg;
+  cache.transformPerspective = perspective + px;
+
+  if (cache.zOrigin = parseFloat(origin.split(" ")[2]) || 0) {
+    style[_transformOriginProp] = _firstTwoOnly(origin);
+  }
+
+  cache.xOffset = cache.yOffset = 0;
+  cache.force3D = _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.force3D;
+  cache.renderTransform = cache.svg ? _renderSVGTransforms : _supports3D ? _renderCSSTransforms : _renderNon3DTransforms;
+  cache.uncache = 0;
+  return cache;
+},
+    _firstTwoOnly = function _firstTwoOnly(value) {
+  return (value = value.split(" "))[0] + " " + value[1];
+},
+    //for handling transformOrigin values, stripping out the 3rd dimension
+_addPxTranslate = function _addPxTranslate(target, start, value) {
+  var unit = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(start);
+  return (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(parseFloat(start) + parseFloat(_convertToUnit(target, "x", value + "px", unit))) + unit;
+},
+    _renderNon3DTransforms = function _renderNon3DTransforms(ratio, cache) {
+  cache.z = "0px";
+  cache.rotationY = cache.rotationX = "0deg";
+  cache.force3D = 0;
+
+  _renderCSSTransforms(ratio, cache);
+},
+    _zeroDeg = "0deg",
+    _zeroPx = "0px",
+    _endParenthesis = ") ",
+    _renderCSSTransforms = function _renderCSSTransforms(ratio, cache) {
+  var _ref = cache || this,
+      xPercent = _ref.xPercent,
+      yPercent = _ref.yPercent,
+      x = _ref.x,
+      y = _ref.y,
+      z = _ref.z,
+      rotation = _ref.rotation,
+      rotationY = _ref.rotationY,
+      rotationX = _ref.rotationX,
+      skewX = _ref.skewX,
+      skewY = _ref.skewY,
+      scaleX = _ref.scaleX,
+      scaleY = _ref.scaleY,
+      transformPerspective = _ref.transformPerspective,
+      force3D = _ref.force3D,
+      target = _ref.target,
+      zOrigin = _ref.zOrigin,
+      transforms = "",
+      use3D = force3D === "auto" && ratio && ratio !== 1 || force3D === true; // Safari has a bug that causes it not to render 3D transform-origin values properly, so we force the z origin to 0, record it in the cache, and then do the math here to offset the translate values accordingly (basically do the 3D transform-origin part manually)
+
+
+  if (zOrigin && (rotationX !== _zeroDeg || rotationY !== _zeroDeg)) {
+    var angle = parseFloat(rotationY) * _DEG2RAD,
+        a13 = Math.sin(angle),
+        a33 = Math.cos(angle),
+        cos;
+
+    angle = parseFloat(rotationX) * _DEG2RAD;
+    cos = Math.cos(angle);
+    x = _addPxTranslate(target, x, a13 * cos * -zOrigin);
+    y = _addPxTranslate(target, y, -Math.sin(angle) * -zOrigin);
+    z = _addPxTranslate(target, z, a33 * cos * -zOrigin + zOrigin);
+  }
+
+  if (transformPerspective !== _zeroPx) {
+    transforms += "perspective(" + transformPerspective + _endParenthesis;
+  }
+
+  if (xPercent || yPercent) {
+    transforms += "translate(" + xPercent + "%, " + yPercent + "%) ";
+  }
+
+  if (use3D || x !== _zeroPx || y !== _zeroPx || z !== _zeroPx) {
+    transforms += z !== _zeroPx || use3D ? "translate3d(" + x + ", " + y + ", " + z + ") " : "translate(" + x + ", " + y + _endParenthesis;
+  }
+
+  if (rotation !== _zeroDeg) {
+    transforms += "rotate(" + rotation + _endParenthesis;
+  }
+
+  if (rotationY !== _zeroDeg) {
+    transforms += "rotateY(" + rotationY + _endParenthesis;
+  }
+
+  if (rotationX !== _zeroDeg) {
+    transforms += "rotateX(" + rotationX + _endParenthesis;
+  }
+
+  if (skewX !== _zeroDeg || skewY !== _zeroDeg) {
+    transforms += "skew(" + skewX + ", " + skewY + _endParenthesis;
+  }
+
+  if (scaleX !== 1 || scaleY !== 1) {
+    transforms += "scale(" + scaleX + ", " + scaleY + _endParenthesis;
+  }
+
+  target.style[_transformProp] = transforms || "translate(0, 0)";
+},
+    _renderSVGTransforms = function _renderSVGTransforms(ratio, cache) {
+  var _ref2 = cache || this,
+      xPercent = _ref2.xPercent,
+      yPercent = _ref2.yPercent,
+      x = _ref2.x,
+      y = _ref2.y,
+      rotation = _ref2.rotation,
+      skewX = _ref2.skewX,
+      skewY = _ref2.skewY,
+      scaleX = _ref2.scaleX,
+      scaleY = _ref2.scaleY,
+      target = _ref2.target,
+      xOrigin = _ref2.xOrigin,
+      yOrigin = _ref2.yOrigin,
+      xOffset = _ref2.xOffset,
+      yOffset = _ref2.yOffset,
+      forceCSS = _ref2.forceCSS,
+      tx = parseFloat(x),
+      ty = parseFloat(y),
+      a11,
+      a21,
+      a12,
+      a22,
+      temp;
+
+  rotation = parseFloat(rotation);
+  skewX = parseFloat(skewX);
+  skewY = parseFloat(skewY);
+
+  if (skewY) {
+    //for performance reasons, we combine all skewing into the skewX and rotation values. Remember, a skewY of 10 degrees looks the same as a rotation of 10 degrees plus a skewX of 10 degrees.
+    skewY = parseFloat(skewY);
+    skewX += skewY;
+    rotation += skewY;
+  }
+
+  if (rotation || skewX) {
+    rotation *= _DEG2RAD;
+    skewX *= _DEG2RAD;
+    a11 = Math.cos(rotation) * scaleX;
+    a21 = Math.sin(rotation) * scaleX;
+    a12 = Math.sin(rotation - skewX) * -scaleY;
+    a22 = Math.cos(rotation - skewX) * scaleY;
+
+    if (skewX) {
+      skewY *= _DEG2RAD;
+      temp = Math.tan(skewX - skewY);
+      temp = Math.sqrt(1 + temp * temp);
+      a12 *= temp;
+      a22 *= temp;
+
+      if (skewY) {
+        temp = Math.tan(skewY);
+        temp = Math.sqrt(1 + temp * temp);
+        a11 *= temp;
+        a21 *= temp;
+      }
+    }
+
+    a11 = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(a11);
+    a21 = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(a21);
+    a12 = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(a12);
+    a22 = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(a22);
+  } else {
+    a11 = scaleX;
+    a22 = scaleY;
+    a21 = a12 = 0;
+  }
+
+  if (tx && !~(x + "").indexOf("px") || ty && !~(y + "").indexOf("px")) {
+    tx = _convertToUnit(target, "x", x, "px");
+    ty = _convertToUnit(target, "y", y, "px");
+  }
+
+  if (xOrigin || yOrigin || xOffset || yOffset) {
+    tx = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(tx + xOrigin - (xOrigin * a11 + yOrigin * a12) + xOffset);
+    ty = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(ty + yOrigin - (xOrigin * a21 + yOrigin * a22) + yOffset);
+  }
+
+  if (xPercent || yPercent) {
+    //The SVG spec doesn't support percentage-based translation in the "transform" attribute, so we merge it into the translation to simulate it.
+    temp = target.getBBox();
+    tx = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(tx + xPercent / 100 * temp.width);
+    ty = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._round)(ty + yPercent / 100 * temp.height);
+  }
+
+  temp = "matrix(" + a11 + "," + a21 + "," + a12 + "," + a22 + "," + tx + "," + ty + ")";
+  target.setAttribute("transform", temp);
+  forceCSS && (target.style[_transformProp] = temp); //some browsers prioritize CSS transforms over the transform attribute. When we sense that the user has CSS transforms applied, we must overwrite them this way (otherwise some browser simply won't render the  transform attribute changes!)
+},
+    _addRotationalPropTween = function _addRotationalPropTween(plugin, target, property, startNum, endValue) {
+  var cap = 360,
+      isString = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._isString)(endValue),
+      endNum = parseFloat(endValue) * (isString && ~endValue.indexOf("rad") ? _RAD2DEG : 1),
+      change = endNum - startNum,
+      finalValue = startNum + change + "deg",
+      direction,
+      pt;
+
+  if (isString) {
+    direction = endValue.split("_")[1];
+
+    if (direction === "short") {
+      change %= cap;
+
+      if (change !== change % (cap / 2)) {
+        change += change < 0 ? cap : -cap;
+      }
+    }
+
+    if (direction === "cw" && change < 0) {
+      change = (change + cap * _bigNum) % cap - ~~(change / cap) * cap;
+    } else if (direction === "ccw" && change > 0) {
+      change = (change - cap * _bigNum) % cap - ~~(change / cap) * cap;
+    }
+  }
+
+  plugin._pt = pt = new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.PropTween(plugin._pt, target, property, startNum, change, _renderPropWithEnd);
+  pt.e = finalValue;
+  pt.u = "deg";
+
+  plugin._props.push(property);
+
+  return pt;
+},
+    _assign = function _assign(target, source) {
+  // Internet Explorer doesn't have Object.assign(), so we recreate it here.
+  for (var p in source) {
+    target[p] = source[p];
+  }
+
+  return target;
+},
+    _addRawTransformPTs = function _addRawTransformPTs(plugin, transforms, target) {
+  //for handling cases where someone passes in a whole transform string, like transform: "scale(2, 3) rotate(20deg) translateY(30em)"
+  var startCache = _assign({}, target._gsap),
+      exclude = "perspective,force3D,transformOrigin,svgOrigin",
+      style = target.style,
+      endCache,
+      p,
+      startValue,
+      endValue,
+      startNum,
+      endNum,
+      startUnit,
+      endUnit;
+
+  if (startCache.svg) {
+    startValue = target.getAttribute("transform");
+    target.setAttribute("transform", "");
+    style[_transformProp] = transforms;
+    endCache = _parseTransform(target, 1);
+
+    _removeProperty(target, _transformProp);
+
+    target.setAttribute("transform", startValue);
+  } else {
+    startValue = getComputedStyle(target)[_transformProp];
+    style[_transformProp] = transforms;
+    endCache = _parseTransform(target, 1);
+    style[_transformProp] = startValue;
+  }
+
+  for (p in _transformProps) {
+    startValue = startCache[p];
+    endValue = endCache[p];
+
+    if (startValue !== endValue && exclude.indexOf(p) < 0) {
+      //tweening to no perspective gives very unintuitive results - just keep the same perspective in that case.
+      startUnit = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(startValue);
+      endUnit = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(endValue);
+      startNum = startUnit !== endUnit ? _convertToUnit(target, p, startValue, endUnit) : parseFloat(startValue);
+      endNum = parseFloat(endValue);
+      plugin._pt = new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.PropTween(plugin._pt, endCache, p, startNum, endNum - startNum, _renderCSSProp);
+      plugin._pt.u = endUnit || 0;
+
+      plugin._props.push(p);
+    }
+  }
+
+  _assign(endCache, startCache);
+}; // handle splitting apart padding, margin, borderWidth, and borderRadius into their 4 components. Firefox, for example, won't report borderRadius correctly - it will only do borderTopLeftRadius and the other corners. We also want to handle paddingTop, marginLeft, borderRightWidth, etc.
+
+
+(0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._forEachName)("padding,margin,Width,Radius", function (name, index) {
+  var t = "Top",
+      r = "Right",
+      b = "Bottom",
+      l = "Left",
+      props = (index < 3 ? [t, r, b, l] : [t + l, t + r, b + r, b + l]).map(function (side) {
+    return index < 2 ? name + side : "border" + side + name;
+  });
+
+  _specialProps[index > 1 ? "border" + name : name] = function (plugin, target, property, endValue, tween) {
+    var a, vars;
+
+    if (arguments.length < 4) {
+      // getter, passed target, property, and unit (from _get())
+      a = props.map(function (prop) {
+        return _get(plugin, prop, property);
+      });
+      vars = a.join(" ");
+      return vars.split(a[0]).length === 5 ? a[0] : vars;
+    }
+
+    a = (endValue + "").split(" ");
+    vars = {};
+    props.forEach(function (prop, i) {
+      return vars[prop] = a[i] = a[i] || a[(i - 1) / 2 | 0];
+    });
+    plugin.init(target, vars, tween);
+  };
+});
+
+var CSSPlugin = {
+  name: "css",
+  register: _initCore,
+  targetTest: function targetTest(target) {
+    return target.style && target.nodeType;
+  },
+  init: function init(target, vars, tween, index, targets) {
+    var props = this._props,
+        style = target.style,
+        startAt = tween.vars.startAt,
+        startValue,
+        endValue,
+        endNum,
+        startNum,
+        type,
+        specialProp,
+        p,
+        startUnit,
+        endUnit,
+        relative,
+        isTransformRelated,
+        transformPropTween,
+        cache,
+        smooth,
+        hasPriority;
+    _pluginInitted || _initCore();
+
+    for (p in vars) {
+      if (p === "autoRound") {
+        continue;
+      }
+
+      endValue = vars[p];
+
+      if (_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._plugins[p] && (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._checkPlugin)(p, vars, tween, index, target, targets)) {
+        // plugins
+        continue;
+      }
+
+      type = typeof endValue;
+      specialProp = _specialProps[p];
+
+      if (type === "function") {
+        endValue = endValue.call(tween, index, target, targets);
+        type = typeof endValue;
+      }
+
+      if (type === "string" && ~endValue.indexOf("random(")) {
+        endValue = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._replaceRandom)(endValue);
+      }
+
+      if (specialProp) {
+        specialProp(this, target, p, endValue, tween) && (hasPriority = 1);
+      } else if (p.substr(0, 2) === "--") {
+        //CSS variable
+        startValue = (getComputedStyle(target).getPropertyValue(p) + "").trim();
+        endValue += "";
+        _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._colorExp.lastIndex = 0;
+
+        if (!_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._colorExp.test(startValue)) {
+          // colors don't have units
+          startUnit = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(startValue);
+          endUnit = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(endValue);
+        }
+
+        endUnit ? startUnit !== endUnit && (startValue = _convertToUnit(target, p, startValue, endUnit) + endUnit) : startUnit && (endValue += startUnit);
+        this.add(style, "setProperty", startValue, endValue, index, targets, 0, 0, p);
+        props.push(p);
+      } else if (type !== "undefined") {
+        if (startAt && p in startAt) {
+          // in case someone hard-codes a complex value as the start, like top: "calc(2vh / 2)". Without this, it'd use the computed value (always in px)
+          startValue = typeof startAt[p] === "function" ? startAt[p].call(tween, index, target, targets) : startAt[p];
+          (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._isString)(startValue) && ~startValue.indexOf("random(") && (startValue = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._replaceRandom)(startValue));
+          (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(startValue + "") || (startValue += _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.units[p] || (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(_get(target, p)) || ""); // for cases when someone passes in a unitless value like {x: 100}; if we try setting translate(100, 0px) it won't work.
+
+          (startValue + "").charAt(1) === "=" && (startValue = _get(target, p)); // can't work with relative values
+        } else {
+          startValue = _get(target, p);
+        }
+
+        startNum = parseFloat(startValue);
+        relative = type === "string" && endValue.charAt(1) === "=" && endValue.substr(0, 2);
+        relative && (endValue = endValue.substr(2));
+        endNum = parseFloat(endValue);
+
+        if (p in _propertyAliases) {
+          if (p === "autoAlpha") {
+            //special case where we control the visibility along with opacity. We still allow the opacity value to pass through and get tweened.
+            if (startNum === 1 && _get(target, "visibility") === "hidden" && endNum) {
+              //if visibility is initially set to "hidden", we should interpret that as intent to make opacity 0 (a convenience)
+              startNum = 0;
+            }
+
+            _addNonTweeningPT(this, style, "visibility", startNum ? "inherit" : "hidden", endNum ? "inherit" : "hidden", !endNum);
+          }
+
+          if (p !== "scale" && p !== "transform") {
+            p = _propertyAliases[p];
+            ~p.indexOf(",") && (p = p.split(",")[0]);
+          }
+        }
+
+        isTransformRelated = p in _transformProps; //--- TRANSFORM-RELATED ---
+
+        if (isTransformRelated) {
+          if (!transformPropTween) {
+            cache = target._gsap;
+            cache.renderTransform && !vars.parseTransform || _parseTransform(target, vars.parseTransform); // if, for example, gsap.set(... {transform:"translateX(50vw)"}), the _get() call doesn't parse the transform, thus cache.renderTransform won't be set yet so force the parsing of the transform here.
+
+            smooth = vars.smoothOrigin !== false && cache.smooth;
+            transformPropTween = this._pt = new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.PropTween(this._pt, style, _transformProp, 0, 1, cache.renderTransform, cache, 0, -1); //the first time through, create the rendering PropTween so that it runs LAST (in the linked list, we keep adding to the beginning)
+
+            transformPropTween.dep = 1; //flag it as dependent so that if things get killed/overwritten and this is the only PropTween left, we can safely kill the whole tween.
+          }
+
+          if (p === "scale") {
+            this._pt = new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.PropTween(this._pt, cache, "scaleY", cache.scaleY, (relative ? (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._parseRelative)(cache.scaleY, relative + endNum) : endNum) - cache.scaleY || 0);
+            props.push("scaleY", p);
+            p += "X";
+          } else if (p === "transformOrigin") {
+            endValue = _convertKeywordsToPercentages(endValue); //in case something like "left top" or "bottom right" is passed in. Convert to percentages.
+
+            if (cache.svg) {
+              _applySVGOrigin(target, endValue, 0, smooth, 0, this);
+            } else {
+              endUnit = parseFloat(endValue.split(" ")[2]) || 0; //handle the zOrigin separately!
+
+              endUnit !== cache.zOrigin && _addNonTweeningPT(this, cache, "zOrigin", cache.zOrigin, endUnit);
+
+              _addNonTweeningPT(this, style, p, _firstTwoOnly(startValue), _firstTwoOnly(endValue));
+            }
+
+            continue;
+          } else if (p === "svgOrigin") {
+            _applySVGOrigin(target, endValue, 1, smooth, 0, this);
+
+            continue;
+          } else if (p in _rotationalProperties) {
+            _addRotationalPropTween(this, cache, p, startNum, relative ? (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._parseRelative)(startNum, relative + endValue) : endValue);
+
+            continue;
+          } else if (p === "smoothOrigin") {
+            _addNonTweeningPT(this, cache, "smooth", cache.smooth, endValue);
+
+            continue;
+          } else if (p === "force3D") {
+            cache[p] = endValue;
+            continue;
+          } else if (p === "transform") {
+            _addRawTransformPTs(this, endValue, target);
+
+            continue;
+          }
+        } else if (!(p in style)) {
+          p = _checkPropPrefix(p) || p;
+        }
+
+        if (isTransformRelated || (endNum || endNum === 0) && (startNum || startNum === 0) && !_complexExp.test(endValue) && p in style) {
+          startUnit = (startValue + "").substr((startNum + "").length);
+          endNum || (endNum = 0); // protect against NaN
+
+          endUnit = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.getUnit)(endValue) || (p in _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.units ? _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.units[p] : startUnit);
+          startUnit !== endUnit && (startNum = _convertToUnit(target, p, startValue, endUnit));
+          this._pt = new _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.PropTween(this._pt, isTransformRelated ? cache : style, p, startNum, (relative ? (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._parseRelative)(startNum, relative + endNum) : endNum) - startNum, !isTransformRelated && (endUnit === "px" || p === "zIndex") && vars.autoRound !== false ? _renderRoundedCSSProp : _renderCSSProp);
+          this._pt.u = endUnit || 0;
+
+          if (startUnit !== endUnit && endUnit !== "%") {
+            //when the tween goes all the way back to the beginning, we need to revert it to the OLD/ORIGINAL value (with those units). We record that as a "b" (beginning) property and point to a render method that handles that. (performance optimization)
+            this._pt.b = startValue;
+            this._pt.r = _renderCSSPropWithBeginning;
+          }
+        } else if (!(p in style)) {
+          if (p in target) {
+            //maybe it's not a style - it could be a property added directly to an element in which case we'll try to animate that.
+            this.add(target, p, startValue || target[p], relative ? relative + endValue : endValue, index, targets);
+          } else {
+            (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._missingPlugin)(p, endValue);
+
+            continue;
+          }
+        } else {
+          _tweenComplexCSSString.call(this, target, p, startValue, relative ? relative + endValue : endValue);
+        }
+
+        props.push(p);
+      }
+    }
+
+    hasPriority && (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._sortPropTweensByPriority)(this);
+  },
+  get: _get,
+  aliases: _propertyAliases,
+  getSetter: function getSetter(target, property, plugin) {
+    //returns a setter function that accepts target, property, value and applies it accordingly. Remember, properties like "x" aren't as simple as target.style.property = value because they've got to be applied to a proxy object and then merged into a transform string in a renderer.
+    var p = _propertyAliases[property];
+    p && p.indexOf(",") < 0 && (property = p);
+    return property in _transformProps && property !== _transformOriginProp && (target._gsap.x || _get(target, "x")) ? plugin && _recentSetterPlugin === plugin ? property === "scale" ? _setterScale : _setterTransform : (_recentSetterPlugin = plugin || {}) && (property === "scale" ? _setterScaleWithRender : _setterTransformWithRender) : target.style && !(0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._isUndefined)(target.style[property]) ? _setterCSSStyle : ~property.indexOf("-") ? _setterCSSProp : (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._getSetter)(target, property);
+  },
+  core: {
+    _removeProperty: _removeProperty,
+    _getMatrix: _getMatrix
+  }
+};
+_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.gsap.utils.checkPrefix = _checkPropPrefix;
+
+(function (positionAndScale, rotation, others, aliases) {
+  var all = (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._forEachName)(positionAndScale + "," + rotation + "," + others, function (name) {
+    _transformProps[name] = 1;
+  });
+
+  (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._forEachName)(rotation, function (name) {
+    _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.units[name] = "deg";
+    _rotationalProperties[name] = 1;
+  });
+
+  _propertyAliases[all[13]] = positionAndScale + "," + rotation;
+
+  (0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._forEachName)(aliases, function (name) {
+    var split = name.split(":");
+    _propertyAliases[split[1]] = all[split[0]];
+  });
+})("x,y,z,scale,scaleX,scaleY,xPercent,yPercent", "rotation,rotationX,rotationY,skewX,skewY", "transform,transformOrigin,svgOrigin,force3D,smoothOrigin,transformPerspective", "0:translateX,1:translateY,2:translateZ,8:rotate,8:rotationZ,8:rotateZ,9:rotateX,10:rotateY");
+
+(0,_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._forEachName)("x,y,z,top,right,bottom,left,width,height,fontSize,padding,margin,perspective", function (name) {
+  _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__._config.units[name] = "px";
+});
+
+_gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.gsap.registerPlugin(CSSPlugin);
+
+
+/***/ }),
+
+/***/ "./node_modules/gsap/gsap-core.js":
+/*!****************************************!*\
+  !*** ./node_modules/gsap/gsap-core.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "GSCache": () => (/* binding */ GSCache),
+/* harmony export */   "Animation": () => (/* binding */ Animation),
+/* harmony export */   "Timeline": () => (/* binding */ Timeline),
+/* harmony export */   "Tween": () => (/* binding */ Tween),
+/* harmony export */   "PropTween": () => (/* binding */ PropTween),
+/* harmony export */   "gsap": () => (/* binding */ gsap),
+/* harmony export */   "Power0": () => (/* binding */ Power0),
+/* harmony export */   "Power1": () => (/* binding */ Power1),
+/* harmony export */   "Power2": () => (/* binding */ Power2),
+/* harmony export */   "Power3": () => (/* binding */ Power3),
+/* harmony export */   "Power4": () => (/* binding */ Power4),
+/* harmony export */   "Linear": () => (/* binding */ Linear),
+/* harmony export */   "Quad": () => (/* binding */ Quad),
+/* harmony export */   "Cubic": () => (/* binding */ Cubic),
+/* harmony export */   "Quart": () => (/* binding */ Quart),
+/* harmony export */   "Quint": () => (/* binding */ Quint),
+/* harmony export */   "Strong": () => (/* binding */ Strong),
+/* harmony export */   "Elastic": () => (/* binding */ Elastic),
+/* harmony export */   "Back": () => (/* binding */ Back),
+/* harmony export */   "SteppedEase": () => (/* binding */ SteppedEase),
+/* harmony export */   "Bounce": () => (/* binding */ Bounce),
+/* harmony export */   "Sine": () => (/* binding */ Sine),
+/* harmony export */   "Expo": () => (/* binding */ Expo),
+/* harmony export */   "Circ": () => (/* binding */ Circ),
+/* harmony export */   "TweenMax": () => (/* binding */ Tween),
+/* harmony export */   "TweenLite": () => (/* binding */ Tween),
+/* harmony export */   "TimelineMax": () => (/* binding */ Timeline),
+/* harmony export */   "TimelineLite": () => (/* binding */ Timeline),
+/* harmony export */   "default": () => (/* binding */ gsap),
+/* harmony export */   "wrap": () => (/* binding */ wrap),
+/* harmony export */   "wrapYoyo": () => (/* binding */ wrapYoyo),
+/* harmony export */   "distribute": () => (/* binding */ distribute),
+/* harmony export */   "random": () => (/* binding */ random),
+/* harmony export */   "snap": () => (/* binding */ snap),
+/* harmony export */   "normalize": () => (/* binding */ normalize),
+/* harmony export */   "getUnit": () => (/* binding */ getUnit),
+/* harmony export */   "clamp": () => (/* binding */ clamp),
+/* harmony export */   "splitColor": () => (/* binding */ splitColor),
+/* harmony export */   "toArray": () => (/* binding */ toArray),
+/* harmony export */   "selector": () => (/* binding */ selector),
+/* harmony export */   "mapRange": () => (/* binding */ mapRange),
+/* harmony export */   "pipe": () => (/* binding */ pipe),
+/* harmony export */   "unitize": () => (/* binding */ unitize),
+/* harmony export */   "interpolate": () => (/* binding */ interpolate),
+/* harmony export */   "shuffle": () => (/* binding */ shuffle),
+/* harmony export */   "_getProperty": () => (/* binding */ _getProperty),
+/* harmony export */   "_numExp": () => (/* binding */ _numExp),
+/* harmony export */   "_numWithUnitExp": () => (/* binding */ _numWithUnitExp),
+/* harmony export */   "_isString": () => (/* binding */ _isString),
+/* harmony export */   "_isUndefined": () => (/* binding */ _isUndefined),
+/* harmony export */   "_renderComplexString": () => (/* binding */ _renderComplexString),
+/* harmony export */   "_relExp": () => (/* binding */ _relExp),
+/* harmony export */   "_setDefaults": () => (/* binding */ _setDefaults),
+/* harmony export */   "_removeLinkedListItem": () => (/* binding */ _removeLinkedListItem),
+/* harmony export */   "_forEachName": () => (/* binding */ _forEachName),
+/* harmony export */   "_sortPropTweensByPriority": () => (/* binding */ _sortPropTweensByPriority),
+/* harmony export */   "_colorStringFilter": () => (/* binding */ _colorStringFilter),
+/* harmony export */   "_replaceRandom": () => (/* binding */ _replaceRandom),
+/* harmony export */   "_checkPlugin": () => (/* binding */ _checkPlugin),
+/* harmony export */   "_plugins": () => (/* binding */ _plugins),
+/* harmony export */   "_ticker": () => (/* binding */ _ticker),
+/* harmony export */   "_config": () => (/* binding */ _config),
+/* harmony export */   "_roundModifier": () => (/* binding */ _roundModifier),
+/* harmony export */   "_round": () => (/* binding */ _round),
+/* harmony export */   "_missingPlugin": () => (/* binding */ _missingPlugin),
+/* harmony export */   "_getSetter": () => (/* binding */ _getSetter),
+/* harmony export */   "_getCache": () => (/* binding */ _getCache),
+/* harmony export */   "_colorExp": () => (/* binding */ _colorExp),
+/* harmony export */   "_parseRelative": () => (/* binding */ _parseRelative)
+/* harmony export */ });
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.create(superClass.prototype); subClass.prototype.constructor = subClass; subClass.__proto__ = superClass; }
+
+/*!
+ * GSAP 3.10.4
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2022, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/* eslint-disable */
+var _config = {
+  autoSleep: 120,
+  force3D: "auto",
+  nullTargetWarn: 1,
+  units: {
+    lineHeight: ""
+  }
+},
+    _defaults = {
+  duration: .5,
+  overwrite: false,
+  delay: 0
+},
+    _suppressOverwrites,
+    _bigNum = 1e8,
+    _tinyNum = 1 / _bigNum,
+    _2PI = Math.PI * 2,
+    _HALF_PI = _2PI / 4,
+    _gsID = 0,
+    _sqrt = Math.sqrt,
+    _cos = Math.cos,
+    _sin = Math.sin,
+    _isString = function _isString(value) {
+  return typeof value === "string";
+},
+    _isFunction = function _isFunction(value) {
+  return typeof value === "function";
+},
+    _isNumber = function _isNumber(value) {
+  return typeof value === "number";
+},
+    _isUndefined = function _isUndefined(value) {
+  return typeof value === "undefined";
+},
+    _isObject = function _isObject(value) {
+  return typeof value === "object";
+},
+    _isNotFalse = function _isNotFalse(value) {
+  return value !== false;
+},
+    _windowExists = function _windowExists() {
+  return typeof window !== "undefined";
+},
+    _isFuncOrString = function _isFuncOrString(value) {
+  return _isFunction(value) || _isString(value);
+},
+    _isTypedArray = typeof ArrayBuffer === "function" && ArrayBuffer.isView || function () {},
+    // note: IE10 has ArrayBuffer, but NOT ArrayBuffer.isView().
+_isArray = Array.isArray,
+    _strictNumExp = /(?:-?\.?\d|\.)+/gi,
+    //only numbers (including negatives and decimals) but NOT relative values.
+_numExp = /[-+=.]*\d+[.e\-+]*\d*[e\-+]*\d*/g,
+    //finds any numbers, including ones that start with += or -=, negative numbers, and ones in scientific notation like 1e-8.
+_numWithUnitExp = /[-+=.]*\d+[.e-]*\d*[a-z%]*/g,
+    _complexStringNumExp = /[-+=.]*\d+\.?\d*(?:e-|e\+)?\d*/gi,
+    //duplicate so that while we're looping through matches from exec(), it doesn't contaminate the lastIndex of _numExp which we use to search for colors too.
+_relExp = /[+-]=-?[.\d]+/,
+    _delimitedValueExp = /[^,'"\[\]\s]+/gi,
+    // previously /[#\-+.]*\b[a-z\d\-=+%.]+/gi but didn't catch special characters.
+_unitExp = /^[+\-=e\s\d]*\d+[.\d]*([a-z]*|%)\s*$/i,
+    _globalTimeline,
+    _win,
+    _coreInitted,
+    _doc,
+    _globals = {},
+    _installScope = {},
+    _coreReady,
+    _install = function _install(scope) {
+  return (_installScope = _merge(scope, _globals)) && gsap;
+},
+    _missingPlugin = function _missingPlugin(property, value) {
+  return console.warn("Invalid property", property, "set to", value, "Missing plugin? gsap.registerPlugin()");
+},
+    _warn = function _warn(message, suppress) {
+  return !suppress && console.warn(message);
+},
+    _addGlobal = function _addGlobal(name, obj) {
+  return name && (_globals[name] = obj) && _installScope && (_installScope[name] = obj) || _globals;
+},
+    _emptyFunc = function _emptyFunc() {
+  return 0;
+},
+    _reservedProps = {},
+    _lazyTweens = [],
+    _lazyLookup = {},
+    _lastRenderedFrame,
+    _plugins = {},
+    _effects = {},
+    _nextGCFrame = 30,
+    _harnessPlugins = [],
+    _callbackNames = "",
+    _harness = function _harness(targets) {
+  var target = targets[0],
+      harnessPlugin,
+      i;
+  _isObject(target) || _isFunction(target) || (targets = [targets]);
+
+  if (!(harnessPlugin = (target._gsap || {}).harness)) {
+    // find the first target with a harness. We assume targets passed into an animation will be of similar type, meaning the same kind of harness can be used for them all (performance optimization)
+    i = _harnessPlugins.length;
+
+    while (i-- && !_harnessPlugins[i].targetTest(target)) {}
+
+    harnessPlugin = _harnessPlugins[i];
+  }
+
+  i = targets.length;
+
+  while (i--) {
+    targets[i] && (targets[i]._gsap || (targets[i]._gsap = new GSCache(targets[i], harnessPlugin))) || targets.splice(i, 1);
+  }
+
+  return targets;
+},
+    _getCache = function _getCache(target) {
+  return target._gsap || _harness(toArray(target))[0]._gsap;
+},
+    _getProperty = function _getProperty(target, property, v) {
+  return (v = target[property]) && _isFunction(v) ? target[property]() : _isUndefined(v) && target.getAttribute && target.getAttribute(property) || v;
+},
+    _forEachName = function _forEachName(names, func) {
+  return (names = names.split(",")).forEach(func) || names;
+},
+    //split a comma-delimited list of names into an array, then run a forEach() function and return the split array (this is just a way to consolidate/shorten some code).
+_round = function _round(value) {
+  return Math.round(value * 100000) / 100000 || 0;
+},
+    _roundPrecise = function _roundPrecise(value) {
+  return Math.round(value * 10000000) / 10000000 || 0;
+},
+    // increased precision mostly for timing values.
+_parseRelative = function _parseRelative(start, value) {
+  var operator = value.charAt(0),
+      end = parseFloat(value.substr(2));
+  start = parseFloat(start);
+  return operator === "+" ? start + end : operator === "-" ? start - end : operator === "*" ? start * end : start / end;
+},
+    _arrayContainsAny = function _arrayContainsAny(toSearch, toFind) {
+  //searches one array to find matches for any of the items in the toFind array. As soon as one is found, it returns true. It does NOT return all the matches; it's simply a boolean search.
+  var l = toFind.length,
+      i = 0;
+
+  for (; toSearch.indexOf(toFind[i]) < 0 && ++i < l;) {}
+
+  return i < l;
+},
+    _lazyRender = function _lazyRender() {
+  var l = _lazyTweens.length,
+      a = _lazyTweens.slice(0),
+      i,
+      tween;
+
+  _lazyLookup = {};
+  _lazyTweens.length = 0;
+
+  for (i = 0; i < l; i++) {
+    tween = a[i];
+    tween && tween._lazy && (tween.render(tween._lazy[0], tween._lazy[1], true)._lazy = 0);
+  }
+},
+    _lazySafeRender = function _lazySafeRender(animation, time, suppressEvents, force) {
+  _lazyTweens.length && _lazyRender();
+  animation.render(time, suppressEvents, force);
+  _lazyTweens.length && _lazyRender(); //in case rendering caused any tweens to lazy-init, we should render them because typically when someone calls seek() or time() or progress(), they expect an immediate render.
+},
+    _numericIfPossible = function _numericIfPossible(value) {
+  var n = parseFloat(value);
+  return (n || n === 0) && (value + "").match(_delimitedValueExp).length < 2 ? n : _isString(value) ? value.trim() : value;
+},
+    _passThrough = function _passThrough(p) {
+  return p;
+},
+    _setDefaults = function _setDefaults(obj, defaults) {
+  for (var p in defaults) {
+    p in obj || (obj[p] = defaults[p]);
+  }
+
+  return obj;
+},
+    _setKeyframeDefaults = function _setKeyframeDefaults(excludeDuration) {
+  return function (obj, defaults) {
+    for (var p in defaults) {
+      p in obj || p === "duration" && excludeDuration || p === "ease" || (obj[p] = defaults[p]);
+    }
+  };
+},
+    _merge = function _merge(base, toMerge) {
+  for (var p in toMerge) {
+    base[p] = toMerge[p];
+  }
+
+  return base;
+},
+    _mergeDeep = function _mergeDeep(base, toMerge) {
+  for (var p in toMerge) {
+    p !== "__proto__" && p !== "constructor" && p !== "prototype" && (base[p] = _isObject(toMerge[p]) ? _mergeDeep(base[p] || (base[p] = {}), toMerge[p]) : toMerge[p]);
+  }
+
+  return base;
+},
+    _copyExcluding = function _copyExcluding(obj, excluding) {
+  var copy = {},
+      p;
+
+  for (p in obj) {
+    p in excluding || (copy[p] = obj[p]);
+  }
+
+  return copy;
+},
+    _inheritDefaults = function _inheritDefaults(vars) {
+  var parent = vars.parent || _globalTimeline,
+      func = vars.keyframes ? _setKeyframeDefaults(_isArray(vars.keyframes)) : _setDefaults;
+
+  if (_isNotFalse(vars.inherit)) {
+    while (parent) {
+      func(vars, parent.vars.defaults);
+      parent = parent.parent || parent._dp;
+    }
+  }
+
+  return vars;
+},
+    _arraysMatch = function _arraysMatch(a1, a2) {
+  var i = a1.length,
+      match = i === a2.length;
+
+  while (match && i-- && a1[i] === a2[i]) {}
+
+  return i < 0;
+},
+    _addLinkedListItem = function _addLinkedListItem(parent, child, firstProp, lastProp, sortBy) {
+  if (firstProp === void 0) {
+    firstProp = "_first";
+  }
+
+  if (lastProp === void 0) {
+    lastProp = "_last";
+  }
+
+  var prev = parent[lastProp],
+      t;
+
+  if (sortBy) {
+    t = child[sortBy];
+
+    while (prev && prev[sortBy] > t) {
+      prev = prev._prev;
+    }
+  }
+
+  if (prev) {
+    child._next = prev._next;
+    prev._next = child;
+  } else {
+    child._next = parent[firstProp];
+    parent[firstProp] = child;
+  }
+
+  if (child._next) {
+    child._next._prev = child;
+  } else {
+    parent[lastProp] = child;
+  }
+
+  child._prev = prev;
+  child.parent = child._dp = parent;
+  return child;
+},
+    _removeLinkedListItem = function _removeLinkedListItem(parent, child, firstProp, lastProp) {
+  if (firstProp === void 0) {
+    firstProp = "_first";
+  }
+
+  if (lastProp === void 0) {
+    lastProp = "_last";
+  }
+
+  var prev = child._prev,
+      next = child._next;
+
+  if (prev) {
+    prev._next = next;
+  } else if (parent[firstProp] === child) {
+    parent[firstProp] = next;
+  }
+
+  if (next) {
+    next._prev = prev;
+  } else if (parent[lastProp] === child) {
+    parent[lastProp] = prev;
+  }
+
+  child._next = child._prev = child.parent = null; // don't delete the _dp just so we can revert if necessary. But parent should be null to indicate the item isn't in a linked list.
+},
+    _removeFromParent = function _removeFromParent(child, onlyIfParentHasAutoRemove) {
+  child.parent && (!onlyIfParentHasAutoRemove || child.parent.autoRemoveChildren) && child.parent.remove(child);
+  child._act = 0;
+},
+    _uncache = function _uncache(animation, child) {
+  if (animation && (!child || child._end > animation._dur || child._start < 0)) {
+    // performance optimization: if a child animation is passed in we should only uncache if that child EXTENDS the animation (its end time is beyond the end)
+    var a = animation;
+
+    while (a) {
+      a._dirty = 1;
+      a = a.parent;
+    }
+  }
+
+  return animation;
+},
+    _recacheAncestors = function _recacheAncestors(animation) {
+  var parent = animation.parent;
+
+  while (parent && parent.parent) {
+    //sometimes we must force a re-sort of all children and update the duration/totalDuration of all ancestor timelines immediately in case, for example, in the middle of a render loop, one tween alters another tween's timeScale which shoves its startTime before 0, forcing the parent timeline to shift around and shiftChildren() which could affect that next tween's render (startTime). Doesn't matter for the root timeline though.
+    parent._dirty = 1;
+    parent.totalDuration();
+    parent = parent.parent;
+  }
+
+  return animation;
+},
+    _hasNoPausedAncestors = function _hasNoPausedAncestors(animation) {
+  return !animation || animation._ts && _hasNoPausedAncestors(animation.parent);
+},
+    _elapsedCycleDuration = function _elapsedCycleDuration(animation) {
+  return animation._repeat ? _animationCycle(animation._tTime, animation = animation.duration() + animation._rDelay) * animation : 0;
+},
+    // feed in the totalTime and cycleDuration and it'll return the cycle (iteration minus 1) and if the playhead is exactly at the very END, it will NOT bump up to the next cycle.
+_animationCycle = function _animationCycle(tTime, cycleDuration) {
+  var whole = Math.floor(tTime /= cycleDuration);
+  return tTime && whole === tTime ? whole - 1 : whole;
+},
+    _parentToChildTotalTime = function _parentToChildTotalTime(parentTime, child) {
+  return (parentTime - child._start) * child._ts + (child._ts >= 0 ? 0 : child._dirty ? child.totalDuration() : child._tDur);
+},
+    _setEnd = function _setEnd(animation) {
+  return animation._end = _roundPrecise(animation._start + (animation._tDur / Math.abs(animation._ts || animation._rts || _tinyNum) || 0));
+},
+    _alignPlayhead = function _alignPlayhead(animation, totalTime) {
+  // adjusts the animation's _start and _end according to the provided totalTime (only if the parent's smoothChildTiming is true and the animation isn't paused). It doesn't do any rendering or forcing things back into parent timelines, etc. - that's what totalTime() is for.
+  var parent = animation._dp;
+
+  if (parent && parent.smoothChildTiming && animation._ts) {
+    animation._start = _roundPrecise(parent._time - (animation._ts > 0 ? totalTime / animation._ts : ((animation._dirty ? animation.totalDuration() : animation._tDur) - totalTime) / -animation._ts));
+
+    _setEnd(animation);
+
+    parent._dirty || _uncache(parent, animation); //for performance improvement. If the parent's cache is already dirty, it already took care of marking the ancestors as dirty too, so skip the function call here.
+  }
+
+  return animation;
+},
+
+/*
+_totalTimeToTime = (clampedTotalTime, duration, repeat, repeatDelay, yoyo) => {
+	let cycleDuration = duration + repeatDelay,
+		time = _round(clampedTotalTime % cycleDuration);
+	if (time > duration) {
+		time = duration;
+	}
+	return (yoyo && (~~(clampedTotalTime / cycleDuration) & 1)) ? duration - time : time;
+},
+*/
+_postAddChecks = function _postAddChecks(timeline, child) {
+  var t;
+
+  if (child._time || child._initted && !child._dur) {
+    //in case, for example, the _start is moved on a tween that has already rendered. Imagine it's at its end state, then the startTime is moved WAY later (after the end of this timeline), it should render at its beginning.
+    t = _parentToChildTotalTime(timeline.rawTime(), child);
+
+    if (!child._dur || _clamp(0, child.totalDuration(), t) - child._tTime > _tinyNum) {
+      child.render(t, true);
+    }
+  } //if the timeline has already ended but the inserted tween/timeline extends the duration, we should enable this timeline again so that it renders properly. We should also align the playhead with the parent timeline's when appropriate.
+
+
+  if (_uncache(timeline, child)._dp && timeline._initted && timeline._time >= timeline._dur && timeline._ts) {
+    //in case any of the ancestors had completed but should now be enabled...
+    if (timeline._dur < timeline.duration()) {
+      t = timeline;
+
+      while (t._dp) {
+        t.rawTime() >= 0 && t.totalTime(t._tTime); //moves the timeline (shifts its startTime) if necessary, and also enables it. If it's currently zero, though, it may not be scheduled to render until later so there's no need to force it to align with the current playhead position. Only move to catch up with the playhead.
+
+        t = t._dp;
+      }
+    }
+
+    timeline._zTime = -_tinyNum; // helps ensure that the next render() will be forced (crossingStart = true in render()), even if the duration hasn't changed (we're adding a child which would need to get rendered). Definitely an edge case. Note: we MUST do this AFTER the loop above where the totalTime() might trigger a render() because this _addToTimeline() method gets called from the Animation constructor, BEFORE tweens even record their targets, etc. so we wouldn't want things to get triggered in the wrong order.
+  }
+},
+    _addToTimeline = function _addToTimeline(timeline, child, position, skipChecks) {
+  child.parent && _removeFromParent(child);
+  child._start = _roundPrecise((_isNumber(position) ? position : position || timeline !== _globalTimeline ? _parsePosition(timeline, position, child) : timeline._time) + child._delay);
+  child._end = _roundPrecise(child._start + (child.totalDuration() / Math.abs(child.timeScale()) || 0));
+
+  _addLinkedListItem(timeline, child, "_first", "_last", timeline._sort ? "_start" : 0);
+
+  _isFromOrFromStart(child) || (timeline._recent = child);
+  skipChecks || _postAddChecks(timeline, child);
+  return timeline;
+},
+    _scrollTrigger = function _scrollTrigger(animation, trigger) {
+  return (_globals.ScrollTrigger || _missingPlugin("scrollTrigger", trigger)) && _globals.ScrollTrigger.create(trigger, animation);
+},
+    _attemptInitTween = function _attemptInitTween(tween, totalTime, force, suppressEvents) {
+  _initTween(tween, totalTime);
+
+  if (!tween._initted) {
+    return 1;
+  }
+
+  if (!force && tween._pt && (tween._dur && tween.vars.lazy !== false || !tween._dur && tween.vars.lazy) && _lastRenderedFrame !== _ticker.frame) {
+    _lazyTweens.push(tween);
+
+    tween._lazy = [totalTime, suppressEvents];
+    return 1;
+  }
+},
+    _parentPlayheadIsBeforeStart = function _parentPlayheadIsBeforeStart(_ref) {
+  var parent = _ref.parent;
+  return parent && parent._ts && parent._initted && !parent._lock && (parent.rawTime() < 0 || _parentPlayheadIsBeforeStart(parent));
+},
+    // check parent's _lock because when a timeline repeats/yoyos and does its artificial wrapping, we shouldn't force the ratio back to 0
+_isFromOrFromStart = function _isFromOrFromStart(_ref2) {
+  var data = _ref2.data;
+  return data === "isFromStart" || data === "isStart";
+},
+    _renderZeroDurationTween = function _renderZeroDurationTween(tween, totalTime, suppressEvents, force) {
+  var prevRatio = tween.ratio,
+      ratio = totalTime < 0 || !totalTime && (!tween._start && _parentPlayheadIsBeforeStart(tween) && !(!tween._initted && _isFromOrFromStart(tween)) || (tween._ts < 0 || tween._dp._ts < 0) && !_isFromOrFromStart(tween)) ? 0 : 1,
+      // if the tween or its parent is reversed and the totalTime is 0, we should go to a ratio of 0. Edge case: if a from() or fromTo() stagger tween is placed later in a timeline, the "startAt" zero-duration tween could initially render at a time when the parent timeline's playhead is technically BEFORE where this tween is, so make sure that any "from" and "fromTo" startAt tweens are rendered the first time at a ratio of 1.
+  repeatDelay = tween._rDelay,
+      tTime = 0,
+      pt,
+      iteration,
+      prevIteration;
+
+  if (repeatDelay && tween._repeat) {
+    // in case there's a zero-duration tween that has a repeat with a repeatDelay
+    tTime = _clamp(0, tween._tDur, totalTime);
+    iteration = _animationCycle(tTime, repeatDelay);
+    tween._yoyo && iteration & 1 && (ratio = 1 - ratio);
+
+    if (iteration !== _animationCycle(tween._tTime, repeatDelay)) {
+      // if iteration changed
+      prevRatio = 1 - ratio;
+      tween.vars.repeatRefresh && tween._initted && tween.invalidate();
+    }
+  }
+
+  if (ratio !== prevRatio || force || tween._zTime === _tinyNum || !totalTime && tween._zTime) {
+    if (!tween._initted && _attemptInitTween(tween, totalTime, force, suppressEvents)) {
+      // if we render the very beginning (time == 0) of a fromTo(), we must force the render (normal tweens wouldn't need to render at a time of 0 when the prevTime was also 0). This is also mandatory to make sure overwriting kicks in immediately.
+      return;
+    }
+
+    prevIteration = tween._zTime;
+    tween._zTime = totalTime || (suppressEvents ? _tinyNum : 0); // when the playhead arrives at EXACTLY time 0 (right on top) of a zero-duration tween, we need to discern if events are suppressed so that when the playhead moves again (next time), it'll trigger the callback. If events are NOT suppressed, obviously the callback would be triggered in this render. Basically, the callback should fire either when the playhead ARRIVES or LEAVES this exact spot, not both. Imagine doing a timeline.seek(0) and there's a callback that sits at 0. Since events are suppressed on that seek() by default, nothing will fire, but when the playhead moves off of that position, the callback should fire. This behavior is what people intuitively expect.
+
+    suppressEvents || (suppressEvents = totalTime && !prevIteration); // if it was rendered previously at exactly 0 (_zTime) and now the playhead is moving away, DON'T fire callbacks otherwise they'll seem like duplicates.
+
+    tween.ratio = ratio;
+    tween._from && (ratio = 1 - ratio);
+    tween._time = 0;
+    tween._tTime = tTime;
+    pt = tween._pt;
+
+    while (pt) {
+      pt.r(ratio, pt.d);
+      pt = pt._next;
+    }
+
+    tween._startAt && totalTime < 0 && tween._startAt.render(totalTime, true, true);
+    tween._onUpdate && !suppressEvents && _callback(tween, "onUpdate");
+    tTime && tween._repeat && !suppressEvents && tween.parent && _callback(tween, "onRepeat");
+
+    if ((totalTime >= tween._tDur || totalTime < 0) && tween.ratio === ratio) {
+      ratio && _removeFromParent(tween, 1);
+
+      if (!suppressEvents) {
+        _callback(tween, ratio ? "onComplete" : "onReverseComplete", true);
+
+        tween._prom && tween._prom();
+      }
+    }
+  } else if (!tween._zTime) {
+    tween._zTime = totalTime;
+  }
+},
+    _findNextPauseTween = function _findNextPauseTween(animation, prevTime, time) {
+  var child;
+
+  if (time > prevTime) {
+    child = animation._first;
+
+    while (child && child._start <= time) {
+      if (child.data === "isPause" && child._start > prevTime) {
+        return child;
+      }
+
+      child = child._next;
+    }
+  } else {
+    child = animation._last;
+
+    while (child && child._start >= time) {
+      if (child.data === "isPause" && child._start < prevTime) {
+        return child;
+      }
+
+      child = child._prev;
+    }
+  }
+},
+    _setDuration = function _setDuration(animation, duration, skipUncache, leavePlayhead) {
+  var repeat = animation._repeat,
+      dur = _roundPrecise(duration) || 0,
+      totalProgress = animation._tTime / animation._tDur;
+  totalProgress && !leavePlayhead && (animation._time *= dur / animation._dur);
+  animation._dur = dur;
+  animation._tDur = !repeat ? dur : repeat < 0 ? 1e10 : _roundPrecise(dur * (repeat + 1) + animation._rDelay * repeat);
+  totalProgress > 0 && !leavePlayhead ? _alignPlayhead(animation, animation._tTime = animation._tDur * totalProgress) : animation.parent && _setEnd(animation);
+  skipUncache || _uncache(animation.parent, animation);
+  return animation;
+},
+    _onUpdateTotalDuration = function _onUpdateTotalDuration(animation) {
+  return animation instanceof Timeline ? _uncache(animation) : _setDuration(animation, animation._dur);
+},
+    _zeroPosition = {
+  _start: 0,
+  endTime: _emptyFunc,
+  totalDuration: _emptyFunc
+},
+    _parsePosition = function _parsePosition(animation, position, percentAnimation) {
+  var labels = animation.labels,
+      recent = animation._recent || _zeroPosition,
+      clippedDuration = animation.duration() >= _bigNum ? recent.endTime(false) : animation._dur,
+      //in case there's a child that infinitely repeats, users almost never intend for the insertion point of a new child to be based on a SUPER long value like that so we clip it and assume the most recently-added child's endTime should be used instead.
+  i,
+      offset,
+      isPercent;
+
+  if (_isString(position) && (isNaN(position) || position in labels)) {
+    //if the string is a number like "1", check to see if there's a label with that name, otherwise interpret it as a number (absolute value).
+    offset = position.charAt(0);
+    isPercent = position.substr(-1) === "%";
+    i = position.indexOf("=");
+
+    if (offset === "<" || offset === ">") {
+      i >= 0 && (position = position.replace(/=/, ""));
+      return (offset === "<" ? recent._start : recent.endTime(recent._repeat >= 0)) + (parseFloat(position.substr(1)) || 0) * (isPercent ? (i < 0 ? recent : percentAnimation).totalDuration() / 100 : 1);
+    }
+
+    if (i < 0) {
+      position in labels || (labels[position] = clippedDuration);
+      return labels[position];
+    }
+
+    offset = parseFloat(position.charAt(i - 1) + position.substr(i + 1));
+
+    if (isPercent && percentAnimation) {
+      offset = offset / 100 * (_isArray(percentAnimation) ? percentAnimation[0] : percentAnimation).totalDuration();
+    }
+
+    return i > 1 ? _parsePosition(animation, position.substr(0, i - 1), percentAnimation) + offset : clippedDuration + offset;
+  }
+
+  return position == null ? clippedDuration : +position;
+},
+    _createTweenType = function _createTweenType(type, params, timeline) {
+  var isLegacy = _isNumber(params[1]),
+      varsIndex = (isLegacy ? 2 : 1) + (type < 2 ? 0 : 1),
+      vars = params[varsIndex],
+      irVars,
+      parent;
+
+  isLegacy && (vars.duration = params[1]);
+  vars.parent = timeline;
+
+  if (type) {
+    irVars = vars;
+    parent = timeline;
+
+    while (parent && !("immediateRender" in irVars)) {
+      // inheritance hasn't happened yet, but someone may have set a default in an ancestor timeline. We could do vars.immediateRender = _isNotFalse(_inheritDefaults(vars).immediateRender) but that'd exact a slight performance penalty because _inheritDefaults() also runs in the Tween constructor. We're paying a small kb price here to gain speed.
+      irVars = parent.vars.defaults || {};
+      parent = _isNotFalse(parent.vars.inherit) && parent.parent;
+    }
+
+    vars.immediateRender = _isNotFalse(irVars.immediateRender);
+    type < 2 ? vars.runBackwards = 1 : vars.startAt = params[varsIndex - 1]; // "from" vars
+  }
+
+  return new Tween(params[0], vars, params[varsIndex + 1]);
+},
+    _conditionalReturn = function _conditionalReturn(value, func) {
+  return value || value === 0 ? func(value) : func;
+},
+    _clamp = function _clamp(min, max, value) {
+  return value < min ? min : value > max ? max : value;
+},
+    getUnit = function getUnit(value, v) {
+  return !_isString(value) || !(v = _unitExp.exec(value)) ? "" : v[1];
+},
+    // note: protect against padded numbers as strings, like "100.100". That shouldn't return "00" as the unit. If it's numeric, return no unit.
+clamp = function clamp(min, max, value) {
+  return _conditionalReturn(value, function (v) {
+    return _clamp(min, max, v);
+  });
+},
+    _slice = [].slice,
+    _isArrayLike = function _isArrayLike(value, nonEmpty) {
+  return value && _isObject(value) && "length" in value && (!nonEmpty && !value.length || value.length - 1 in value && _isObject(value[0])) && !value.nodeType && value !== _win;
+},
+    _flatten = function _flatten(ar, leaveStrings, accumulator) {
+  if (accumulator === void 0) {
+    accumulator = [];
+  }
+
+  return ar.forEach(function (value) {
+    var _accumulator;
+
+    return _isString(value) && !leaveStrings || _isArrayLike(value, 1) ? (_accumulator = accumulator).push.apply(_accumulator, toArray(value)) : accumulator.push(value);
+  }) || accumulator;
+},
+    //takes any value and returns an array. If it's a string (and leaveStrings isn't true), it'll use document.querySelectorAll() and convert that to an array. It'll also accept iterables like jQuery objects.
+toArray = function toArray(value, scope, leaveStrings) {
+  return _isString(value) && !leaveStrings && (_coreInitted || !_wake()) ? _slice.call((scope || _doc).querySelectorAll(value), 0) : _isArray(value) ? _flatten(value, leaveStrings) : _isArrayLike(value) ? _slice.call(value, 0) : value ? [value] : [];
+},
+    selector = function selector(value) {
+  value = toArray(value)[0] || _warn("Invalid scope") || {};
+  return function (v) {
+    var el = value.current || value.nativeElement || value;
+    return toArray(v, el.querySelectorAll ? el : el === value ? _warn("Invalid scope") || _doc.createElement("div") : value);
+  };
+},
+    shuffle = function shuffle(a) {
+  return a.sort(function () {
+    return .5 - Math.random();
+  });
+},
+    // alternative that's a bit faster and more reliably diverse but bigger:   for (let j, v, i = a.length; i; j = Math.floor(Math.random() * i), v = a[--i], a[i] = a[j], a[j] = v); return a;
+//for distributing values across an array. Can accept a number, a function or (most commonly) a function which can contain the following properties: {base, amount, from, ease, grid, axis, length, each}. Returns a function that expects the following parameters: index, target, array. Recognizes the following
+distribute = function distribute(v) {
+  if (_isFunction(v)) {
+    return v;
+  }
+
+  var vars = _isObject(v) ? v : {
+    each: v
+  },
+      //n:1 is just to indicate v was a number; we leverage that later to set v according to the length we get. If a number is passed in, we treat it like the old stagger value where 0.1, for example, would mean that things would be distributed with 0.1 between each element in the array rather than a total "amount" that's chunked out among them all.
+  ease = _parseEase(vars.ease),
+      from = vars.from || 0,
+      base = parseFloat(vars.base) || 0,
+      cache = {},
+      isDecimal = from > 0 && from < 1,
+      ratios = isNaN(from) || isDecimal,
+      axis = vars.axis,
+      ratioX = from,
+      ratioY = from;
+
+  if (_isString(from)) {
+    ratioX = ratioY = {
+      center: .5,
+      edges: .5,
+      end: 1
+    }[from] || 0;
+  } else if (!isDecimal && ratios) {
+    ratioX = from[0];
+    ratioY = from[1];
+  }
+
+  return function (i, target, a) {
+    var l = (a || vars).length,
+        distances = cache[l],
+        originX,
+        originY,
+        x,
+        y,
+        d,
+        j,
+        max,
+        min,
+        wrapAt;
+
+    if (!distances) {
+      wrapAt = vars.grid === "auto" ? 0 : (vars.grid || [1, _bigNum])[1];
+
+      if (!wrapAt) {
+        max = -_bigNum;
+
+        while (max < (max = a[wrapAt++].getBoundingClientRect().left) && wrapAt < l) {}
+
+        wrapAt--;
+      }
+
+      distances = cache[l] = [];
+      originX = ratios ? Math.min(wrapAt, l) * ratioX - .5 : from % wrapAt;
+      originY = wrapAt === _bigNum ? 0 : ratios ? l * ratioY / wrapAt - .5 : from / wrapAt | 0;
+      max = 0;
+      min = _bigNum;
+
+      for (j = 0; j < l; j++) {
+        x = j % wrapAt - originX;
+        y = originY - (j / wrapAt | 0);
+        distances[j] = d = !axis ? _sqrt(x * x + y * y) : Math.abs(axis === "y" ? y : x);
+        d > max && (max = d);
+        d < min && (min = d);
+      }
+
+      from === "random" && shuffle(distances);
+      distances.max = max - min;
+      distances.min = min;
+      distances.v = l = (parseFloat(vars.amount) || parseFloat(vars.each) * (wrapAt > l ? l - 1 : !axis ? Math.max(wrapAt, l / wrapAt) : axis === "y" ? l / wrapAt : wrapAt) || 0) * (from === "edges" ? -1 : 1);
+      distances.b = l < 0 ? base - l : base;
+      distances.u = getUnit(vars.amount || vars.each) || 0; //unit
+
+      ease = ease && l < 0 ? _invertEase(ease) : ease;
+    }
+
+    l = (distances[i] - distances.min) / distances.max || 0;
+    return _roundPrecise(distances.b + (ease ? ease(l) : l) * distances.v) + distances.u; //round in order to work around floating point errors
+  };
+},
+    _roundModifier = function _roundModifier(v) {
+  //pass in 0.1 get a function that'll round to the nearest tenth, or 5 to round to the closest 5, or 0.001 to the closest 1000th, etc.
+  var p = Math.pow(10, ((v + "").split(".")[1] || "").length); //to avoid floating point math errors (like 24 * 0.1 == 2.4000000000000004), we chop off at a specific number of decimal places (much faster than toFixed())
+
+  return function (raw) {
+    var n = Math.round(parseFloat(raw) / v) * v * p;
+    return (n - n % 1) / p + (_isNumber(raw) ? 0 : getUnit(raw)); // n - n % 1 replaces Math.floor() in order to handle negative values properly. For example, Math.floor(-150.00000000000003) is 151!
+  };
+},
+    snap = function snap(snapTo, value) {
+  var isArray = _isArray(snapTo),
+      radius,
+      is2D;
+
+  if (!isArray && _isObject(snapTo)) {
+    radius = isArray = snapTo.radius || _bigNum;
+
+    if (snapTo.values) {
+      snapTo = toArray(snapTo.values);
+
+      if (is2D = !_isNumber(snapTo[0])) {
+        radius *= radius; //performance optimization so we don't have to Math.sqrt() in the loop.
+      }
+    } else {
+      snapTo = _roundModifier(snapTo.increment);
+    }
+  }
+
+  return _conditionalReturn(value, !isArray ? _roundModifier(snapTo) : _isFunction(snapTo) ? function (raw) {
+    is2D = snapTo(raw);
+    return Math.abs(is2D - raw) <= radius ? is2D : raw;
+  } : function (raw) {
+    var x = parseFloat(is2D ? raw.x : raw),
+        y = parseFloat(is2D ? raw.y : 0),
+        min = _bigNum,
+        closest = 0,
+        i = snapTo.length,
+        dx,
+        dy;
+
+    while (i--) {
+      if (is2D) {
+        dx = snapTo[i].x - x;
+        dy = snapTo[i].y - y;
+        dx = dx * dx + dy * dy;
+      } else {
+        dx = Math.abs(snapTo[i] - x);
+      }
+
+      if (dx < min) {
+        min = dx;
+        closest = i;
+      }
+    }
+
+    closest = !radius || min <= radius ? snapTo[closest] : raw;
+    return is2D || closest === raw || _isNumber(raw) ? closest : closest + getUnit(raw);
+  });
+},
+    random = function random(min, max, roundingIncrement, returnFunction) {
+  return _conditionalReturn(_isArray(min) ? !max : roundingIncrement === true ? !!(roundingIncrement = 0) : !returnFunction, function () {
+    return _isArray(min) ? min[~~(Math.random() * min.length)] : (roundingIncrement = roundingIncrement || 1e-5) && (returnFunction = roundingIncrement < 1 ? Math.pow(10, (roundingIncrement + "").length - 2) : 1) && Math.floor(Math.round((min - roundingIncrement / 2 + Math.random() * (max - min + roundingIncrement * .99)) / roundingIncrement) * roundingIncrement * returnFunction) / returnFunction;
+  });
+},
+    pipe = function pipe() {
+  for (var _len = arguments.length, functions = new Array(_len), _key = 0; _key < _len; _key++) {
+    functions[_key] = arguments[_key];
+  }
+
+  return function (value) {
+    return functions.reduce(function (v, f) {
+      return f(v);
+    }, value);
+  };
+},
+    unitize = function unitize(func, unit) {
+  return function (value) {
+    return func(parseFloat(value)) + (unit || getUnit(value));
+  };
+},
+    normalize = function normalize(min, max, value) {
+  return mapRange(min, max, 0, 1, value);
+},
+    _wrapArray = function _wrapArray(a, wrapper, value) {
+  return _conditionalReturn(value, function (index) {
+    return a[~~wrapper(index)];
+  });
+},
+    wrap = function wrap(min, max, value) {
+  // NOTE: wrap() CANNOT be an arrow function! A very odd compiling bug causes problems (unrelated to GSAP).
+  var range = max - min;
+  return _isArray(min) ? _wrapArray(min, wrap(0, min.length), max) : _conditionalReturn(value, function (value) {
+    return (range + (value - min) % range) % range + min;
+  });
+},
+    wrapYoyo = function wrapYoyo(min, max, value) {
+  var range = max - min,
+      total = range * 2;
+  return _isArray(min) ? _wrapArray(min, wrapYoyo(0, min.length - 1), max) : _conditionalReturn(value, function (value) {
+    value = (total + (value - min) % total) % total || 0;
+    return min + (value > range ? total - value : value);
+  });
+},
+    _replaceRandom = function _replaceRandom(value) {
+  //replaces all occurrences of random(...) in a string with the calculated random value. can be a range like random(-100, 100, 5) or an array like random([0, 100, 500])
+  var prev = 0,
+      s = "",
+      i,
+      nums,
+      end,
+      isArray;
+
+  while (~(i = value.indexOf("random(", prev))) {
+    end = value.indexOf(")", i);
+    isArray = value.charAt(i + 7) === "[";
+    nums = value.substr(i + 7, end - i - 7).match(isArray ? _delimitedValueExp : _strictNumExp);
+    s += value.substr(prev, i - prev) + random(isArray ? nums : +nums[0], isArray ? 0 : +nums[1], +nums[2] || 1e-5);
+    prev = end + 1;
+  }
+
+  return s + value.substr(prev, value.length - prev);
+},
+    mapRange = function mapRange(inMin, inMax, outMin, outMax, value) {
+  var inRange = inMax - inMin,
+      outRange = outMax - outMin;
+  return _conditionalReturn(value, function (value) {
+    return outMin + ((value - inMin) / inRange * outRange || 0);
+  });
+},
+    interpolate = function interpolate(start, end, progress, mutate) {
+  var func = isNaN(start + end) ? 0 : function (p) {
+    return (1 - p) * start + p * end;
+  };
+
+  if (!func) {
+    var isString = _isString(start),
+        master = {},
+        p,
+        i,
+        interpolators,
+        l,
+        il;
+
+    progress === true && (mutate = 1) && (progress = null);
+
+    if (isString) {
+      start = {
+        p: start
+      };
+      end = {
+        p: end
+      };
+    } else if (_isArray(start) && !_isArray(end)) {
+      interpolators = [];
+      l = start.length;
+      il = l - 2;
+
+      for (i = 1; i < l; i++) {
+        interpolators.push(interpolate(start[i - 1], start[i])); //build the interpolators up front as a performance optimization so that when the function is called many times, it can just reuse them.
+      }
+
+      l--;
+
+      func = function func(p) {
+        p *= l;
+        var i = Math.min(il, ~~p);
+        return interpolators[i](p - i);
+      };
+
+      progress = end;
+    } else if (!mutate) {
+      start = _merge(_isArray(start) ? [] : {}, start);
+    }
+
+    if (!interpolators) {
+      for (p in end) {
+        _addPropTween.call(master, start, p, "get", end[p]);
+      }
+
+      func = function func(p) {
+        return _renderPropTweens(p, master) || (isString ? start.p : start);
+      };
+    }
+  }
+
+  return _conditionalReturn(progress, func);
+},
+    _getLabelInDirection = function _getLabelInDirection(timeline, fromTime, backward) {
+  //used for nextLabel() and previousLabel()
+  var labels = timeline.labels,
+      min = _bigNum,
+      p,
+      distance,
+      label;
+
+  for (p in labels) {
+    distance = labels[p] - fromTime;
+
+    if (distance < 0 === !!backward && distance && min > (distance = Math.abs(distance))) {
+      label = p;
+      min = distance;
+    }
+  }
+
+  return label;
+},
+    _callback = function _callback(animation, type, executeLazyFirst) {
+  var v = animation.vars,
+      callback = v[type],
+      params,
+      scope;
+
+  if (!callback) {
+    return;
+  }
+
+  params = v[type + "Params"];
+  scope = v.callbackScope || animation;
+  executeLazyFirst && _lazyTweens.length && _lazyRender(); //in case rendering caused any tweens to lazy-init, we should render them because typically when a timeline finishes, users expect things to have rendered fully. Imagine an onUpdate on a timeline that reports/checks tweened values.
+
+  return params ? callback.apply(scope, params) : callback.call(scope);
+},
+    _interrupt = function _interrupt(animation) {
+  _removeFromParent(animation);
+
+  animation.scrollTrigger && animation.scrollTrigger.kill(false);
+  animation.progress() < 1 && _callback(animation, "onInterrupt");
+  return animation;
+},
+    _quickTween,
+    _createPlugin = function _createPlugin(config) {
+  config = !config.name && config["default"] || config; //UMD packaging wraps things oddly, so for example MotionPathHelper becomes {MotionPathHelper:MotionPathHelper, default:MotionPathHelper}.
+
+  var name = config.name,
+      isFunc = _isFunction(config),
+      Plugin = name && !isFunc && config.init ? function () {
+    this._props = [];
+  } : config,
+      //in case someone passes in an object that's not a plugin, like CustomEase
+  instanceDefaults = {
+    init: _emptyFunc,
+    render: _renderPropTweens,
+    add: _addPropTween,
+    kill: _killPropTweensOf,
+    modifier: _addPluginModifier,
+    rawVars: 0
+  },
+      statics = {
+    targetTest: 0,
+    get: 0,
+    getSetter: _getSetter,
+    aliases: {},
+    register: 0
+  };
+
+  _wake();
+
+  if (config !== Plugin) {
+    if (_plugins[name]) {
+      return;
+    }
+
+    _setDefaults(Plugin, _setDefaults(_copyExcluding(config, instanceDefaults), statics)); //static methods
+
+
+    _merge(Plugin.prototype, _merge(instanceDefaults, _copyExcluding(config, statics))); //instance methods
+
+
+    _plugins[Plugin.prop = name] = Plugin;
+
+    if (config.targetTest) {
+      _harnessPlugins.push(Plugin);
+
+      _reservedProps[name] = 1;
+    }
+
+    name = (name === "css" ? "CSS" : name.charAt(0).toUpperCase() + name.substr(1)) + "Plugin"; //for the global name. "motionPath" should become MotionPathPlugin
+  }
+
+  _addGlobal(name, Plugin);
+
+  config.register && config.register(gsap, Plugin, PropTween);
+},
+
+/*
+ * --------------------------------------------------------------------------------------
+ * COLORS
+ * --------------------------------------------------------------------------------------
+ */
+_255 = 255,
+    _colorLookup = {
+  aqua: [0, _255, _255],
+  lime: [0, _255, 0],
+  silver: [192, 192, 192],
+  black: [0, 0, 0],
+  maroon: [128, 0, 0],
+  teal: [0, 128, 128],
+  blue: [0, 0, _255],
+  navy: [0, 0, 128],
+  white: [_255, _255, _255],
+  olive: [128, 128, 0],
+  yellow: [_255, _255, 0],
+  orange: [_255, 165, 0],
+  gray: [128, 128, 128],
+  purple: [128, 0, 128],
+  green: [0, 128, 0],
+  red: [_255, 0, 0],
+  pink: [_255, 192, 203],
+  cyan: [0, _255, _255],
+  transparent: [_255, _255, _255, 0]
+},
+    // possible future idea to replace the hard-coded color name values - put this in the ticker.wake() where we set the _doc:
+// let ctx = _doc.createElement("canvas").getContext("2d");
+// _forEachName("aqua,lime,silver,black,maroon,teal,blue,navy,white,olive,yellow,orange,gray,purple,green,red,pink,cyan", color => {ctx.fillStyle = color; _colorLookup[color] = splitColor(ctx.fillStyle)});
+_hue = function _hue(h, m1, m2) {
+  h += h < 0 ? 1 : h > 1 ? -1 : 0;
+  return (h * 6 < 1 ? m1 + (m2 - m1) * h * 6 : h < .5 ? m2 : h * 3 < 2 ? m1 + (m2 - m1) * (2 / 3 - h) * 6 : m1) * _255 + .5 | 0;
+},
+    splitColor = function splitColor(v, toHSL, forceAlpha) {
+  var a = !v ? _colorLookup.black : _isNumber(v) ? [v >> 16, v >> 8 & _255, v & _255] : 0,
+      r,
+      g,
+      b,
+      h,
+      s,
+      l,
+      max,
+      min,
+      d,
+      wasHSL;
+
+  if (!a) {
+    if (v.substr(-1) === ",") {
+      //sometimes a trailing comma is included and we should chop it off (typically from a comma-delimited list of values like a textShadow:"2px 2px 2px blue, 5px 5px 5px rgb(255,0,0)" - in this example "blue," has a trailing comma. We could strip it out inside parseComplex() but we'd need to do it to the beginning and ending values plus it wouldn't provide protection from other potential scenarios like if the user passes in a similar value.
+      v = v.substr(0, v.length - 1);
+    }
+
+    if (_colorLookup[v]) {
+      a = _colorLookup[v];
+    } else if (v.charAt(0) === "#") {
+      if (v.length < 6) {
+        //for shorthand like #9F0 or #9F0F (could have alpha)
+        r = v.charAt(1);
+        g = v.charAt(2);
+        b = v.charAt(3);
+        v = "#" + r + r + g + g + b + b + (v.length === 5 ? v.charAt(4) + v.charAt(4) : "");
+      }
+
+      if (v.length === 9) {
+        // hex with alpha, like #fd5e53ff
+        a = parseInt(v.substr(1, 6), 16);
+        return [a >> 16, a >> 8 & _255, a & _255, parseInt(v.substr(7), 16) / 255];
+      }
+
+      v = parseInt(v.substr(1), 16);
+      a = [v >> 16, v >> 8 & _255, v & _255];
+    } else if (v.substr(0, 3) === "hsl") {
+      a = wasHSL = v.match(_strictNumExp);
+
+      if (!toHSL) {
+        h = +a[0] % 360 / 360;
+        s = +a[1] / 100;
+        l = +a[2] / 100;
+        g = l <= .5 ? l * (s + 1) : l + s - l * s;
+        r = l * 2 - g;
+        a.length > 3 && (a[3] *= 1); //cast as number
+
+        a[0] = _hue(h + 1 / 3, r, g);
+        a[1] = _hue(h, r, g);
+        a[2] = _hue(h - 1 / 3, r, g);
+      } else if (~v.indexOf("=")) {
+        //if relative values are found, just return the raw strings with the relative prefixes in place.
+        a = v.match(_numExp);
+        forceAlpha && a.length < 4 && (a[3] = 1);
+        return a;
+      }
+    } else {
+      a = v.match(_strictNumExp) || _colorLookup.transparent;
+    }
+
+    a = a.map(Number);
+  }
+
+  if (toHSL && !wasHSL) {
+    r = a[0] / _255;
+    g = a[1] / _255;
+    b = a[2] / _255;
+    max = Math.max(r, g, b);
+    min = Math.min(r, g, b);
+    l = (max + min) / 2;
+
+    if (max === min) {
+      h = s = 0;
+    } else {
+      d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+      h *= 60;
+    }
+
+    a[0] = ~~(h + .5);
+    a[1] = ~~(s * 100 + .5);
+    a[2] = ~~(l * 100 + .5);
+  }
+
+  forceAlpha && a.length < 4 && (a[3] = 1);
+  return a;
+},
+    _colorOrderData = function _colorOrderData(v) {
+  // strips out the colors from the string, finds all the numeric slots (with units) and returns an array of those. The Array also has a "c" property which is an Array of the index values where the colors belong. This is to help work around issues where there's a mis-matched order of color/numeric data like drop-shadow(#f00 0px 1px 2px) and drop-shadow(0x 1px 2px #f00). This is basically a helper function used in _formatColors()
+  var values = [],
+      c = [],
+      i = -1;
+  v.split(_colorExp).forEach(function (v) {
+    var a = v.match(_numWithUnitExp) || [];
+    values.push.apply(values, a);
+    c.push(i += a.length + 1);
+  });
+  values.c = c;
+  return values;
+},
+    _formatColors = function _formatColors(s, toHSL, orderMatchData) {
+  var result = "",
+      colors = (s + result).match(_colorExp),
+      type = toHSL ? "hsla(" : "rgba(",
+      i = 0,
+      c,
+      shell,
+      d,
+      l;
+
+  if (!colors) {
+    return s;
+  }
+
+  colors = colors.map(function (color) {
+    return (color = splitColor(color, toHSL, 1)) && type + (toHSL ? color[0] + "," + color[1] + "%," + color[2] + "%," + color[3] : color.join(",")) + ")";
+  });
+
+  if (orderMatchData) {
+    d = _colorOrderData(s);
+    c = orderMatchData.c;
+
+    if (c.join(result) !== d.c.join(result)) {
+      shell = s.replace(_colorExp, "1").split(_numWithUnitExp);
+      l = shell.length - 1;
+
+      for (; i < l; i++) {
+        result += shell[i] + (~c.indexOf(i) ? colors.shift() || type + "0,0,0,0)" : (d.length ? d : colors.length ? colors : orderMatchData).shift());
+      }
+    }
+  }
+
+  if (!shell) {
+    shell = s.split(_colorExp);
+    l = shell.length - 1;
+
+    for (; i < l; i++) {
+      result += shell[i] + colors[i];
+    }
+  }
+
+  return result + shell[l];
+},
+    _colorExp = function () {
+  var s = "(?:\\b(?:(?:rgb|rgba|hsl|hsla)\\(.+?\\))|\\B#(?:[0-9a-f]{3,4}){1,2}\\b",
+      //we'll dynamically build this Regular Expression to conserve file size. After building it, it will be able to find rgb(), rgba(), # (hexadecimal), and named color values like red, blue, purple, etc.,
+  p;
+
+  for (p in _colorLookup) {
+    s += "|" + p + "\\b";
+  }
+
+  return new RegExp(s + ")", "gi");
+}(),
+    _hslExp = /hsl[a]?\(/,
+    _colorStringFilter = function _colorStringFilter(a) {
+  var combined = a.join(" "),
+      toHSL;
+  _colorExp.lastIndex = 0;
+
+  if (_colorExp.test(combined)) {
+    toHSL = _hslExp.test(combined);
+    a[1] = _formatColors(a[1], toHSL);
+    a[0] = _formatColors(a[0], toHSL, _colorOrderData(a[1])); // make sure the order of numbers/colors match with the END value.
+
+    return true;
+  }
+},
+
+/*
+ * --------------------------------------------------------------------------------------
+ * TICKER
+ * --------------------------------------------------------------------------------------
+ */
+_tickerActive,
+    _ticker = function () {
+  var _getTime = Date.now,
+      _lagThreshold = 500,
+      _adjustedLag = 33,
+      _startTime = _getTime(),
+      _lastUpdate = _startTime,
+      _gap = 1000 / 240,
+      _nextTime = _gap,
+      _listeners = [],
+      _id,
+      _req,
+      _raf,
+      _self,
+      _delta,
+      _i,
+      _tick = function _tick(v) {
+    var elapsed = _getTime() - _lastUpdate,
+        manual = v === true,
+        overlap,
+        dispatch,
+        time,
+        frame;
+
+    elapsed > _lagThreshold && (_startTime += elapsed - _adjustedLag);
+    _lastUpdate += elapsed;
+    time = _lastUpdate - _startTime;
+    overlap = time - _nextTime;
+
+    if (overlap > 0 || manual) {
+      frame = ++_self.frame;
+      _delta = time - _self.time * 1000;
+      _self.time = time = time / 1000;
+      _nextTime += overlap + (overlap >= _gap ? 4 : _gap - overlap);
+      dispatch = 1;
+    }
+
+    manual || (_id = _req(_tick)); //make sure the request is made before we dispatch the "tick" event so that timing is maintained. Otherwise, if processing the "tick" requires a bunch of time (like 15ms) and we're using a setTimeout() that's based on 16.7ms, it'd technically take 31.7ms between frames otherwise.
+
+    if (dispatch) {
+      for (_i = 0; _i < _listeners.length; _i++) {
+        // use _i and check _listeners.length instead of a variable because a listener could get removed during the loop, and if that happens to an element less than the current index, it'd throw things off in the loop.
+        _listeners[_i](time, _delta, frame, v);
+      }
+    }
+  };
+
+  _self = {
+    time: 0,
+    frame: 0,
+    tick: function tick() {
+      _tick(true);
+    },
+    deltaRatio: function deltaRatio(fps) {
+      return _delta / (1000 / (fps || 60));
+    },
+    wake: function wake() {
+      if (_coreReady) {
+        if (!_coreInitted && _windowExists()) {
+          _win = _coreInitted = window;
+          _doc = _win.document || {};
+          _globals.gsap = gsap;
+          (_win.gsapVersions || (_win.gsapVersions = [])).push(gsap.version);
+
+          _install(_installScope || _win.GreenSockGlobals || !_win.gsap && _win || {});
+
+          _raf = _win.requestAnimationFrame;
+        }
+
+        _id && _self.sleep();
+
+        _req = _raf || function (f) {
+          return setTimeout(f, _nextTime - _self.time * 1000 + 1 | 0);
+        };
+
+        _tickerActive = 1;
+
+        _tick(2);
+      }
+    },
+    sleep: function sleep() {
+      (_raf ? _win.cancelAnimationFrame : clearTimeout)(_id);
+      _tickerActive = 0;
+      _req = _emptyFunc;
+    },
+    lagSmoothing: function lagSmoothing(threshold, adjustedLag) {
+      _lagThreshold = threshold || 1 / _tinyNum; //zero should be interpreted as basically unlimited
+
+      _adjustedLag = Math.min(adjustedLag, _lagThreshold, 0);
+    },
+    fps: function fps(_fps) {
+      _gap = 1000 / (_fps || 240);
+      _nextTime = _self.time * 1000 + _gap;
+    },
+    add: function add(callback, once, prioritize) {
+      var func = once ? function (t, d, f, v) {
+        callback(t, d, f, v);
+
+        _self.remove(func);
+      } : callback;
+
+      _self.remove(callback);
+
+      _listeners[prioritize ? "unshift" : "push"](func);
+
+      _wake();
+
+      return func;
+    },
+    remove: function remove(callback, i) {
+      ~(i = _listeners.indexOf(callback)) && _listeners.splice(i, 1) && _i >= i && _i--;
+    },
+    _listeners: _listeners
+  };
+  return _self;
+}(),
+    _wake = function _wake() {
+  return !_tickerActive && _ticker.wake();
+},
+    //also ensures the core classes are initialized.
+
+/*
+* -------------------------------------------------
+* EASING
+* -------------------------------------------------
+*/
+_easeMap = {},
+    _customEaseExp = /^[\d.\-M][\d.\-,\s]/,
+    _quotesExp = /["']/g,
+    _parseObjectInString = function _parseObjectInString(value) {
+  //takes a string like "{wiggles:10, type:anticipate})" and turns it into a real object. Notice it ends in ")" and includes the {} wrappers. This is because we only use this function for parsing ease configs and prioritized optimization rather than reusability.
+  var obj = {},
+      split = value.substr(1, value.length - 3).split(":"),
+      key = split[0],
+      i = 1,
+      l = split.length,
+      index,
+      val,
+      parsedVal;
+
+  for (; i < l; i++) {
+    val = split[i];
+    index = i !== l - 1 ? val.lastIndexOf(",") : val.length;
+    parsedVal = val.substr(0, index);
+    obj[key] = isNaN(parsedVal) ? parsedVal.replace(_quotesExp, "").trim() : +parsedVal;
+    key = val.substr(index + 1).trim();
+  }
+
+  return obj;
+},
+    _valueInParentheses = function _valueInParentheses(value) {
+  var open = value.indexOf("(") + 1,
+      close = value.indexOf(")"),
+      nested = value.indexOf("(", open);
+  return value.substring(open, ~nested && nested < close ? value.indexOf(")", close + 1) : close);
+},
+    _configEaseFromString = function _configEaseFromString(name) {
+  //name can be a string like "elastic.out(1,0.5)", and pass in _easeMap as obj and it'll parse it out and call the actual function like _easeMap.Elastic.easeOut.config(1,0.5). It will also parse custom ease strings as long as CustomEase is loaded and registered (internally as _easeMap._CE).
+  var split = (name + "").split("("),
+      ease = _easeMap[split[0]];
+  return ease && split.length > 1 && ease.config ? ease.config.apply(null, ~name.indexOf("{") ? [_parseObjectInString(split[1])] : _valueInParentheses(name).split(",").map(_numericIfPossible)) : _easeMap._CE && _customEaseExp.test(name) ? _easeMap._CE("", name) : ease;
+},
+    _invertEase = function _invertEase(ease) {
+  return function (p) {
+    return 1 - ease(1 - p);
+  };
+},
+    // allow yoyoEase to be set in children and have those affected when the parent/ancestor timeline yoyos.
+_propagateYoyoEase = function _propagateYoyoEase(timeline, isYoyo) {
+  var child = timeline._first,
+      ease;
+
+  while (child) {
+    if (child instanceof Timeline) {
+      _propagateYoyoEase(child, isYoyo);
+    } else if (child.vars.yoyoEase && (!child._yoyo || !child._repeat) && child._yoyo !== isYoyo) {
+      if (child.timeline) {
+        _propagateYoyoEase(child.timeline, isYoyo);
+      } else {
+        ease = child._ease;
+        child._ease = child._yEase;
+        child._yEase = ease;
+        child._yoyo = isYoyo;
+      }
+    }
+
+    child = child._next;
+  }
+},
+    _parseEase = function _parseEase(ease, defaultEase) {
+  return !ease ? defaultEase : (_isFunction(ease) ? ease : _easeMap[ease] || _configEaseFromString(ease)) || defaultEase;
+},
+    _insertEase = function _insertEase(names, easeIn, easeOut, easeInOut) {
+  if (easeOut === void 0) {
+    easeOut = function easeOut(p) {
+      return 1 - easeIn(1 - p);
+    };
+  }
+
+  if (easeInOut === void 0) {
+    easeInOut = function easeInOut(p) {
+      return p < .5 ? easeIn(p * 2) / 2 : 1 - easeIn((1 - p) * 2) / 2;
+    };
+  }
+
+  var ease = {
+    easeIn: easeIn,
+    easeOut: easeOut,
+    easeInOut: easeInOut
+  },
+      lowercaseName;
+
+  _forEachName(names, function (name) {
+    _easeMap[name] = _globals[name] = ease;
+    _easeMap[lowercaseName = name.toLowerCase()] = easeOut;
+
+    for (var p in ease) {
+      _easeMap[lowercaseName + (p === "easeIn" ? ".in" : p === "easeOut" ? ".out" : ".inOut")] = _easeMap[name + "." + p] = ease[p];
+    }
+  });
+
+  return ease;
+},
+    _easeInOutFromOut = function _easeInOutFromOut(easeOut) {
+  return function (p) {
+    return p < .5 ? (1 - easeOut(1 - p * 2)) / 2 : .5 + easeOut((p - .5) * 2) / 2;
+  };
+},
+    _configElastic = function _configElastic(type, amplitude, period) {
+  var p1 = amplitude >= 1 ? amplitude : 1,
+      //note: if amplitude is < 1, we simply adjust the period for a more natural feel. Otherwise the math doesn't work right and the curve starts at 1.
+  p2 = (period || (type ? .3 : .45)) / (amplitude < 1 ? amplitude : 1),
+      p3 = p2 / _2PI * (Math.asin(1 / p1) || 0),
+      easeOut = function easeOut(p) {
+    return p === 1 ? 1 : p1 * Math.pow(2, -10 * p) * _sin((p - p3) * p2) + 1;
+  },
+      ease = type === "out" ? easeOut : type === "in" ? function (p) {
+    return 1 - easeOut(1 - p);
+  } : _easeInOutFromOut(easeOut);
+
+  p2 = _2PI / p2; //precalculate to optimize
+
+  ease.config = function (amplitude, period) {
+    return _configElastic(type, amplitude, period);
+  };
+
+  return ease;
+},
+    _configBack = function _configBack(type, overshoot) {
+  if (overshoot === void 0) {
+    overshoot = 1.70158;
+  }
+
+  var easeOut = function easeOut(p) {
+    return p ? --p * p * ((overshoot + 1) * p + overshoot) + 1 : 0;
+  },
+      ease = type === "out" ? easeOut : type === "in" ? function (p) {
+    return 1 - easeOut(1 - p);
+  } : _easeInOutFromOut(easeOut);
+
+  ease.config = function (overshoot) {
+    return _configBack(type, overshoot);
+  };
+
+  return ease;
+}; // a cheaper (kb and cpu) but more mild way to get a parameterized weighted ease by feeding in a value between -1 (easeIn) and 1 (easeOut) where 0 is linear.
+// _weightedEase = ratio => {
+// 	let y = 0.5 + ratio / 2;
+// 	return p => (2 * (1 - p) * p * y + p * p);
+// },
+// a stronger (but more expensive kb/cpu) parameterized weighted ease that lets you feed in a value between -1 (easeIn) and 1 (easeOut) where 0 is linear.
+// _weightedEaseStrong = ratio => {
+// 	ratio = .5 + ratio / 2;
+// 	let o = 1 / 3 * (ratio < .5 ? ratio : 1 - ratio),
+// 		b = ratio - o,
+// 		c = ratio + o;
+// 	return p => p === 1 ? p : 3 * b * (1 - p) * (1 - p) * p + 3 * c * (1 - p) * p * p + p * p * p;
+// };
+
+
+_forEachName("Linear,Quad,Cubic,Quart,Quint,Strong", function (name, i) {
+  var power = i < 5 ? i + 1 : i;
+
+  _insertEase(name + ",Power" + (power - 1), i ? function (p) {
+    return Math.pow(p, power);
+  } : function (p) {
+    return p;
+  }, function (p) {
+    return 1 - Math.pow(1 - p, power);
+  }, function (p) {
+    return p < .5 ? Math.pow(p * 2, power) / 2 : 1 - Math.pow((1 - p) * 2, power) / 2;
+  });
+});
+
+_easeMap.Linear.easeNone = _easeMap.none = _easeMap.Linear.easeIn;
+
+_insertEase("Elastic", _configElastic("in"), _configElastic("out"), _configElastic());
+
+(function (n, c) {
+  var n1 = 1 / c,
+      n2 = 2 * n1,
+      n3 = 2.5 * n1,
+      easeOut = function easeOut(p) {
+    return p < n1 ? n * p * p : p < n2 ? n * Math.pow(p - 1.5 / c, 2) + .75 : p < n3 ? n * (p -= 2.25 / c) * p + .9375 : n * Math.pow(p - 2.625 / c, 2) + .984375;
+  };
+
+  _insertEase("Bounce", function (p) {
+    return 1 - easeOut(1 - p);
+  }, easeOut);
+})(7.5625, 2.75);
+
+_insertEase("Expo", function (p) {
+  return p ? Math.pow(2, 10 * (p - 1)) : 0;
+});
+
+_insertEase("Circ", function (p) {
+  return -(_sqrt(1 - p * p) - 1);
+});
+
+_insertEase("Sine", function (p) {
+  return p === 1 ? 1 : -_cos(p * _HALF_PI) + 1;
+});
+
+_insertEase("Back", _configBack("in"), _configBack("out"), _configBack());
+
+_easeMap.SteppedEase = _easeMap.steps = _globals.SteppedEase = {
+  config: function config(steps, immediateStart) {
+    if (steps === void 0) {
+      steps = 1;
+    }
+
+    var p1 = 1 / steps,
+        p2 = steps + (immediateStart ? 0 : 1),
+        p3 = immediateStart ? 1 : 0,
+        max = 1 - _tinyNum;
+    return function (p) {
+      return ((p2 * _clamp(0, max, p) | 0) + p3) * p1;
+    };
+  }
+};
+_defaults.ease = _easeMap["quad.out"];
+
+_forEachName("onComplete,onUpdate,onStart,onRepeat,onReverseComplete,onInterrupt", function (name) {
+  return _callbackNames += name + "," + name + "Params,";
+});
+/*
+ * --------------------------------------------------------------------------------------
+ * CACHE
+ * --------------------------------------------------------------------------------------
+ */
+
+
+var GSCache = function GSCache(target, harness) {
+  this.id = _gsID++;
+  target._gsap = this;
+  this.target = target;
+  this.harness = harness;
+  this.get = harness ? harness.get : _getProperty;
+  this.set = harness ? harness.getSetter : _getSetter;
+};
+/*
+ * --------------------------------------------------------------------------------------
+ * ANIMATION
+ * --------------------------------------------------------------------------------------
+ */
+
+var Animation = /*#__PURE__*/function () {
+  function Animation(vars) {
+    this.vars = vars;
+    this._delay = +vars.delay || 0;
+
+    if (this._repeat = vars.repeat === Infinity ? -2 : vars.repeat || 0) {
+      // TODO: repeat: Infinity on a timeline's children must flag that timeline internally and affect its totalDuration, otherwise it'll stop in the negative direction when reaching the start.
+      this._rDelay = vars.repeatDelay || 0;
+      this._yoyo = !!vars.yoyo || !!vars.yoyoEase;
+    }
+
+    this._ts = 1;
+
+    _setDuration(this, +vars.duration, 1, 1);
+
+    this.data = vars.data;
+    _tickerActive || _ticker.wake();
+  }
+
+  var _proto = Animation.prototype;
+
+  _proto.delay = function delay(value) {
+    if (value || value === 0) {
+      this.parent && this.parent.smoothChildTiming && this.startTime(this._start + value - this._delay);
+      this._delay = value;
+      return this;
+    }
+
+    return this._delay;
+  };
+
+  _proto.duration = function duration(value) {
+    return arguments.length ? this.totalDuration(this._repeat > 0 ? value + (value + this._rDelay) * this._repeat : value) : this.totalDuration() && this._dur;
+  };
+
+  _proto.totalDuration = function totalDuration(value) {
+    if (!arguments.length) {
+      return this._tDur;
+    }
+
+    this._dirty = 0;
+    return _setDuration(this, this._repeat < 0 ? value : (value - this._repeat * this._rDelay) / (this._repeat + 1));
+  };
+
+  _proto.totalTime = function totalTime(_totalTime, suppressEvents) {
+    _wake();
+
+    if (!arguments.length) {
+      return this._tTime;
+    }
+
+    var parent = this._dp;
+
+    if (parent && parent.smoothChildTiming && this._ts) {
+      _alignPlayhead(this, _totalTime);
+
+      !parent._dp || parent.parent || _postAddChecks(parent, this); // edge case: if this is a child of a timeline that already completed, for example, we must re-activate the parent.
+      //in case any of the ancestor timelines had completed but should now be enabled, we should reset their totalTime() which will also ensure that they're lined up properly and enabled. Skip for animations that are on the root (wasteful). Example: a TimelineLite.exportRoot() is performed when there's a paused tween on the root, the export will not complete until that tween is unpaused, but imagine a child gets restarted later, after all [unpaused] tweens have completed. The start of that child would get pushed out, but one of the ancestors may have completed.
+
+      while (parent && parent.parent) {
+        if (parent.parent._time !== parent._start + (parent._ts >= 0 ? parent._tTime / parent._ts : (parent.totalDuration() - parent._tTime) / -parent._ts)) {
+          parent.totalTime(parent._tTime, true);
+        }
+
+        parent = parent.parent;
+      }
+
+      if (!this.parent && this._dp.autoRemoveChildren && (this._ts > 0 && _totalTime < this._tDur || this._ts < 0 && _totalTime > 0 || !this._tDur && !_totalTime)) {
+        //if the animation doesn't have a parent, put it back into its last parent (recorded as _dp for exactly cases like this). Limit to parents with autoRemoveChildren (like globalTimeline) so that if the user manually removes an animation from a timeline and then alters its playhead, it doesn't get added back in.
+        _addToTimeline(this._dp, this, this._start - this._delay);
+      }
+    }
+
+    if (this._tTime !== _totalTime || !this._dur && !suppressEvents || this._initted && Math.abs(this._zTime) === _tinyNum || !_totalTime && !this._initted && (this.add || this._ptLookup)) {
+      // check for _ptLookup on a Tween instance to ensure it has actually finished being instantiated, otherwise if this.reverse() gets called in the Animation constructor, it could trigger a render() here even though the _targets weren't populated, thus when _init() is called there won't be any PropTweens (it'll act like the tween is non-functional)
+      this._ts || (this._pTime = _totalTime); // otherwise, if an animation is paused, then the playhead is moved back to zero, then resumed, it'd revert back to the original time at the pause
+      //if (!this._lock) { // avoid endless recursion (not sure we need this yet or if it's worth the performance hit)
+      //   this._lock = 1;
+
+      _lazySafeRender(this, _totalTime, suppressEvents); //   this._lock = 0;
+      //}
+
+    }
+
+    return this;
+  };
+
+  _proto.time = function time(value, suppressEvents) {
+    return arguments.length ? this.totalTime(Math.min(this.totalDuration(), value + _elapsedCycleDuration(this)) % (this._dur + this._rDelay) || (value ? this._dur : 0), suppressEvents) : this._time; // note: if the modulus results in 0, the playhead could be exactly at the end or the beginning, and we always defer to the END with a non-zero value, otherwise if you set the time() to the very end (duration()), it would render at the START!
+  };
+
+  _proto.totalProgress = function totalProgress(value, suppressEvents) {
+    return arguments.length ? this.totalTime(this.totalDuration() * value, suppressEvents) : this.totalDuration() ? Math.min(1, this._tTime / this._tDur) : this.ratio;
+  };
+
+  _proto.progress = function progress(value, suppressEvents) {
+    return arguments.length ? this.totalTime(this.duration() * (this._yoyo && !(this.iteration() & 1) ? 1 - value : value) + _elapsedCycleDuration(this), suppressEvents) : this.duration() ? Math.min(1, this._time / this._dur) : this.ratio;
+  };
+
+  _proto.iteration = function iteration(value, suppressEvents) {
+    var cycleDuration = this.duration() + this._rDelay;
+
+    return arguments.length ? this.totalTime(this._time + (value - 1) * cycleDuration, suppressEvents) : this._repeat ? _animationCycle(this._tTime, cycleDuration) + 1 : 1;
+  } // potential future addition:
+  // isPlayingBackwards() {
+  // 	let animation = this,
+  // 		orientation = 1; // 1 = forward, -1 = backward
+  // 	while (animation) {
+  // 		orientation *= animation.reversed() || (animation.repeat() && !(animation.iteration() & 1)) ? -1 : 1;
+  // 		animation = animation.parent;
+  // 	}
+  // 	return orientation < 0;
+  // }
+  ;
+
+  _proto.timeScale = function timeScale(value) {
+    if (!arguments.length) {
+      return this._rts === -_tinyNum ? 0 : this._rts; // recorded timeScale. Special case: if someone calls reverse() on an animation with timeScale of 0, we assign it -_tinyNum to remember it's reversed.
+    }
+
+    if (this._rts === value) {
+      return this;
+    }
+
+    var tTime = this.parent && this._ts ? _parentToChildTotalTime(this.parent._time, this) : this._tTime; // make sure to do the parentToChildTotalTime() BEFORE setting the new _ts because the old one must be used in that calculation.
+    // future addition? Up side: fast and minimal file size. Down side: only works on this animation; if a timeline is reversed, for example, its childrens' onReverse wouldn't get called.
+    //(+value < 0 && this._rts >= 0) && _callback(this, "onReverse", true);
+    // prioritize rendering where the parent's playhead lines up instead of this._tTime because there could be a tween that's animating another tween's timeScale in the same rendering loop (same parent), thus if the timeScale tween renders first, it would alter _start BEFORE _tTime was set on that tick (in the rendering loop), effectively freezing it until the timeScale tween finishes.
+
+    this._rts = +value || 0;
+    this._ts = this._ps || value === -_tinyNum ? 0 : this._rts; // _ts is the functional timeScale which would be 0 if the animation is paused.
+
+    this.totalTime(_clamp(-this._delay, this._tDur, tTime), true);
+
+    _setEnd(this); // if parent.smoothChildTiming was false, the end time didn't get updated in the _alignPlayhead() method, so do it here.
+
+
+    return _recacheAncestors(this);
+  };
+
+  _proto.paused = function paused(value) {
+    if (!arguments.length) {
+      return this._ps;
+    }
+
+    if (this._ps !== value) {
+      this._ps = value;
+
+      if (value) {
+        this._pTime = this._tTime || Math.max(-this._delay, this.rawTime()); // if the pause occurs during the delay phase, make sure that's factored in when resuming.
+
+        this._ts = this._act = 0; // _ts is the functional timeScale, so a paused tween would effectively have a timeScale of 0. We record the "real" timeScale as _rts (recorded time scale)
+      } else {
+        _wake();
+
+        this._ts = this._rts; //only defer to _pTime (pauseTime) if tTime is zero. Remember, someone could pause() an animation, then scrub the playhead and resume(). If the parent doesn't have smoothChildTiming, we render at the rawTime() because the startTime won't get updated.
+
+        this.totalTime(this.parent && !this.parent.smoothChildTiming ? this.rawTime() : this._tTime || this._pTime, this.progress() === 1 && Math.abs(this._zTime) !== _tinyNum && (this._tTime -= _tinyNum)); // edge case: animation.progress(1).pause().play() wouldn't render again because the playhead is already at the end, but the call to totalTime() below will add it back to its parent...and not remove it again (since removing only happens upon rendering at a new time). Offsetting the _tTime slightly is done simply to cause the final render in totalTime() that'll pop it off its timeline (if autoRemoveChildren is true, of course). Check to make sure _zTime isn't -_tinyNum to avoid an edge case where the playhead is pushed to the end but INSIDE a tween/callback, the timeline itself is paused thus halting rendering and leaving a few unrendered. When resuming, it wouldn't render those otherwise.
+      }
+    }
+
+    return this;
+  };
+
+  _proto.startTime = function startTime(value) {
+    if (arguments.length) {
+      this._start = value;
+      var parent = this.parent || this._dp;
+      parent && (parent._sort || !this.parent) && _addToTimeline(parent, this, value - this._delay);
+      return this;
+    }
+
+    return this._start;
+  };
+
+  _proto.endTime = function endTime(includeRepeats) {
+    return this._start + (_isNotFalse(includeRepeats) ? this.totalDuration() : this.duration()) / Math.abs(this._ts || 1);
+  };
+
+  _proto.rawTime = function rawTime(wrapRepeats) {
+    var parent = this.parent || this._dp; // _dp = detached parent
+
+    return !parent ? this._tTime : wrapRepeats && (!this._ts || this._repeat && this._time && this.totalProgress() < 1) ? this._tTime % (this._dur + this._rDelay) : !this._ts ? this._tTime : _parentToChildTotalTime(parent.rawTime(wrapRepeats), this);
+  };
+
+  _proto.globalTime = function globalTime(rawTime) {
+    var animation = this,
+        time = arguments.length ? rawTime : animation.rawTime();
+
+    while (animation) {
+      time = animation._start + time / (animation._ts || 1);
+      animation = animation._dp;
+    }
+
+    return time;
+  };
+
+  _proto.repeat = function repeat(value) {
+    if (arguments.length) {
+      this._repeat = value === Infinity ? -2 : value;
+      return _onUpdateTotalDuration(this);
+    }
+
+    return this._repeat === -2 ? Infinity : this._repeat;
+  };
+
+  _proto.repeatDelay = function repeatDelay(value) {
+    if (arguments.length) {
+      var time = this._time;
+      this._rDelay = value;
+
+      _onUpdateTotalDuration(this);
+
+      return time ? this.time(time) : this;
+    }
+
+    return this._rDelay;
+  };
+
+  _proto.yoyo = function yoyo(value) {
+    if (arguments.length) {
+      this._yoyo = value;
+      return this;
+    }
+
+    return this._yoyo;
+  };
+
+  _proto.seek = function seek(position, suppressEvents) {
+    return this.totalTime(_parsePosition(this, position), _isNotFalse(suppressEvents));
+  };
+
+  _proto.restart = function restart(includeDelay, suppressEvents) {
+    return this.play().totalTime(includeDelay ? -this._delay : 0, _isNotFalse(suppressEvents));
+  };
+
+  _proto.play = function play(from, suppressEvents) {
+    from != null && this.seek(from, suppressEvents);
+    return this.reversed(false).paused(false);
+  };
+
+  _proto.reverse = function reverse(from, suppressEvents) {
+    from != null && this.seek(from || this.totalDuration(), suppressEvents);
+    return this.reversed(true).paused(false);
+  };
+
+  _proto.pause = function pause(atTime, suppressEvents) {
+    atTime != null && this.seek(atTime, suppressEvents);
+    return this.paused(true);
+  };
+
+  _proto.resume = function resume() {
+    return this.paused(false);
+  };
+
+  _proto.reversed = function reversed(value) {
+    if (arguments.length) {
+      !!value !== this.reversed() && this.timeScale(-this._rts || (value ? -_tinyNum : 0)); // in case timeScale is zero, reversing would have no effect so we use _tinyNum.
+
+      return this;
+    }
+
+    return this._rts < 0;
+  };
+
+  _proto.invalidate = function invalidate() {
+    this._initted = this._act = 0;
+    this._zTime = -_tinyNum;
+    return this;
+  };
+
+  _proto.isActive = function isActive() {
+    var parent = this.parent || this._dp,
+        start = this._start,
+        rawTime;
+    return !!(!parent || this._ts && this._initted && parent.isActive() && (rawTime = parent.rawTime(true)) >= start && rawTime < this.endTime(true) - _tinyNum);
+  };
+
+  _proto.eventCallback = function eventCallback(type, callback, params) {
+    var vars = this.vars;
+
+    if (arguments.length > 1) {
+      if (!callback) {
+        delete vars[type];
+      } else {
+        vars[type] = callback;
+        params && (vars[type + "Params"] = params);
+        type === "onUpdate" && (this._onUpdate = callback);
+      }
+
+      return this;
+    }
+
+    return vars[type];
+  };
+
+  _proto.then = function then(onFulfilled) {
+    var self = this;
+    return new Promise(function (resolve) {
+      var f = _isFunction(onFulfilled) ? onFulfilled : _passThrough,
+          _resolve = function _resolve() {
+        var _then = self.then;
+        self.then = null; // temporarily null the then() method to avoid an infinite loop (see https://github.com/greensock/GSAP/issues/322)
+
+        _isFunction(f) && (f = f(self)) && (f.then || f === self) && (self.then = _then);
+        resolve(f);
+        self.then = _then;
+      };
+
+      if (self._initted && self.totalProgress() === 1 && self._ts >= 0 || !self._tTime && self._ts < 0) {
+        _resolve();
+      } else {
+        self._prom = _resolve;
+      }
+    });
+  };
+
+  _proto.kill = function kill() {
+    _interrupt(this);
+  };
+
+  return Animation;
+}();
+
+_setDefaults(Animation.prototype, {
+  _time: 0,
+  _start: 0,
+  _end: 0,
+  _tTime: 0,
+  _tDur: 0,
+  _dirty: 0,
+  _repeat: 0,
+  _yoyo: false,
+  parent: null,
+  _initted: false,
+  _rDelay: 0,
+  _ts: 1,
+  _dp: 0,
+  ratio: 0,
+  _zTime: -_tinyNum,
+  _prom: 0,
+  _ps: false,
+  _rts: 1
+});
+/*
+ * -------------------------------------------------
+ * TIMELINE
+ * -------------------------------------------------
+ */
+
+
+var Timeline = /*#__PURE__*/function (_Animation) {
+  _inheritsLoose(Timeline, _Animation);
+
+  function Timeline(vars, position) {
+    var _this;
+
+    if (vars === void 0) {
+      vars = {};
+    }
+
+    _this = _Animation.call(this, vars) || this;
+    _this.labels = {};
+    _this.smoothChildTiming = !!vars.smoothChildTiming;
+    _this.autoRemoveChildren = !!vars.autoRemoveChildren;
+    _this._sort = _isNotFalse(vars.sortChildren);
+    _globalTimeline && _addToTimeline(vars.parent || _globalTimeline, _assertThisInitialized(_this), position);
+    vars.reversed && _this.reverse();
+    vars.paused && _this.paused(true);
+    vars.scrollTrigger && _scrollTrigger(_assertThisInitialized(_this), vars.scrollTrigger);
+    return _this;
+  }
+
+  var _proto2 = Timeline.prototype;
+
+  _proto2.to = function to(targets, vars, position) {
+    _createTweenType(0, arguments, this);
+
+    return this;
+  };
+
+  _proto2.from = function from(targets, vars, position) {
+    _createTweenType(1, arguments, this);
+
+    return this;
+  };
+
+  _proto2.fromTo = function fromTo(targets, fromVars, toVars, position) {
+    _createTweenType(2, arguments, this);
+
+    return this;
+  };
+
+  _proto2.set = function set(targets, vars, position) {
+    vars.duration = 0;
+    vars.parent = this;
+    _inheritDefaults(vars).repeatDelay || (vars.repeat = 0);
+    vars.immediateRender = !!vars.immediateRender;
+    new Tween(targets, vars, _parsePosition(this, position), 1);
+    return this;
+  };
+
+  _proto2.call = function call(callback, params, position) {
+    return _addToTimeline(this, Tween.delayedCall(0, callback, params), position);
+  } //ONLY for backward compatibility! Maybe delete?
+  ;
+
+  _proto2.staggerTo = function staggerTo(targets, duration, vars, stagger, position, onCompleteAll, onCompleteAllParams) {
+    vars.duration = duration;
+    vars.stagger = vars.stagger || stagger;
+    vars.onComplete = onCompleteAll;
+    vars.onCompleteParams = onCompleteAllParams;
+    vars.parent = this;
+    new Tween(targets, vars, _parsePosition(this, position));
+    return this;
+  };
+
+  _proto2.staggerFrom = function staggerFrom(targets, duration, vars, stagger, position, onCompleteAll, onCompleteAllParams) {
+    vars.runBackwards = 1;
+    _inheritDefaults(vars).immediateRender = _isNotFalse(vars.immediateRender);
+    return this.staggerTo(targets, duration, vars, stagger, position, onCompleteAll, onCompleteAllParams);
+  };
+
+  _proto2.staggerFromTo = function staggerFromTo(targets, duration, fromVars, toVars, stagger, position, onCompleteAll, onCompleteAllParams) {
+    toVars.startAt = fromVars;
+    _inheritDefaults(toVars).immediateRender = _isNotFalse(toVars.immediateRender);
+    return this.staggerTo(targets, duration, toVars, stagger, position, onCompleteAll, onCompleteAllParams);
+  };
+
+  _proto2.render = function render(totalTime, suppressEvents, force) {
+    var prevTime = this._time,
+        tDur = this._dirty ? this.totalDuration() : this._tDur,
+        dur = this._dur,
+        tTime = totalTime <= 0 ? 0 : _roundPrecise(totalTime),
+        // if a paused timeline is resumed (or its _start is updated for another reason...which rounds it), that could result in the playhead shifting a **tiny** amount and a zero-duration child at that spot may get rendered at a different ratio, like its totalTime in render() may be 1e-17 instead of 0, for example.
+    crossingStart = this._zTime < 0 !== totalTime < 0 && (this._initted || !dur),
+        time,
+        child,
+        next,
+        iteration,
+        cycleDuration,
+        prevPaused,
+        pauseTween,
+        timeScale,
+        prevStart,
+        prevIteration,
+        yoyo,
+        isYoyo;
+    this !== _globalTimeline && tTime > tDur && totalTime >= 0 && (tTime = tDur);
+
+    if (tTime !== this._tTime || force || crossingStart) {
+      if (prevTime !== this._time && dur) {
+        //if totalDuration() finds a child with a negative startTime and smoothChildTiming is true, things get shifted around internally so we need to adjust the time accordingly. For example, if a tween starts at -30 we must shift EVERYTHING forward 30 seconds and move this timeline's startTime backward by 30 seconds so that things align with the playhead (no jump).
+        tTime += this._time - prevTime;
+        totalTime += this._time - prevTime;
+      }
+
+      time = tTime;
+      prevStart = this._start;
+      timeScale = this._ts;
+      prevPaused = !timeScale;
+
+      if (crossingStart) {
+        dur || (prevTime = this._zTime); //when the playhead arrives at EXACTLY time 0 (right on top) of a zero-duration timeline, we need to discern if events are suppressed so that when the playhead moves again (next time), it'll trigger the callback. If events are NOT suppressed, obviously the callback would be triggered in this render. Basically, the callback should fire either when the playhead ARRIVES or LEAVES this exact spot, not both. Imagine doing a timeline.seek(0) and there's a callback that sits at 0. Since events are suppressed on that seek() by default, nothing will fire, but when the playhead moves off of that position, the callback should fire. This behavior is what people intuitively expect.
+
+        (totalTime || !suppressEvents) && (this._zTime = totalTime);
+      }
+
+      if (this._repeat) {
+        //adjust the time for repeats and yoyos
+        yoyo = this._yoyo;
+        cycleDuration = dur + this._rDelay;
+
+        if (this._repeat < -1 && totalTime < 0) {
+          return this.totalTime(cycleDuration * 100 + totalTime, suppressEvents, force);
+        }
+
+        time = _roundPrecise(tTime % cycleDuration); //round to avoid floating point errors. (4 % 0.8 should be 0 but some browsers report it as 0.79999999!)
+
+        if (tTime === tDur) {
+          // the tDur === tTime is for edge cases where there's a lengthy decimal on the duration and it may reach the very end but the time is rendered as not-quite-there (remember, tDur is rounded to 4 decimals whereas dur isn't)
+          iteration = this._repeat;
+          time = dur;
+        } else {
+          iteration = ~~(tTime / cycleDuration);
+
+          if (iteration && iteration === tTime / cycleDuration) {
+            time = dur;
+            iteration--;
+          }
+
+          time > dur && (time = dur);
+        }
+
+        prevIteration = _animationCycle(this._tTime, cycleDuration);
+        !prevTime && this._tTime && prevIteration !== iteration && (prevIteration = iteration); // edge case - if someone does addPause() at the very beginning of a repeating timeline, that pause is technically at the same spot as the end which causes this._time to get set to 0 when the totalTime would normally place the playhead at the end. See https://greensock.com/forums/topic/23823-closing-nav-animation-not-working-on-ie-and-iphone-6-maybe-other-older-browser/?tab=comments#comment-113005
+
+        if (yoyo && iteration & 1) {
+          time = dur - time;
+          isYoyo = 1;
+        }
+        /*
+        make sure children at the end/beginning of the timeline are rendered properly. If, for example,
+        a 3-second long timeline rendered at 2.9 seconds previously, and now renders at 3.2 seconds (which
+        would get translated to 2.8 seconds if the timeline yoyos or 0.2 seconds if it just repeats), there
+        could be a callback or a short tween that's at 2.95 or 3 seconds in which wouldn't render. So
+        we need to push the timeline to the end (and/or beginning depending on its yoyo value). Also we must
+        ensure that zero-duration tweens at the very beginning or end of the Timeline work.
+        */
+
+
+        if (iteration !== prevIteration && !this._lock) {
+          var rewinding = yoyo && prevIteration & 1,
+              doesWrap = rewinding === (yoyo && iteration & 1);
+          iteration < prevIteration && (rewinding = !rewinding);
+          prevTime = rewinding ? 0 : dur;
+          this._lock = 1;
+          this.render(prevTime || (isYoyo ? 0 : _roundPrecise(iteration * cycleDuration)), suppressEvents, !dur)._lock = 0;
+          this._tTime = tTime; // if a user gets the iteration() inside the onRepeat, for example, it should be accurate.
+
+          !suppressEvents && this.parent && _callback(this, "onRepeat");
+          this.vars.repeatRefresh && !isYoyo && (this.invalidate()._lock = 1);
+
+          if (prevTime && prevTime !== this._time || prevPaused !== !this._ts || this.vars.onRepeat && !this.parent && !this._act) {
+            // if prevTime is 0 and we render at the very end, _time will be the end, thus won't match. So in this edge case, prevTime won't match _time but that's okay. If it gets killed in the onRepeat, eject as well.
+            return this;
+          }
+
+          dur = this._dur; // in case the duration changed in the onRepeat
+
+          tDur = this._tDur;
+
+          if (doesWrap) {
+            this._lock = 2;
+            prevTime = rewinding ? dur : -0.0001;
+            this.render(prevTime, true);
+            this.vars.repeatRefresh && !isYoyo && this.invalidate();
+          }
+
+          this._lock = 0;
+
+          if (!this._ts && !prevPaused) {
+            return this;
+          } //in order for yoyoEase to work properly when there's a stagger, we must swap out the ease in each sub-tween.
+
+
+          _propagateYoyoEase(this, isYoyo);
+        }
+      }
+
+      if (this._hasPause && !this._forcing && this._lock < 2) {
+        pauseTween = _findNextPauseTween(this, _roundPrecise(prevTime), _roundPrecise(time));
+
+        if (pauseTween) {
+          tTime -= time - (time = pauseTween._start);
+        }
+      }
+
+      this._tTime = tTime;
+      this._time = time;
+      this._act = !timeScale; //as long as it's not paused, force it to be active so that if the user renders independent of the parent timeline, it'll be forced to re-render on the next tick.
+
+      if (!this._initted) {
+        this._onUpdate = this.vars.onUpdate;
+        this._initted = 1;
+        this._zTime = totalTime;
+        prevTime = 0; // upon init, the playhead should always go forward; someone could invalidate() a completed timeline and then if they restart(), that would make child tweens render in reverse order which could lock in the wrong starting values if they build on each other, like tl.to(obj, {x: 100}).to(obj, {x: 0}).
+      }
+
+      if (!prevTime && time && !suppressEvents) {
+        _callback(this, "onStart");
+
+        if (this._tTime !== tTime) {
+          // in case the onStart triggered a render at a different spot, eject. Like if someone did animation.pause(0.5) or something inside the onStart.
+          return this;
+        }
+      }
+
+      if (time >= prevTime && totalTime >= 0) {
+        child = this._first;
+
+        while (child) {
+          next = child._next;
+
+          if ((child._act || time >= child._start) && child._ts && pauseTween !== child) {
+            if (child.parent !== this) {
+              // an extreme edge case - the child's render could do something like kill() the "next" one in the linked list, or reparent it. In that case we must re-initiate the whole render to be safe.
+              return this.render(totalTime, suppressEvents, force);
+            }
+
+            child.render(child._ts > 0 ? (time - child._start) * child._ts : (child._dirty ? child.totalDuration() : child._tDur) + (time - child._start) * child._ts, suppressEvents, force);
+
+            if (time !== this._time || !this._ts && !prevPaused) {
+              //in case a tween pauses or seeks the timeline when rendering, like inside of an onUpdate/onComplete
+              pauseTween = 0;
+              next && (tTime += this._zTime = -_tinyNum); // it didn't finish rendering, so flag zTime as negative so that so that the next time render() is called it'll be forced (to render any remaining children)
+
+              break;
+            }
+          }
+
+          child = next;
+        }
+      } else {
+        child = this._last;
+        var adjustedTime = totalTime < 0 ? totalTime : time; //when the playhead goes backward beyond the start of this timeline, we must pass that information down to the child animations so that zero-duration tweens know whether to render their starting or ending values.
+
+        while (child) {
+          next = child._prev;
+
+          if ((child._act || adjustedTime <= child._end) && child._ts && pauseTween !== child) {
+            if (child.parent !== this) {
+              // an extreme edge case - the child's render could do something like kill() the "next" one in the linked list, or reparent it. In that case we must re-initiate the whole render to be safe.
+              return this.render(totalTime, suppressEvents, force);
+            }
+
+            child.render(child._ts > 0 ? (adjustedTime - child._start) * child._ts : (child._dirty ? child.totalDuration() : child._tDur) + (adjustedTime - child._start) * child._ts, suppressEvents, force);
+
+            if (time !== this._time || !this._ts && !prevPaused) {
+              //in case a tween pauses or seeks the timeline when rendering, like inside of an onUpdate/onComplete
+              pauseTween = 0;
+              next && (tTime += this._zTime = adjustedTime ? -_tinyNum : _tinyNum); // it didn't finish rendering, so adjust zTime so that so that the next time render() is called it'll be forced (to render any remaining children)
+
+              break;
+            }
+          }
+
+          child = next;
+        }
+      }
+
+      if (pauseTween && !suppressEvents) {
+        this.pause();
+        pauseTween.render(time >= prevTime ? 0 : -_tinyNum)._zTime = time >= prevTime ? 1 : -1;
+
+        if (this._ts) {
+          //the callback resumed playback! So since we may have held back the playhead due to where the pause is positioned, go ahead and jump to where it's SUPPOSED to be (if no pause happened).
+          this._start = prevStart; //if the pause was at an earlier time and the user resumed in the callback, it could reposition the timeline (changing its startTime), throwing things off slightly, so we make sure the _start doesn't shift.
+
+          _setEnd(this);
+
+          return this.render(totalTime, suppressEvents, force);
+        }
+      }
+
+      this._onUpdate && !suppressEvents && _callback(this, "onUpdate", true);
+      if (tTime === tDur && this._tTime >= this.totalDuration() || !tTime && prevTime) if (prevStart === this._start || Math.abs(timeScale) !== Math.abs(this._ts)) if (!this._lock) {
+        // remember, a child's callback may alter this timeline's playhead or timeScale which is why we need to add some of these checks.
+        (totalTime || !dur) && (tTime === tDur && this._ts > 0 || !tTime && this._ts < 0) && _removeFromParent(this, 1); // don't remove if the timeline is reversed and the playhead isn't at 0, otherwise tl.progress(1).reverse() won't work. Only remove if the playhead is at the end and timeScale is positive, or if the playhead is at 0 and the timeScale is negative.
+
+        if (!suppressEvents && !(totalTime < 0 && !prevTime) && (tTime || prevTime || !tDur)) {
+          _callback(this, tTime === tDur && totalTime >= 0 ? "onComplete" : "onReverseComplete", true);
+
+          this._prom && !(tTime < tDur && this.timeScale() > 0) && this._prom();
+        }
+      }
+    }
+
+    return this;
+  };
+
+  _proto2.add = function add(child, position) {
+    var _this2 = this;
+
+    _isNumber(position) || (position = _parsePosition(this, position, child));
+
+    if (!(child instanceof Animation)) {
+      if (_isArray(child)) {
+        child.forEach(function (obj) {
+          return _this2.add(obj, position);
+        });
+        return this;
+      }
+
+      if (_isString(child)) {
+        return this.addLabel(child, position);
+      }
+
+      if (_isFunction(child)) {
+        child = Tween.delayedCall(0, child);
+      } else {
+        return this;
+      }
+    }
+
+    return this !== child ? _addToTimeline(this, child, position) : this; //don't allow a timeline to be added to itself as a child!
+  };
+
+  _proto2.getChildren = function getChildren(nested, tweens, timelines, ignoreBeforeTime) {
+    if (nested === void 0) {
+      nested = true;
+    }
+
+    if (tweens === void 0) {
+      tweens = true;
+    }
+
+    if (timelines === void 0) {
+      timelines = true;
+    }
+
+    if (ignoreBeforeTime === void 0) {
+      ignoreBeforeTime = -_bigNum;
+    }
+
+    var a = [],
+        child = this._first;
+
+    while (child) {
+      if (child._start >= ignoreBeforeTime) {
+        if (child instanceof Tween) {
+          tweens && a.push(child);
+        } else {
+          timelines && a.push(child);
+          nested && a.push.apply(a, child.getChildren(true, tweens, timelines));
+        }
+      }
+
+      child = child._next;
+    }
+
+    return a;
+  };
+
+  _proto2.getById = function getById(id) {
+    var animations = this.getChildren(1, 1, 1),
+        i = animations.length;
+
+    while (i--) {
+      if (animations[i].vars.id === id) {
+        return animations[i];
+      }
+    }
+  };
+
+  _proto2.remove = function remove(child) {
+    if (_isString(child)) {
+      return this.removeLabel(child);
+    }
+
+    if (_isFunction(child)) {
+      return this.killTweensOf(child);
+    }
+
+    _removeLinkedListItem(this, child);
+
+    if (child === this._recent) {
+      this._recent = this._last;
+    }
+
+    return _uncache(this);
+  };
+
+  _proto2.totalTime = function totalTime(_totalTime2, suppressEvents) {
+    if (!arguments.length) {
+      return this._tTime;
+    }
+
+    this._forcing = 1;
+
+    if (!this._dp && this._ts) {
+      //special case for the global timeline (or any other that has no parent or detached parent).
+      this._start = _roundPrecise(_ticker.time - (this._ts > 0 ? _totalTime2 / this._ts : (this.totalDuration() - _totalTime2) / -this._ts));
+    }
+
+    _Animation.prototype.totalTime.call(this, _totalTime2, suppressEvents);
+
+    this._forcing = 0;
+    return this;
+  };
+
+  _proto2.addLabel = function addLabel(label, position) {
+    this.labels[label] = _parsePosition(this, position);
+    return this;
+  };
+
+  _proto2.removeLabel = function removeLabel(label) {
+    delete this.labels[label];
+    return this;
+  };
+
+  _proto2.addPause = function addPause(position, callback, params) {
+    var t = Tween.delayedCall(0, callback || _emptyFunc, params);
+    t.data = "isPause";
+    this._hasPause = 1;
+    return _addToTimeline(this, t, _parsePosition(this, position));
+  };
+
+  _proto2.removePause = function removePause(position) {
+    var child = this._first;
+    position = _parsePosition(this, position);
+
+    while (child) {
+      if (child._start === position && child.data === "isPause") {
+        _removeFromParent(child);
+      }
+
+      child = child._next;
+    }
+  };
+
+  _proto2.killTweensOf = function killTweensOf(targets, props, onlyActive) {
+    var tweens = this.getTweensOf(targets, onlyActive),
+        i = tweens.length;
+
+    while (i--) {
+      _overwritingTween !== tweens[i] && tweens[i].kill(targets, props);
+    }
+
+    return this;
+  };
+
+  _proto2.getTweensOf = function getTweensOf(targets, onlyActive) {
+    var a = [],
+        parsedTargets = toArray(targets),
+        child = this._first,
+        isGlobalTime = _isNumber(onlyActive),
+        // a number is interpreted as a global time. If the animation spans
+    children;
+
+    while (child) {
+      if (child instanceof Tween) {
+        if (_arrayContainsAny(child._targets, parsedTargets) && (isGlobalTime ? (!_overwritingTween || child._initted && child._ts) && child.globalTime(0) <= onlyActive && child.globalTime(child.totalDuration()) > onlyActive : !onlyActive || child.isActive())) {
+          // note: if this is for overwriting, it should only be for tweens that aren't paused and are initted.
+          a.push(child);
+        }
+      } else if ((children = child.getTweensOf(parsedTargets, onlyActive)).length) {
+        a.push.apply(a, children);
+      }
+
+      child = child._next;
+    }
+
+    return a;
+  } // potential future feature - targets() on timelines
+  // targets() {
+  // 	let result = [];
+  // 	this.getChildren(true, true, false).forEach(t => result.push(...t.targets()));
+  // 	return result.filter((v, i) => result.indexOf(v) === i);
+  // }
+  ;
+
+  _proto2.tweenTo = function tweenTo(position, vars) {
+    vars = vars || {};
+
+    var tl = this,
+        endTime = _parsePosition(tl, position),
+        _vars = vars,
+        startAt = _vars.startAt,
+        _onStart = _vars.onStart,
+        onStartParams = _vars.onStartParams,
+        immediateRender = _vars.immediateRender,
+        initted,
+        tween = Tween.to(tl, _setDefaults({
+      ease: vars.ease || "none",
+      lazy: false,
+      immediateRender: false,
+      time: endTime,
+      overwrite: "auto",
+      duration: vars.duration || Math.abs((endTime - (startAt && "time" in startAt ? startAt.time : tl._time)) / tl.timeScale()) || _tinyNum,
+      onStart: function onStart() {
+        tl.pause();
+
+        if (!initted) {
+          var duration = vars.duration || Math.abs((endTime - (startAt && "time" in startAt ? startAt.time : tl._time)) / tl.timeScale());
+          tween._dur !== duration && _setDuration(tween, duration, 0, 1).render(tween._time, true, true);
+          initted = 1;
+        }
+
+        _onStart && _onStart.apply(tween, onStartParams || []); //in case the user had an onStart in the vars - we don't want to overwrite it.
+      }
+    }, vars));
+
+    return immediateRender ? tween.render(0) : tween;
+  };
+
+  _proto2.tweenFromTo = function tweenFromTo(fromPosition, toPosition, vars) {
+    return this.tweenTo(toPosition, _setDefaults({
+      startAt: {
+        time: _parsePosition(this, fromPosition)
+      }
+    }, vars));
+  };
+
+  _proto2.recent = function recent() {
+    return this._recent;
+  };
+
+  _proto2.nextLabel = function nextLabel(afterTime) {
+    if (afterTime === void 0) {
+      afterTime = this._time;
+    }
+
+    return _getLabelInDirection(this, _parsePosition(this, afterTime));
+  };
+
+  _proto2.previousLabel = function previousLabel(beforeTime) {
+    if (beforeTime === void 0) {
+      beforeTime = this._time;
+    }
+
+    return _getLabelInDirection(this, _parsePosition(this, beforeTime), 1);
+  };
+
+  _proto2.currentLabel = function currentLabel(value) {
+    return arguments.length ? this.seek(value, true) : this.previousLabel(this._time + _tinyNum);
+  };
+
+  _proto2.shiftChildren = function shiftChildren(amount, adjustLabels, ignoreBeforeTime) {
+    if (ignoreBeforeTime === void 0) {
+      ignoreBeforeTime = 0;
+    }
+
+    var child = this._first,
+        labels = this.labels,
+        p;
+
+    while (child) {
+      if (child._start >= ignoreBeforeTime) {
+        child._start += amount;
+        child._end += amount;
+      }
+
+      child = child._next;
+    }
+
+    if (adjustLabels) {
+      for (p in labels) {
+        if (labels[p] >= ignoreBeforeTime) {
+          labels[p] += amount;
+        }
+      }
+    }
+
+    return _uncache(this);
+  };
+
+  _proto2.invalidate = function invalidate() {
+    var child = this._first;
+    this._lock = 0;
+
+    while (child) {
+      child.invalidate();
+      child = child._next;
+    }
+
+    return _Animation.prototype.invalidate.call(this);
+  };
+
+  _proto2.clear = function clear(includeLabels) {
+    if (includeLabels === void 0) {
+      includeLabels = true;
+    }
+
+    var child = this._first,
+        next;
+
+    while (child) {
+      next = child._next;
+      this.remove(child);
+      child = next;
+    }
+
+    this._dp && (this._time = this._tTime = this._pTime = 0);
+    includeLabels && (this.labels = {});
+    return _uncache(this);
+  };
+
+  _proto2.totalDuration = function totalDuration(value) {
+    var max = 0,
+        self = this,
+        child = self._last,
+        prevStart = _bigNum,
+        prev,
+        start,
+        parent;
+
+    if (arguments.length) {
+      return self.timeScale((self._repeat < 0 ? self.duration() : self.totalDuration()) / (self.reversed() ? -value : value));
+    }
+
+    if (self._dirty) {
+      parent = self.parent;
+
+      while (child) {
+        prev = child._prev; //record it here in case the tween changes position in the sequence...
+
+        child._dirty && child.totalDuration(); //could change the tween._startTime, so make sure the animation's cache is clean before analyzing it.
+
+        start = child._start;
+
+        if (start > prevStart && self._sort && child._ts && !self._lock) {
+          //in case one of the tweens shifted out of order, it needs to be re-inserted into the correct position in the sequence
+          self._lock = 1; //prevent endless recursive calls - there are methods that get triggered that check duration/totalDuration when we add().
+
+          _addToTimeline(self, child, start - child._delay, 1)._lock = 0;
+        } else {
+          prevStart = start;
+        }
+
+        if (start < 0 && child._ts) {
+          //children aren't allowed to have negative startTimes unless smoothChildTiming is true, so adjust here if one is found.
+          max -= start;
+
+          if (!parent && !self._dp || parent && parent.smoothChildTiming) {
+            self._start += start / self._ts;
+            self._time -= start;
+            self._tTime -= start;
+          }
+
+          self.shiftChildren(-start, false, -1e999);
+          prevStart = 0;
+        }
+
+        child._end > max && child._ts && (max = child._end);
+        child = prev;
+      }
+
+      _setDuration(self, self === _globalTimeline && self._time > max ? self._time : max, 1, 1);
+
+      self._dirty = 0;
+    }
+
+    return self._tDur;
+  };
+
+  Timeline.updateRoot = function updateRoot(time) {
+    if (_globalTimeline._ts) {
+      _lazySafeRender(_globalTimeline, _parentToChildTotalTime(time, _globalTimeline));
+
+      _lastRenderedFrame = _ticker.frame;
+    }
+
+    if (_ticker.frame >= _nextGCFrame) {
+      _nextGCFrame += _config.autoSleep || 120;
+      var child = _globalTimeline._first;
+      if (!child || !child._ts) if (_config.autoSleep && _ticker._listeners.length < 2) {
+        while (child && !child._ts) {
+          child = child._next;
+        }
+
+        child || _ticker.sleep();
+      }
+    }
+  };
+
+  return Timeline;
+}(Animation);
+
+_setDefaults(Timeline.prototype, {
+  _lock: 0,
+  _hasPause: 0,
+  _forcing: 0
+});
+
+var _addComplexStringPropTween = function _addComplexStringPropTween(target, prop, start, end, setter, stringFilter, funcParam) {
+  //note: we call _addComplexStringPropTween.call(tweenInstance...) to ensure that it's scoped properly. We may call it from within a plugin too, thus "this" would refer to the plugin.
+  var pt = new PropTween(this._pt, target, prop, 0, 1, _renderComplexString, null, setter),
+      index = 0,
+      matchIndex = 0,
+      result,
+      startNums,
+      color,
+      endNum,
+      chunk,
+      startNum,
+      hasRandom,
+      a;
+  pt.b = start;
+  pt.e = end;
+  start += ""; //ensure values are strings
+
+  end += "";
+
+  if (hasRandom = ~end.indexOf("random(")) {
+    end = _replaceRandom(end);
+  }
+
+  if (stringFilter) {
+    a = [start, end];
+    stringFilter(a, target, prop); //pass an array with the starting and ending values and let the filter do whatever it needs to the values.
+
+    start = a[0];
+    end = a[1];
+  }
+
+  startNums = start.match(_complexStringNumExp) || [];
+
+  while (result = _complexStringNumExp.exec(end)) {
+    endNum = result[0];
+    chunk = end.substring(index, result.index);
+
+    if (color) {
+      color = (color + 1) % 5;
+    } else if (chunk.substr(-5) === "rgba(") {
+      color = 1;
+    }
+
+    if (endNum !== startNums[matchIndex++]) {
+      startNum = parseFloat(startNums[matchIndex - 1]) || 0; //these nested PropTweens are handled in a special way - we'll never actually call a render or setter method on them. We'll just loop through them in the parent complex string PropTween's render method.
+
+      pt._pt = {
+        _next: pt._pt,
+        p: chunk || matchIndex === 1 ? chunk : ",",
+        //note: SVG spec allows omission of comma/space when a negative sign is wedged between two numbers, like 2.5-5.3 instead of 2.5,-5.3 but when tweening, the negative value may switch to positive, so we insert the comma just in case.
+        s: startNum,
+        c: endNum.charAt(1) === "=" ? _parseRelative(startNum, endNum) - startNum : parseFloat(endNum) - startNum,
+        m: color && color < 4 ? Math.round : 0
+      };
+      index = _complexStringNumExp.lastIndex;
+    }
+  }
+
+  pt.c = index < end.length ? end.substring(index, end.length) : ""; //we use the "c" of the PropTween to store the final part of the string (after the last number)
+
+  pt.fp = funcParam;
+
+  if (_relExp.test(end) || hasRandom) {
+    pt.e = 0; //if the end string contains relative values or dynamic random(...) values, delete the end it so that on the final render we don't actually set it to the string with += or -= characters (forces it to use the calculated value).
+  }
+
+  this._pt = pt; //start the linked list with this new PropTween. Remember, we call _addComplexStringPropTween.call(tweenInstance...) to ensure that it's scoped properly. We may call it from within a plugin too, thus "this" would refer to the plugin.
+
+  return pt;
+},
+    _addPropTween = function _addPropTween(target, prop, start, end, index, targets, modifier, stringFilter, funcParam) {
+  _isFunction(end) && (end = end(index || 0, target, targets));
+  var currentValue = target[prop],
+      parsedStart = start !== "get" ? start : !_isFunction(currentValue) ? currentValue : funcParam ? target[prop.indexOf("set") || !_isFunction(target["get" + prop.substr(3)]) ? prop : "get" + prop.substr(3)](funcParam) : target[prop](),
+      setter = !_isFunction(currentValue) ? _setterPlain : funcParam ? _setterFuncWithParam : _setterFunc,
+      pt;
+
+  if (_isString(end)) {
+    if (~end.indexOf("random(")) {
+      end = _replaceRandom(end);
+    }
+
+    if (end.charAt(1) === "=") {
+      pt = _parseRelative(parsedStart, end) + (getUnit(parsedStart) || 0);
+
+      if (pt || pt === 0) {
+        // to avoid isNaN, like if someone passes in a value like "!= whatever"
+        end = pt;
+      }
+    }
+  }
+
+  if (parsedStart !== end || _forceAllPropTweens) {
+    if (!isNaN(parsedStart * end) && end !== "") {
+      // fun fact: any number multiplied by "" is evaluated as the number 0!
+      pt = new PropTween(this._pt, target, prop, +parsedStart || 0, end - (parsedStart || 0), typeof currentValue === "boolean" ? _renderBoolean : _renderPlain, 0, setter);
+      funcParam && (pt.fp = funcParam);
+      modifier && pt.modifier(modifier, this, target);
+      return this._pt = pt;
+    }
+
+    !currentValue && !(prop in target) && _missingPlugin(prop, end);
+    return _addComplexStringPropTween.call(this, target, prop, parsedStart, end, setter, stringFilter || _config.stringFilter, funcParam);
+  }
+},
+    //creates a copy of the vars object and processes any function-based values (putting the resulting values directly into the copy) as well as strings with "random()" in them. It does NOT process relative values.
+_processVars = function _processVars(vars, index, target, targets, tween) {
+  _isFunction(vars) && (vars = _parseFuncOrString(vars, tween, index, target, targets));
+
+  if (!_isObject(vars) || vars.style && vars.nodeType || _isArray(vars) || _isTypedArray(vars)) {
+    return _isString(vars) ? _parseFuncOrString(vars, tween, index, target, targets) : vars;
+  }
+
+  var copy = {},
+      p;
+
+  for (p in vars) {
+    copy[p] = _parseFuncOrString(vars[p], tween, index, target, targets);
+  }
+
+  return copy;
+},
+    _checkPlugin = function _checkPlugin(property, vars, tween, index, target, targets) {
+  var plugin, pt, ptLookup, i;
+
+  if (_plugins[property] && (plugin = new _plugins[property]()).init(target, plugin.rawVars ? vars[property] : _processVars(vars[property], index, target, targets, tween), tween, index, targets) !== false) {
+    tween._pt = pt = new PropTween(tween._pt, target, property, 0, 1, plugin.render, plugin, 0, plugin.priority);
+
+    if (tween !== _quickTween) {
+      ptLookup = tween._ptLookup[tween._targets.indexOf(target)]; //note: we can't use tween._ptLookup[index] because for staggered tweens, the index from the fullTargets array won't match what it is in each individual tween that spawns from the stagger.
+
+      i = plugin._props.length;
+
+      while (i--) {
+        ptLookup[plugin._props[i]] = pt;
+      }
+    }
+  }
+
+  return plugin;
+},
+    _overwritingTween,
+    //store a reference temporarily so we can avoid overwriting itself.
+_forceAllPropTweens,
+    _initTween = function _initTween(tween, time) {
+  var vars = tween.vars,
+      ease = vars.ease,
+      startAt = vars.startAt,
+      immediateRender = vars.immediateRender,
+      lazy = vars.lazy,
+      onUpdate = vars.onUpdate,
+      onUpdateParams = vars.onUpdateParams,
+      callbackScope = vars.callbackScope,
+      runBackwards = vars.runBackwards,
+      yoyoEase = vars.yoyoEase,
+      keyframes = vars.keyframes,
+      autoRevert = vars.autoRevert,
+      dur = tween._dur,
+      prevStartAt = tween._startAt,
+      targets = tween._targets,
+      parent = tween.parent,
+      fullTargets = parent && parent.data === "nested" ? parent.parent._targets : targets,
+      autoOverwrite = tween._overwrite === "auto" && !_suppressOverwrites,
+      tl = tween.timeline,
+      cleanVars,
+      i,
+      p,
+      pt,
+      target,
+      hasPriority,
+      gsData,
+      harness,
+      plugin,
+      ptLookup,
+      index,
+      harnessVars,
+      overwritten;
+  tl && (!keyframes || !ease) && (ease = "none");
+  tween._ease = _parseEase(ease, _defaults.ease);
+  tween._yEase = yoyoEase ? _invertEase(_parseEase(yoyoEase === true ? ease : yoyoEase, _defaults.ease)) : 0;
+
+  if (yoyoEase && tween._yoyo && !tween._repeat) {
+    //there must have been a parent timeline with yoyo:true that is currently in its yoyo phase, so flip the eases.
+    yoyoEase = tween._yEase;
+    tween._yEase = tween._ease;
+    tween._ease = yoyoEase;
+  }
+
+  tween._from = !tl && !!vars.runBackwards; //nested timelines should never run backwards - the backwards-ness is in the child tweens.
+
+  if (!tl || keyframes && !vars.stagger) {
+    //if there's an internal timeline, skip all the parsing because we passed that task down the chain.
+    harness = targets[0] ? _getCache(targets[0]).harness : 0;
+    harnessVars = harness && vars[harness.prop]; //someone may need to specify CSS-specific values AND non-CSS values, like if the element has an "x" property plus it's a standard DOM element. We allow people to distinguish by wrapping plugin-specific stuff in a css:{} object for example.
+
+    cleanVars = _copyExcluding(vars, _reservedProps);
+
+    if (prevStartAt) {
+      _removeFromParent(prevStartAt.render(-1, true));
+
+      prevStartAt._lazy = 0;
+    }
+
+    if (startAt) {
+      _removeFromParent(tween._startAt = Tween.set(targets, _setDefaults({
+        data: "isStart",
+        overwrite: false,
+        parent: parent,
+        immediateRender: true,
+        lazy: _isNotFalse(lazy),
+        startAt: null,
+        delay: 0,
+        onUpdate: onUpdate,
+        onUpdateParams: onUpdateParams,
+        callbackScope: callbackScope,
+        stagger: 0
+      }, startAt))); //copy the properties/values into a new object to avoid collisions, like var to = {x:0}, from = {x:500}; timeline.fromTo(e, from, to).fromTo(e, to, from);
+
+
+      time < 0 && !immediateRender && !autoRevert && tween._startAt.render(-1, true); // rare edge case, like if a render is forced in the negative direction of a non-initted tween.
+
+      if (immediateRender) {
+        time > 0 && !autoRevert && (tween._startAt = 0); //tweens that render immediately (like most from() and fromTo() tweens) shouldn't revert when their parent timeline's playhead goes backward past the startTime because the initial render could have happened anytime and it shouldn't be directly correlated to this tween's startTime. Imagine setting up a complex animation where the beginning states of various objects are rendered immediately but the tween doesn't happen for quite some time - if we revert to the starting values as soon as the playhead goes backward past the tween's startTime, it will throw things off visually. Reversion should only happen in Timeline instances where immediateRender was false or when autoRevert is explicitly set to true.
+
+        if (dur && time <= 0) {
+          time && (tween._zTime = time);
+          return; //we skip initialization here so that overwriting doesn't occur until the tween actually begins. Otherwise, if you create several immediateRender:true tweens of the same target/properties to drop into a Timeline, the last one created would overwrite the first ones because they didn't get placed into the timeline yet before the first render occurs and kicks in overwriting.
+        } // if (time > 0) {
+        // 	autoRevert || (tween._startAt = 0); //tweens that render immediately (like most from() and fromTo() tweens) shouldn't revert when their parent timeline's playhead goes backward past the startTime because the initial render could have happened anytime and it shouldn't be directly correlated to this tween's startTime. Imagine setting up a complex animation where the beginning states of various objects are rendered immediately but the tween doesn't happen for quite some time - if we revert to the starting values as soon as the playhead goes backward past the tween's startTime, it will throw things off visually. Reversion should only happen in Timeline instances where immediateRender was false or when autoRevert is explicitly set to true.
+        // } else if (dur && !(time < 0 && prevStartAt)) {
+        // 	time && (tween._zTime = time);
+        // 	return; //we skip initialization here so that overwriting doesn't occur until the tween actually begins. Otherwise, if you create several immediateRender:true tweens of the same target/properties to drop into a Timeline, the last one created would overwrite the first ones because they didn't get placed into the timeline yet before the first render occurs and kicks in overwriting.
+        // }
+
+      } else if (autoRevert === false) {
+        tween._startAt = 0;
+      }
+    } else if (runBackwards && dur) {
+      //from() tweens must be handled uniquely: their beginning values must be rendered but we don't want overwriting to occur yet (when time is still 0). Wait until the tween actually begins before doing all the routines like overwriting. At that time, we should render at the END of the tween to ensure that things initialize correctly (remember, from() tweens go backwards)
+      if (prevStartAt) {
+        !autoRevert && (tween._startAt = 0);
+      } else {
+        time && (immediateRender = false); //in rare cases (like if a from() tween runs and then is invalidate()-ed), immediateRender could be true but the initial forced-render gets skipped, so there's no need to force the render in this context when the _time is greater than 0
+
+        p = _setDefaults({
+          overwrite: false,
+          data: "isFromStart",
+          //we tag the tween with as "isFromStart" so that if [inside a plugin] we need to only do something at the very END of a tween, we have a way of identifying this tween as merely the one that's setting the beginning values for a "from()" tween. For example, clearProps in CSSPlugin should only get applied at the very END of a tween and without this tag, from(...{height:100, clearProps:"height", delay:1}) would wipe the height at the beginning of the tween and after 1 second, it'd kick back in.
+          lazy: immediateRender && _isNotFalse(lazy),
+          immediateRender: immediateRender,
+          //zero-duration tweens render immediately by default, but if we're not specifically instructed to render this tween immediately, we should skip this and merely _init() to record the starting values (rendering them immediately would push them to completion which is wasteful in that case - we'd have to render(-1) immediately after)
+          stagger: 0,
+          parent: parent //ensures that nested tweens that had a stagger are handled properly, like gsap.from(".class", {y:gsap.utils.wrap([-100,100])})
+
+        }, cleanVars);
+        harnessVars && (p[harness.prop] = harnessVars); // in case someone does something like .from(..., {css:{}})
+
+        _removeFromParent(tween._startAt = Tween.set(targets, p));
+
+        time < 0 && tween._startAt.render(-1, true); // rare edge case, like if a render is forced in the negative direction of a non-initted from() tween.
+
+        tween._zTime = time;
+
+        if (!immediateRender) {
+          _initTween(tween._startAt, _tinyNum); //ensures that the initial values are recorded
+
+        } else if (!time) {
+          return;
+        }
+      }
+    }
+
+    tween._pt = tween._ptCache = 0;
+    lazy = dur && _isNotFalse(lazy) || lazy && !dur;
+
+    for (i = 0; i < targets.length; i++) {
+      target = targets[i];
+      gsData = target._gsap || _harness(targets)[i]._gsap;
+      tween._ptLookup[i] = ptLookup = {};
+      _lazyLookup[gsData.id] && _lazyTweens.length && _lazyRender(); //if other tweens of the same target have recently initted but haven't rendered yet, we've got to force the render so that the starting values are correct (imagine populating a timeline with a bunch of sequential tweens and then jumping to the end)
+
+      index = fullTargets === targets ? i : fullTargets.indexOf(target);
+
+      if (harness && (plugin = new harness()).init(target, harnessVars || cleanVars, tween, index, fullTargets) !== false) {
+        tween._pt = pt = new PropTween(tween._pt, target, plugin.name, 0, 1, plugin.render, plugin, 0, plugin.priority);
+
+        plugin._props.forEach(function (name) {
+          ptLookup[name] = pt;
+        });
+
+        plugin.priority && (hasPriority = 1);
+      }
+
+      if (!harness || harnessVars) {
+        for (p in cleanVars) {
+          if (_plugins[p] && (plugin = _checkPlugin(p, cleanVars, tween, index, target, fullTargets))) {
+            plugin.priority && (hasPriority = 1);
+          } else {
+            ptLookup[p] = pt = _addPropTween.call(tween, target, p, "get", cleanVars[p], index, fullTargets, 0, vars.stringFilter);
+          }
+        }
+      }
+
+      tween._op && tween._op[i] && tween.kill(target, tween._op[i]);
+
+      if (autoOverwrite && tween._pt) {
+        _overwritingTween = tween;
+
+        _globalTimeline.killTweensOf(target, ptLookup, tween.globalTime(time)); // make sure the overwriting doesn't overwrite THIS tween!!!
+
+
+        overwritten = !tween.parent;
+        _overwritingTween = 0;
+      }
+
+      tween._pt && lazy && (_lazyLookup[gsData.id] = 1);
+    }
+
+    hasPriority && _sortPropTweensByPriority(tween);
+    tween._onInit && tween._onInit(tween); //plugins like RoundProps must wait until ALL of the PropTweens are instantiated. In the plugin's init() function, it sets the _onInit on the tween instance. May not be pretty/intuitive, but it's fast and keeps file size down.
+  }
+
+  tween._onUpdate = onUpdate;
+  tween._initted = (!tween._op || tween._pt) && !overwritten; // if overwrittenProps resulted in the entire tween being killed, do NOT flag it as initted or else it may render for one tick.
+
+  keyframes && time <= 0 && tl.render(_bigNum, true, true); // if there's a 0% keyframe, it'll render in the "before" state for any staggered/delayed animations thus when the following tween initializes, it'll use the "before" state instead of the "after" state as the initial values.
+},
+    _updatePropTweens = function _updatePropTweens(tween, property, value, start, startIsRelative, ratio, time) {
+  var ptCache = (tween._pt && tween._ptCache || (tween._ptCache = {}))[property],
+      pt,
+      lookup,
+      i;
+
+  if (!ptCache) {
+    ptCache = tween._ptCache[property] = [];
+    lookup = tween._ptLookup;
+    i = tween._targets.length;
+
+    while (i--) {
+      pt = lookup[i][property];
+
+      if (pt && pt.d && pt.d._pt) {
+        // it's a plugin, so find the nested PropTween
+        pt = pt.d._pt;
+
+        while (pt && pt.p !== property) {
+          pt = pt._next;
+        }
+      }
+
+      if (!pt) {
+        // there is no PropTween associated with that property, so we must FORCE one to be created and ditch out of this
+        // if the tween has other properties that already rendered at new positions, we'd normally have to rewind to put them back like tween.render(0, true) before forcing an _initTween(), but that can create another edge case like tweening a timeline's progress would trigger onUpdates to fire which could move other things around. It's better to just inform users that .resetTo() should ONLY be used for tweens that already have that property. For example, you can't gsap.to(...{ y: 0 }) and then tween.restTo("x", 200) for example.
+        _forceAllPropTweens = 1; // otherwise, when we _addPropTween() and it finds no change between the start and end values, it skips creating a PropTween (for efficiency...why tween when there's no difference?) but in this case we NEED that PropTween created so we can edit it.
+
+        tween.vars[property] = "+=0";
+
+        _initTween(tween, time);
+
+        _forceAllPropTweens = 0;
+        return 1;
+      }
+
+      ptCache.push(pt);
+    }
+  }
+
+  i = ptCache.length;
+
+  while (i--) {
+    pt = ptCache[i];
+    pt.s = (start || start === 0) && !startIsRelative ? start : pt.s + (start || 0) + ratio * pt.c;
+    pt.c = value - pt.s;
+    pt.e && (pt.e = _round(value) + getUnit(pt.e)); // mainly for CSSPlugin (end value)
+
+    pt.b && (pt.b = pt.s + getUnit(pt.b)); // (beginning value)
+  }
+},
+    _addAliasesToVars = function _addAliasesToVars(targets, vars) {
+  var harness = targets[0] ? _getCache(targets[0]).harness : 0,
+      propertyAliases = harness && harness.aliases,
+      copy,
+      p,
+      i,
+      aliases;
+
+  if (!propertyAliases) {
+    return vars;
+  }
+
+  copy = _merge({}, vars);
+
+  for (p in propertyAliases) {
+    if (p in copy) {
+      aliases = propertyAliases[p].split(",");
+      i = aliases.length;
+
+      while (i--) {
+        copy[aliases[i]] = copy[p];
+      }
+    }
+  }
+
+  return copy;
+},
+    // parses multiple formats, like {"0%": {x: 100}, {"50%": {x: -20}} and { x: {"0%": 100, "50%": -20} }, and an "ease" can be set on any object. We populate an "allProps" object with an Array for each property, like {x: [{}, {}], y:[{}, {}]} with data for each property tween. The objects have a "t" (time), "v", (value), and "e" (ease) property. This allows us to piece together a timeline later.
+_parseKeyframe = function _parseKeyframe(prop, obj, allProps, easeEach) {
+  var ease = obj.ease || easeEach || "power1.inOut",
+      p,
+      a;
+
+  if (_isArray(obj)) {
+    a = allProps[prop] || (allProps[prop] = []); // t = time (out of 100), v = value, e = ease
+
+    obj.forEach(function (value, i) {
+      return a.push({
+        t: i / (obj.length - 1) * 100,
+        v: value,
+        e: ease
+      });
+    });
+  } else {
+    for (p in obj) {
+      a = allProps[p] || (allProps[p] = []);
+      p === "ease" || a.push({
+        t: parseFloat(prop),
+        v: obj[p],
+        e: ease
+      });
+    }
+  }
+},
+    _parseFuncOrString = function _parseFuncOrString(value, tween, i, target, targets) {
+  return _isFunction(value) ? value.call(tween, i, target, targets) : _isString(value) && ~value.indexOf("random(") ? _replaceRandom(value) : value;
+},
+    _staggerTweenProps = _callbackNames + "repeat,repeatDelay,yoyo,repeatRefresh,yoyoEase,autoRevert",
+    _staggerPropsToSkip = {};
+
+_forEachName(_staggerTweenProps + ",id,stagger,delay,duration,paused,scrollTrigger", function (name) {
+  return _staggerPropsToSkip[name] = 1;
+});
+/*
+ * --------------------------------------------------------------------------------------
+ * TWEEN
+ * --------------------------------------------------------------------------------------
+ */
+
+
+var Tween = /*#__PURE__*/function (_Animation2) {
+  _inheritsLoose(Tween, _Animation2);
+
+  function Tween(targets, vars, position, skipInherit) {
+    var _this3;
+
+    if (typeof vars === "number") {
+      position.duration = vars;
+      vars = position;
+      position = null;
+    }
+
+    _this3 = _Animation2.call(this, skipInherit ? vars : _inheritDefaults(vars)) || this;
+    var _this3$vars = _this3.vars,
+        duration = _this3$vars.duration,
+        delay = _this3$vars.delay,
+        immediateRender = _this3$vars.immediateRender,
+        stagger = _this3$vars.stagger,
+        overwrite = _this3$vars.overwrite,
+        keyframes = _this3$vars.keyframes,
+        defaults = _this3$vars.defaults,
+        scrollTrigger = _this3$vars.scrollTrigger,
+        yoyoEase = _this3$vars.yoyoEase,
+        parent = vars.parent || _globalTimeline,
+        parsedTargets = (_isArray(targets) || _isTypedArray(targets) ? _isNumber(targets[0]) : "length" in vars) ? [targets] : toArray(targets),
+        tl,
+        i,
+        copy,
+        l,
+        p,
+        curTarget,
+        staggerFunc,
+        staggerVarsToMerge;
+    _this3._targets = parsedTargets.length ? _harness(parsedTargets) : _warn("GSAP target " + targets + " not found. https://greensock.com", !_config.nullTargetWarn) || [];
+    _this3._ptLookup = []; //PropTween lookup. An array containing an object for each target, having keys for each tweening property
+
+    _this3._overwrite = overwrite;
+
+    if (keyframes || stagger || _isFuncOrString(duration) || _isFuncOrString(delay)) {
+      vars = _this3.vars;
+      tl = _this3.timeline = new Timeline({
+        data: "nested",
+        defaults: defaults || {}
+      });
+      tl.kill();
+      tl.parent = tl._dp = _assertThisInitialized(_this3);
+      tl._start = 0;
+
+      if (stagger || _isFuncOrString(duration) || _isFuncOrString(delay)) {
+        l = parsedTargets.length;
+        staggerFunc = stagger && distribute(stagger);
+
+        if (_isObject(stagger)) {
+          //users can pass in callbacks like onStart/onComplete in the stagger object. These should fire with each individual tween.
+          for (p in stagger) {
+            if (~_staggerTweenProps.indexOf(p)) {
+              staggerVarsToMerge || (staggerVarsToMerge = {});
+              staggerVarsToMerge[p] = stagger[p];
+            }
+          }
+        }
+
+        for (i = 0; i < l; i++) {
+          copy = _copyExcluding(vars, _staggerPropsToSkip);
+          copy.stagger = 0;
+          yoyoEase && (copy.yoyoEase = yoyoEase);
+          staggerVarsToMerge && _merge(copy, staggerVarsToMerge);
+          curTarget = parsedTargets[i]; //don't just copy duration or delay because if they're a string or function, we'd end up in an infinite loop because _isFuncOrString() would evaluate as true in the child tweens, entering this loop, etc. So we parse the value straight from vars and default to 0.
+
+          copy.duration = +_parseFuncOrString(duration, _assertThisInitialized(_this3), i, curTarget, parsedTargets);
+          copy.delay = (+_parseFuncOrString(delay, _assertThisInitialized(_this3), i, curTarget, parsedTargets) || 0) - _this3._delay;
+
+          if (!stagger && l === 1 && copy.delay) {
+            // if someone does delay:"random(1, 5)", repeat:-1, for example, the delay shouldn't be inside the repeat.
+            _this3._delay = delay = copy.delay;
+            _this3._start += delay;
+            copy.delay = 0;
+          }
+
+          tl.to(curTarget, copy, staggerFunc ? staggerFunc(i, curTarget, parsedTargets) : 0);
+          tl._ease = _easeMap.none;
+        }
+
+        tl.duration() ? duration = delay = 0 : _this3.timeline = 0; // if the timeline's duration is 0, we don't need a timeline internally!
+      } else if (keyframes) {
+        _inheritDefaults(_setDefaults(tl.vars.defaults, {
+          ease: "none"
+        }));
+
+        tl._ease = _parseEase(keyframes.ease || vars.ease || "none");
+        var time = 0,
+            a,
+            kf,
+            v;
+
+        if (_isArray(keyframes)) {
+          keyframes.forEach(function (frame) {
+            return tl.to(parsedTargets, frame, ">");
+          });
+        } else {
+          copy = {};
+
+          for (p in keyframes) {
+            p === "ease" || p === "easeEach" || _parseKeyframe(p, keyframes[p], copy, keyframes.easeEach);
+          }
+
+          for (p in copy) {
+            a = copy[p].sort(function (a, b) {
+              return a.t - b.t;
+            });
+            time = 0;
+
+            for (i = 0; i < a.length; i++) {
+              kf = a[i];
+              v = {
+                ease: kf.e,
+                duration: (kf.t - (i ? a[i - 1].t : 0)) / 100 * duration
+              };
+              v[p] = kf.v;
+              tl.to(parsedTargets, v, time);
+              time += v.duration;
+            }
+          }
+
+          tl.duration() < duration && tl.to({}, {
+            duration: duration - tl.duration()
+          }); // in case keyframes didn't go to 100%
+        }
+      }
+
+      duration || _this3.duration(duration = tl.duration());
+    } else {
+      _this3.timeline = 0; //speed optimization, faster lookups (no going up the prototype chain)
+    }
+
+    if (overwrite === true && !_suppressOverwrites) {
+      _overwritingTween = _assertThisInitialized(_this3);
+
+      _globalTimeline.killTweensOf(parsedTargets);
+
+      _overwritingTween = 0;
+    }
+
+    _addToTimeline(parent, _assertThisInitialized(_this3), position);
+
+    vars.reversed && _this3.reverse();
+    vars.paused && _this3.paused(true);
+
+    if (immediateRender || !duration && !keyframes && _this3._start === _roundPrecise(parent._time) && _isNotFalse(immediateRender) && _hasNoPausedAncestors(_assertThisInitialized(_this3)) && parent.data !== "nested") {
+      _this3._tTime = -_tinyNum; //forces a render without having to set the render() "force" parameter to true because we want to allow lazying by default (using the "force" parameter always forces an immediate full render)
+
+      _this3.render(Math.max(0, -delay)); //in case delay is negative
+
+    }
+
+    scrollTrigger && _scrollTrigger(_assertThisInitialized(_this3), scrollTrigger);
+    return _this3;
+  }
+
+  var _proto3 = Tween.prototype;
+
+  _proto3.render = function render(totalTime, suppressEvents, force) {
+    var prevTime = this._time,
+        tDur = this._tDur,
+        dur = this._dur,
+        tTime = totalTime > tDur - _tinyNum && totalTime >= 0 ? tDur : totalTime < _tinyNum ? 0 : totalTime,
+        time,
+        pt,
+        iteration,
+        cycleDuration,
+        prevIteration,
+        isYoyo,
+        ratio,
+        timeline,
+        yoyoEase;
+
+    if (!dur) {
+      _renderZeroDurationTween(this, totalTime, suppressEvents, force);
+    } else if (tTime !== this._tTime || !totalTime || force || !this._initted && this._tTime || this._startAt && this._zTime < 0 !== totalTime < 0) {
+      //this senses if we're crossing over the start time, in which case we must record _zTime and force the render, but we do it in this lengthy conditional way for performance reasons (usually we can skip the calculations): this._initted && (this._zTime < 0) !== (totalTime < 0)
+      time = tTime;
+      timeline = this.timeline;
+
+      if (this._repeat) {
+        //adjust the time for repeats and yoyos
+        cycleDuration = dur + this._rDelay;
+
+        if (this._repeat < -1 && totalTime < 0) {
+          return this.totalTime(cycleDuration * 100 + totalTime, suppressEvents, force);
+        }
+
+        time = _roundPrecise(tTime % cycleDuration); //round to avoid floating point errors. (4 % 0.8 should be 0 but some browsers report it as 0.79999999!)
+
+        if (tTime === tDur) {
+          // the tDur === tTime is for edge cases where there's a lengthy decimal on the duration and it may reach the very end but the time is rendered as not-quite-there (remember, tDur is rounded to 4 decimals whereas dur isn't)
+          iteration = this._repeat;
+          time = dur;
+        } else {
+          iteration = ~~(tTime / cycleDuration);
+
+          if (iteration && iteration === tTime / cycleDuration) {
+            time = dur;
+            iteration--;
+          }
+
+          time > dur && (time = dur);
+        }
+
+        isYoyo = this._yoyo && iteration & 1;
+
+        if (isYoyo) {
+          yoyoEase = this._yEase;
+          time = dur - time;
+        }
+
+        prevIteration = _animationCycle(this._tTime, cycleDuration);
+
+        if (time === prevTime && !force && this._initted) {
+          //could be during the repeatDelay part. No need to render and fire callbacks.
+          this._tTime = tTime;
+          return this;
+        }
+
+        if (iteration !== prevIteration) {
+          timeline && this._yEase && _propagateYoyoEase(timeline, isYoyo); //repeatRefresh functionality
+
+          if (this.vars.repeatRefresh && !isYoyo && !this._lock) {
+            this._lock = force = 1; //force, otherwise if lazy is true, the _attemptInitTween() will return and we'll jump out and get caught bouncing on each tick.
+
+            this.render(_roundPrecise(cycleDuration * iteration), true).invalidate()._lock = 0;
+          }
+        }
+      }
+
+      if (!this._initted) {
+        if (_attemptInitTween(this, totalTime < 0 ? totalTime : time, force, suppressEvents)) {
+          this._tTime = 0; // in constructor if immediateRender is true, we set _tTime to -_tinyNum to have the playhead cross the starting point but we can't leave _tTime as a negative number.
+
+          return this;
+        }
+
+        if (prevTime !== this._time) {
+          // rare edge case - during initialization, an onUpdate in the _startAt (.fromTo()) might force this tween to render at a different spot in which case we should ditch this render() call so that it doesn't revert the values.
+          return this;
+        }
+
+        if (dur !== this._dur) {
+          // while initting, a plugin like InertiaPlugin might alter the duration, so rerun from the start to ensure everything renders as it should.
+          return this.render(totalTime, suppressEvents, force);
+        }
+      }
+
+      this._tTime = tTime;
+      this._time = time;
+
+      if (!this._act && this._ts) {
+        this._act = 1; //as long as it's not paused, force it to be active so that if the user renders independent of the parent timeline, it'll be forced to re-render on the next tick.
+
+        this._lazy = 0;
+      }
+
+      this.ratio = ratio = (yoyoEase || this._ease)(time / dur);
+
+      if (this._from) {
+        this.ratio = ratio = 1 - ratio;
+      }
+
+      if (time && !prevTime && !suppressEvents) {
+        _callback(this, "onStart");
+
+        if (this._tTime !== tTime) {
+          // in case the onStart triggered a render at a different spot, eject. Like if someone did animation.pause(0.5) or something inside the onStart.
+          return this;
+        }
+      }
+
+      pt = this._pt;
+
+      while (pt) {
+        pt.r(ratio, pt.d);
+        pt = pt._next;
+      }
+
+      timeline && timeline.render(totalTime < 0 ? totalTime : !time && isYoyo ? -_tinyNum : timeline._dur * timeline._ease(time / this._dur), suppressEvents, force) || this._startAt && (this._zTime = totalTime);
+
+      if (this._onUpdate && !suppressEvents) {
+        totalTime < 0 && this._startAt && this._startAt.render(totalTime, true, force); //note: for performance reasons, we tuck this conditional logic inside less traveled areas (most tweens don't have an onUpdate). We'd just have it at the end before the onComplete, but the values should be updated before any onUpdate is called, so we ALSO put it here and then if it's not called, we do so later near the onComplete.
+
+        _callback(this, "onUpdate");
+      }
+
+      this._repeat && iteration !== prevIteration && this.vars.onRepeat && !suppressEvents && this.parent && _callback(this, "onRepeat");
+
+      if ((tTime === this._tDur || !tTime) && this._tTime === tTime) {
+        totalTime < 0 && this._startAt && !this._onUpdate && this._startAt.render(totalTime, true, true);
+        (totalTime || !dur) && (tTime === this._tDur && this._ts > 0 || !tTime && this._ts < 0) && _removeFromParent(this, 1); // don't remove if we're rendering at exactly a time of 0, as there could be autoRevert values that should get set on the next tick (if the playhead goes backward beyond the startTime, negative totalTime). Don't remove if the timeline is reversed and the playhead isn't at 0, otherwise tl.progress(1).reverse() won't work. Only remove if the playhead is at the end and timeScale is positive, or if the playhead is at 0 and the timeScale is negative.
+
+        if (!suppressEvents && !(totalTime < 0 && !prevTime) && (tTime || prevTime)) {
+          // if prevTime and tTime are zero, we shouldn't fire the onReverseComplete. This could happen if you gsap.to(... {paused:true}).play();
+          _callback(this, tTime === tDur ? "onComplete" : "onReverseComplete", true);
+
+          this._prom && !(tTime < tDur && this.timeScale() > 0) && this._prom();
+        }
+      }
+    }
+
+    return this;
+  };
+
+  _proto3.targets = function targets() {
+    return this._targets;
+  };
+
+  _proto3.invalidate = function invalidate() {
+    this._pt = this._op = this._startAt = this._onUpdate = this._lazy = this.ratio = 0;
+    this._ptLookup = [];
+    this.timeline && this.timeline.invalidate();
+    return _Animation2.prototype.invalidate.call(this);
+  };
+
+  _proto3.resetTo = function resetTo(property, value, start, startIsRelative) {
+    _tickerActive || _ticker.wake();
+    this._ts || this.play();
+    var time = Math.min(this._dur, (this._dp._time - this._start) * this._ts),
+        ratio;
+    this._initted || _initTween(this, time);
+    ratio = this._ease(time / this._dur); // don't just get tween.ratio because it may not have rendered yet.
+    // possible future addition to allow an object with multiple values to update, like tween.resetTo({x: 100, y: 200}); At this point, it doesn't seem worth the added kb given the fact that most users will likely opt for the convenient gsap.quickTo() way of interacting with this method.
+    // if (_isObject(property)) { // performance optimization
+    // 	for (p in property) {
+    // 		if (_updatePropTweens(this, p, property[p], value ? value[p] : null, start, ratio, time)) {
+    // 			return this.resetTo(property, value, start, startIsRelative); // if a PropTween wasn't found for the property, it'll get forced with a re-initialization so we need to jump out and start over again.
+    // 		}
+    // 	}
+    // } else {
+
+    if (_updatePropTweens(this, property, value, start, startIsRelative, ratio, time)) {
+      return this.resetTo(property, value, start, startIsRelative); // if a PropTween wasn't found for the property, it'll get forced with a re-initialization so we need to jump out and start over again.
+    } //}
+
+
+    _alignPlayhead(this, 0);
+
+    this.parent || _addLinkedListItem(this._dp, this, "_first", "_last", this._dp._sort ? "_start" : 0);
+    return this.render(0);
+  };
+
+  _proto3.kill = function kill(targets, vars) {
+    if (vars === void 0) {
+      vars = "all";
+    }
+
+    if (!targets && (!vars || vars === "all")) {
+      this._lazy = this._pt = 0;
+      return this.parent ? _interrupt(this) : this;
+    }
+
+    if (this.timeline) {
+      var tDur = this.timeline.totalDuration();
+      this.timeline.killTweensOf(targets, vars, _overwritingTween && _overwritingTween.vars.overwrite !== true)._first || _interrupt(this); // if nothing is left tweening, interrupt.
+
+      this.parent && tDur !== this.timeline.totalDuration() && _setDuration(this, this._dur * this.timeline._tDur / tDur, 0, 1); // if a nested tween is killed that changes the duration, it should affect this tween's duration. We must use the ratio, though, because sometimes the internal timeline is stretched like for keyframes where they don't all add up to whatever the parent tween's duration was set to.
+
+      return this;
+    }
+
+    var parsedTargets = this._targets,
+        killingTargets = targets ? toArray(targets) : parsedTargets,
+        propTweenLookup = this._ptLookup,
+        firstPT = this._pt,
+        overwrittenProps,
+        curLookup,
+        curOverwriteProps,
+        props,
+        p,
+        pt,
+        i;
+
+    if ((!vars || vars === "all") && _arraysMatch(parsedTargets, killingTargets)) {
+      vars === "all" && (this._pt = 0);
+      return _interrupt(this);
+    }
+
+    overwrittenProps = this._op = this._op || [];
+
+    if (vars !== "all") {
+      //so people can pass in a comma-delimited list of property names
+      if (_isString(vars)) {
+        p = {};
+
+        _forEachName(vars, function (name) {
+          return p[name] = 1;
+        });
+
+        vars = p;
+      }
+
+      vars = _addAliasesToVars(parsedTargets, vars);
+    }
+
+    i = parsedTargets.length;
+
+    while (i--) {
+      if (~killingTargets.indexOf(parsedTargets[i])) {
+        curLookup = propTweenLookup[i];
+
+        if (vars === "all") {
+          overwrittenProps[i] = vars;
+          props = curLookup;
+          curOverwriteProps = {};
+        } else {
+          curOverwriteProps = overwrittenProps[i] = overwrittenProps[i] || {};
+          props = vars;
+        }
+
+        for (p in props) {
+          pt = curLookup && curLookup[p];
+
+          if (pt) {
+            if (!("kill" in pt.d) || pt.d.kill(p) === true) {
+              _removeLinkedListItem(this, pt, "_pt");
+            }
+
+            delete curLookup[p];
+          }
+
+          if (curOverwriteProps !== "all") {
+            curOverwriteProps[p] = 1;
+          }
+        }
+      }
+    }
+
+    this._initted && !this._pt && firstPT && _interrupt(this); //if all tweening properties are killed, kill the tween. Without this line, if there's a tween with multiple targets and then you killTweensOf() each target individually, the tween would technically still remain active and fire its onComplete even though there aren't any more properties tweening.
+
+    return this;
+  };
+
+  Tween.to = function to(targets, vars) {
+    return new Tween(targets, vars, arguments[2]);
+  };
+
+  Tween.from = function from(targets, vars) {
+    return _createTweenType(1, arguments);
+  };
+
+  Tween.delayedCall = function delayedCall(delay, callback, params, scope) {
+    return new Tween(callback, 0, {
+      immediateRender: false,
+      lazy: false,
+      overwrite: false,
+      delay: delay,
+      onComplete: callback,
+      onReverseComplete: callback,
+      onCompleteParams: params,
+      onReverseCompleteParams: params,
+      callbackScope: scope
+    });
+  };
+
+  Tween.fromTo = function fromTo(targets, fromVars, toVars) {
+    return _createTweenType(2, arguments);
+  };
+
+  Tween.set = function set(targets, vars) {
+    vars.duration = 0;
+    vars.repeatDelay || (vars.repeat = 0);
+    return new Tween(targets, vars);
+  };
+
+  Tween.killTweensOf = function killTweensOf(targets, props, onlyActive) {
+    return _globalTimeline.killTweensOf(targets, props, onlyActive);
+  };
+
+  return Tween;
+}(Animation);
+
+_setDefaults(Tween.prototype, {
+  _targets: [],
+  _lazy: 0,
+  _startAt: 0,
+  _op: 0,
+  _onInit: 0
+}); //add the pertinent timeline methods to Tween instances so that users can chain conveniently and create a timeline automatically. (removed due to concerns that it'd ultimately add to more confusion especially for beginners)
+// _forEachName("to,from,fromTo,set,call,add,addLabel,addPause", name => {
+// 	Tween.prototype[name] = function() {
+// 		let tl = new Timeline();
+// 		return _addToTimeline(tl, this)[name].apply(tl, toArray(arguments));
+// 	}
+// });
+//for backward compatibility. Leverage the timeline calls.
+
+
+_forEachName("staggerTo,staggerFrom,staggerFromTo", function (name) {
+  Tween[name] = function () {
+    var tl = new Timeline(),
+        params = _slice.call(arguments, 0);
+
+    params.splice(name === "staggerFromTo" ? 5 : 4, 0, 0);
+    return tl[name].apply(tl, params);
+  };
+});
+/*
+ * --------------------------------------------------------------------------------------
+ * PROPTWEEN
+ * --------------------------------------------------------------------------------------
+ */
+
+
+var _setterPlain = function _setterPlain(target, property, value) {
+  return target[property] = value;
+},
+    _setterFunc = function _setterFunc(target, property, value) {
+  return target[property](value);
+},
+    _setterFuncWithParam = function _setterFuncWithParam(target, property, value, data) {
+  return target[property](data.fp, value);
+},
+    _setterAttribute = function _setterAttribute(target, property, value) {
+  return target.setAttribute(property, value);
+},
+    _getSetter = function _getSetter(target, property) {
+  return _isFunction(target[property]) ? _setterFunc : _isUndefined(target[property]) && target.setAttribute ? _setterAttribute : _setterPlain;
+},
+    _renderPlain = function _renderPlain(ratio, data) {
+  return data.set(data.t, data.p, Math.round((data.s + data.c * ratio) * 1000000) / 1000000, data);
+},
+    _renderBoolean = function _renderBoolean(ratio, data) {
+  return data.set(data.t, data.p, !!(data.s + data.c * ratio), data);
+},
+    _renderComplexString = function _renderComplexString(ratio, data) {
+  var pt = data._pt,
+      s = "";
+
+  if (!ratio && data.b) {
+    //b = beginning string
+    s = data.b;
+  } else if (ratio === 1 && data.e) {
+    //e = ending string
+    s = data.e;
+  } else {
+    while (pt) {
+      s = pt.p + (pt.m ? pt.m(pt.s + pt.c * ratio) : Math.round((pt.s + pt.c * ratio) * 10000) / 10000) + s; //we use the "p" property for the text inbetween (like a suffix). And in the context of a complex string, the modifier (m) is typically just Math.round(), like for RGB colors.
+
+      pt = pt._next;
+    }
+
+    s += data.c; //we use the "c" of the PropTween to store the final chunk of non-numeric text.
+  }
+
+  data.set(data.t, data.p, s, data);
+},
+    _renderPropTweens = function _renderPropTweens(ratio, data) {
+  var pt = data._pt;
+
+  while (pt) {
+    pt.r(ratio, pt.d);
+    pt = pt._next;
+  }
+},
+    _addPluginModifier = function _addPluginModifier(modifier, tween, target, property) {
+  var pt = this._pt,
+      next;
+
+  while (pt) {
+    next = pt._next;
+    pt.p === property && pt.modifier(modifier, tween, target);
+    pt = next;
+  }
+},
+    _killPropTweensOf = function _killPropTweensOf(property) {
+  var pt = this._pt,
+      hasNonDependentRemaining,
+      next;
+
+  while (pt) {
+    next = pt._next;
+
+    if (pt.p === property && !pt.op || pt.op === property) {
+      _removeLinkedListItem(this, pt, "_pt");
+    } else if (!pt.dep) {
+      hasNonDependentRemaining = 1;
+    }
+
+    pt = next;
+  }
+
+  return !hasNonDependentRemaining;
+},
+    _setterWithModifier = function _setterWithModifier(target, property, value, data) {
+  data.mSet(target, property, data.m.call(data.tween, value, data.mt), data);
+},
+    _sortPropTweensByPriority = function _sortPropTweensByPriority(parent) {
+  var pt = parent._pt,
+      next,
+      pt2,
+      first,
+      last; //sorts the PropTween linked list in order of priority because some plugins need to do their work after ALL of the PropTweens were created (like RoundPropsPlugin and ModifiersPlugin)
+
+  while (pt) {
+    next = pt._next;
+    pt2 = first;
+
+    while (pt2 && pt2.pr > pt.pr) {
+      pt2 = pt2._next;
+    }
+
+    if (pt._prev = pt2 ? pt2._prev : last) {
+      pt._prev._next = pt;
+    } else {
+      first = pt;
+    }
+
+    if (pt._next = pt2) {
+      pt2._prev = pt;
+    } else {
+      last = pt;
+    }
+
+    pt = next;
+  }
+
+  parent._pt = first;
+}; //PropTween key: t = target, p = prop, r = renderer, d = data, s = start, c = change, op = overwriteProperty (ONLY populated when it's different than p), pr = priority, _next/_prev for the linked list siblings, set = setter, m = modifier, mSet = modifierSetter (the original setter, before a modifier was added)
+
+
+var PropTween = /*#__PURE__*/function () {
+  function PropTween(next, target, prop, start, change, renderer, data, setter, priority) {
+    this.t = target;
+    this.s = start;
+    this.c = change;
+    this.p = prop;
+    this.r = renderer || _renderPlain;
+    this.d = data || this;
+    this.set = setter || _setterPlain;
+    this.pr = priority || 0;
+    this._next = next;
+
+    if (next) {
+      next._prev = this;
+    }
+  }
+
+  var _proto4 = PropTween.prototype;
+
+  _proto4.modifier = function modifier(func, tween, target) {
+    this.mSet = this.mSet || this.set; //in case it was already set (a PropTween can only have one modifier)
+
+    this.set = _setterWithModifier;
+    this.m = func;
+    this.mt = target; //modifier target
+
+    this.tween = tween;
+  };
+
+  return PropTween;
+}(); //Initialization tasks
+
+_forEachName(_callbackNames + "parent,duration,ease,delay,overwrite,runBackwards,startAt,yoyo,immediateRender,repeat,repeatDelay,data,paused,reversed,lazy,callbackScope,stringFilter,id,yoyoEase,stagger,inherit,repeatRefresh,keyframes,autoRevert,scrollTrigger", function (name) {
+  return _reservedProps[name] = 1;
+});
+
+_globals.TweenMax = _globals.TweenLite = Tween;
+_globals.TimelineLite = _globals.TimelineMax = Timeline;
+_globalTimeline = new Timeline({
+  sortChildren: false,
+  defaults: _defaults,
+  autoRemoveChildren: true,
+  id: "root",
+  smoothChildTiming: true
+});
+_config.stringFilter = _colorStringFilter;
+/*
+ * --------------------------------------------------------------------------------------
+ * GSAP
+ * --------------------------------------------------------------------------------------
+ */
+
+var _gsap = {
+  registerPlugin: function registerPlugin() {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    args.forEach(function (config) {
+      return _createPlugin(config);
+    });
+  },
+  timeline: function timeline(vars) {
+    return new Timeline(vars);
+  },
+  getTweensOf: function getTweensOf(targets, onlyActive) {
+    return _globalTimeline.getTweensOf(targets, onlyActive);
+  },
+  getProperty: function getProperty(target, property, unit, uncache) {
+    _isString(target) && (target = toArray(target)[0]); //in case selector text or an array is passed in
+
+    var getter = _getCache(target || {}).get,
+        format = unit ? _passThrough : _numericIfPossible;
+
+    unit === "native" && (unit = "");
+    return !target ? target : !property ? function (property, unit, uncache) {
+      return format((_plugins[property] && _plugins[property].get || getter)(target, property, unit, uncache));
+    } : format((_plugins[property] && _plugins[property].get || getter)(target, property, unit, uncache));
+  },
+  quickSetter: function quickSetter(target, property, unit) {
+    target = toArray(target);
+
+    if (target.length > 1) {
+      var setters = target.map(function (t) {
+        return gsap.quickSetter(t, property, unit);
+      }),
+          l = setters.length;
+      return function (value) {
+        var i = l;
+
+        while (i--) {
+          setters[i](value);
+        }
+      };
+    }
+
+    target = target[0] || {};
+
+    var Plugin = _plugins[property],
+        cache = _getCache(target),
+        p = cache.harness && (cache.harness.aliases || {})[property] || property,
+        // in case it's an alias, like "rotate" for "rotation".
+    setter = Plugin ? function (value) {
+      var p = new Plugin();
+      _quickTween._pt = 0;
+      p.init(target, unit ? value + unit : value, _quickTween, 0, [target]);
+      p.render(1, p);
+      _quickTween._pt && _renderPropTweens(1, _quickTween);
+    } : cache.set(target, p);
+
+    return Plugin ? setter : function (value) {
+      return setter(target, p, unit ? value + unit : value, cache, 1);
+    };
+  },
+  quickTo: function quickTo(target, property, vars) {
+    var _merge2;
+
+    var tween = gsap.to(target, _merge((_merge2 = {}, _merge2[property] = "+=0.1", _merge2.paused = true, _merge2), vars || {})),
+        func = function func(value, start, startIsRelative) {
+      return tween.resetTo(property, value, start, startIsRelative);
+    };
+
+    func.tween = tween;
+    return func;
+  },
+  isTweening: function isTweening(targets) {
+    return _globalTimeline.getTweensOf(targets, true).length > 0;
+  },
+  defaults: function defaults(value) {
+    value && value.ease && (value.ease = _parseEase(value.ease, _defaults.ease));
+    return _mergeDeep(_defaults, value || {});
+  },
+  config: function config(value) {
+    return _mergeDeep(_config, value || {});
+  },
+  registerEffect: function registerEffect(_ref3) {
+    var name = _ref3.name,
+        effect = _ref3.effect,
+        plugins = _ref3.plugins,
+        defaults = _ref3.defaults,
+        extendTimeline = _ref3.extendTimeline;
+    (plugins || "").split(",").forEach(function (pluginName) {
+      return pluginName && !_plugins[pluginName] && !_globals[pluginName] && _warn(name + " effect requires " + pluginName + " plugin.");
+    });
+
+    _effects[name] = function (targets, vars, tl) {
+      return effect(toArray(targets), _setDefaults(vars || {}, defaults), tl);
+    };
+
+    if (extendTimeline) {
+      Timeline.prototype[name] = function (targets, vars, position) {
+        return this.add(_effects[name](targets, _isObject(vars) ? vars : (position = vars) && {}, this), position);
+      };
+    }
+  },
+  registerEase: function registerEase(name, ease) {
+    _easeMap[name] = _parseEase(ease);
+  },
+  parseEase: function parseEase(ease, defaultEase) {
+    return arguments.length ? _parseEase(ease, defaultEase) : _easeMap;
+  },
+  getById: function getById(id) {
+    return _globalTimeline.getById(id);
+  },
+  exportRoot: function exportRoot(vars, includeDelayedCalls) {
+    if (vars === void 0) {
+      vars = {};
+    }
+
+    var tl = new Timeline(vars),
+        child,
+        next;
+    tl.smoothChildTiming = _isNotFalse(vars.smoothChildTiming);
+
+    _globalTimeline.remove(tl);
+
+    tl._dp = 0; //otherwise it'll get re-activated when adding children and be re-introduced into _globalTimeline's linked list (then added to itself).
+
+    tl._time = tl._tTime = _globalTimeline._time;
+    child = _globalTimeline._first;
+
+    while (child) {
+      next = child._next;
+
+      if (includeDelayedCalls || !(!child._dur && child instanceof Tween && child.vars.onComplete === child._targets[0])) {
+        _addToTimeline(tl, child, child._start - child._delay);
+      }
+
+      child = next;
+    }
+
+    _addToTimeline(_globalTimeline, tl, 0);
+
+    return tl;
+  },
+  utils: {
+    wrap: wrap,
+    wrapYoyo: wrapYoyo,
+    distribute: distribute,
+    random: random,
+    snap: snap,
+    normalize: normalize,
+    getUnit: getUnit,
+    clamp: clamp,
+    splitColor: splitColor,
+    toArray: toArray,
+    selector: selector,
+    mapRange: mapRange,
+    pipe: pipe,
+    unitize: unitize,
+    interpolate: interpolate,
+    shuffle: shuffle
+  },
+  install: _install,
+  effects: _effects,
+  ticker: _ticker,
+  updateRoot: Timeline.updateRoot,
+  plugins: _plugins,
+  globalTimeline: _globalTimeline,
+  core: {
+    PropTween: PropTween,
+    globals: _addGlobal,
+    Tween: Tween,
+    Timeline: Timeline,
+    Animation: Animation,
+    getCache: _getCache,
+    _removeLinkedListItem: _removeLinkedListItem,
+    suppressOverwrites: function suppressOverwrites(value) {
+      return _suppressOverwrites = value;
+    }
+  }
+};
+
+_forEachName("to,from,fromTo,delayedCall,set,killTweensOf", function (name) {
+  return _gsap[name] = Tween[name];
+});
+
+_ticker.add(Timeline.updateRoot);
+
+_quickTween = _gsap.to({}, {
+  duration: 0
+}); // ---- EXTRA PLUGINS --------------------------------------------------------
+
+var _getPluginPropTween = function _getPluginPropTween(plugin, prop) {
+  var pt = plugin._pt;
+
+  while (pt && pt.p !== prop && pt.op !== prop && pt.fp !== prop) {
+    pt = pt._next;
+  }
+
+  return pt;
+},
+    _addModifiers = function _addModifiers(tween, modifiers) {
+  var targets = tween._targets,
+      p,
+      i,
+      pt;
+
+  for (p in modifiers) {
+    i = targets.length;
+
+    while (i--) {
+      pt = tween._ptLookup[i][p];
+
+      if (pt && (pt = pt.d)) {
+        if (pt._pt) {
+          // is a plugin
+          pt = _getPluginPropTween(pt, p);
+        }
+
+        pt && pt.modifier && pt.modifier(modifiers[p], tween, targets[i], p);
+      }
+    }
+  }
+},
+    _buildModifierPlugin = function _buildModifierPlugin(name, modifier) {
+  return {
+    name: name,
+    rawVars: 1,
+    //don't pre-process function-based values or "random()" strings.
+    init: function init(target, vars, tween) {
+      tween._onInit = function (tween) {
+        var temp, p;
+
+        if (_isString(vars)) {
+          temp = {};
+
+          _forEachName(vars, function (name) {
+            return temp[name] = 1;
+          }); //if the user passes in a comma-delimited list of property names to roundProps, like "x,y", we round to whole numbers.
+
+
+          vars = temp;
+        }
+
+        if (modifier) {
+          temp = {};
+
+          for (p in vars) {
+            temp[p] = modifier(vars[p]);
+          }
+
+          vars = temp;
+        }
+
+        _addModifiers(tween, vars);
+      };
+    }
+  };
+}; //register core plugins
+
+
+var gsap = _gsap.registerPlugin({
+  name: "attr",
+  init: function init(target, vars, tween, index, targets) {
+    var p, pt;
+
+    for (p in vars) {
+      pt = this.add(target, "setAttribute", (target.getAttribute(p) || 0) + "", vars[p], index, targets, 0, 0, p);
+      pt && (pt.op = p);
+
+      this._props.push(p);
+    }
+  }
+}, {
+  name: "endArray",
+  init: function init(target, value) {
+    var i = value.length;
+
+    while (i--) {
+      this.add(target, i, target[i] || 0, value[i]);
+    }
+  }
+}, _buildModifierPlugin("roundProps", _roundModifier), _buildModifierPlugin("modifiers"), _buildModifierPlugin("snap", snap)) || _gsap; //to prevent the core plugins from being dropped via aggressive tree shaking, we must include them in the variable declaration in this way.
+
+Tween.version = Timeline.version = gsap.version = "3.10.4";
+_coreReady = 1;
+_windowExists() && _wake();
+var Power0 = _easeMap.Power0,
+    Power1 = _easeMap.Power1,
+    Power2 = _easeMap.Power2,
+    Power3 = _easeMap.Power3,
+    Power4 = _easeMap.Power4,
+    Linear = _easeMap.Linear,
+    Quad = _easeMap.Quad,
+    Cubic = _easeMap.Cubic,
+    Quart = _easeMap.Quart,
+    Quint = _easeMap.Quint,
+    Strong = _easeMap.Strong,
+    Elastic = _easeMap.Elastic,
+    Back = _easeMap.Back,
+    SteppedEase = _easeMap.SteppedEase,
+    Bounce = _easeMap.Bounce,
+    Sine = _easeMap.Sine,
+    Expo = _easeMap.Expo,
+    Circ = _easeMap.Circ;
+
+ //export some internal methods/orojects for use in CSSPlugin so that we can externalize that file and allow custom builds that exclude it.
+
+
+
+/***/ }),
+
+/***/ "./node_modules/gsap/index.js":
+/*!************************************!*\
+  !*** ./node_modules/gsap/index.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "gsap": () => (/* binding */ gsapWithCSS),
+/* harmony export */   "default": () => (/* binding */ gsapWithCSS),
+/* harmony export */   "CSSPlugin": () => (/* reexport safe */ _CSSPlugin_js__WEBPACK_IMPORTED_MODULE_1__.CSSPlugin),
+/* harmony export */   "TweenMax": () => (/* binding */ TweenMaxWithCSS),
+/* harmony export */   "TweenLite": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.TweenLite),
+/* harmony export */   "TimelineMax": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.TimelineMax),
+/* harmony export */   "TimelineLite": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.TimelineLite),
+/* harmony export */   "Power0": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Power0),
+/* harmony export */   "Power1": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Power1),
+/* harmony export */   "Power2": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Power2),
+/* harmony export */   "Power3": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Power3),
+/* harmony export */   "Power4": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Power4),
+/* harmony export */   "Linear": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Linear),
+/* harmony export */   "Quad": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Quad),
+/* harmony export */   "Cubic": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Cubic),
+/* harmony export */   "Quart": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Quart),
+/* harmony export */   "Quint": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Quint),
+/* harmony export */   "Strong": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Strong),
+/* harmony export */   "Elastic": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Elastic),
+/* harmony export */   "Back": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Back),
+/* harmony export */   "SteppedEase": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.SteppedEase),
+/* harmony export */   "Bounce": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Bounce),
+/* harmony export */   "Sine": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Sine),
+/* harmony export */   "Expo": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Expo),
+/* harmony export */   "Circ": () => (/* reexport safe */ _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.Circ)
+/* harmony export */ });
+/* harmony import */ var _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./gsap-core.js */ "./node_modules/gsap/gsap-core.js");
+/* harmony import */ var _CSSPlugin_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CSSPlugin.js */ "./node_modules/gsap/CSSPlugin.js");
+
+
+var gsapWithCSS = _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.gsap.registerPlugin(_CSSPlugin_js__WEBPACK_IMPORTED_MODULE_1__.CSSPlugin) || _gsap_core_js__WEBPACK_IMPORTED_MODULE_0__.gsap,
+    // to protect from tree shaking
+TweenMaxWithCSS = gsapWithCSS.core.Tween;
 
 
 /***/ }),
@@ -19466,6 +25466,54 @@ ___CSS_LOADER_EXPORT___.push([module.id, "/*\n * Chessground base css properties
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media screen and (min-width: 1025px) and (max-width: 2000px) {\n.lgSvg {\n        display: block;\n}\n}\n@media screen and (min-width: 0px) and (max-width: 1024px) {\n.lgSvg {\n        display: none;\n}\n}\n@media screen and (min-width: 2000px) {\n.lgSvg {\n        display: none;\n}\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n@media screen and (min-width: 501px) and (max-width: 1024px) {\n.medSvg {\n        display: block;\n}\n}\n@media screen and (min-width: 0px) and (max-width: 500px) {\n.medSvg {\n        display: none;\n}\n}\n@media screen and (min-width: 1024px) {\n.medSvg {\n        display: none;\n}\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SyncAccount.vue?vue&type=style&index=0&lang=css&":
 /*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SyncAccount.vue?vue&type=style&index=0&lang=css& ***!
@@ -19482,9 +25530,8 @@ __webpack_require__.r(__webpack_exports__);
 // Imports
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Roboto:100);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#loading {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    border: 3px solid #86efac;\n    border-radius: 50%;\n    border-top-color: #15803d;\n    animation: spin 1s ease-in-out infinite;\n    -webkit-animation: spin 1s ease-in-out infinite;\n}\n@keyframes spin {\nto {\n        -webkit-transform: rotate(360deg);\n}\n}\n@-webkit-keyframes spin {\nto {\n        -webkit-transform: rotate(360deg);\n}\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput[type=number] {\n    -moz-appearance: textfield;\n}\n#loading {\n    display: inline-block;\n    width: 50px;\n    height: 50px;\n    border: 3px solid #1f4481;\n    border-radius: 50%;\n    border-top-color: #86A5D9;\n    animation: spin 1s ease-in-out infinite;\n    -webkit-animation: spin 1s ease-in-out infinite;\n}\n@keyframes spin {\nto {\n        -webkit-transform: rotate(360deg);\n}\n}\n@-webkit-keyframes spin {\nto {\n        -webkit-transform: rotate(360deg);\n}\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -40411,6 +46458,66 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoDesktop.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&":
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoMedium_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoMedium.vue?vue&type=style&index=0&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoMedium_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoMedium_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SyncAccount.vue?vue&type=style&index=0&lang=css&":
 /*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SyncAccount.vue?vue&type=style&index=0&lang=css& ***!
@@ -40754,6 +46861,158 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/SVGs/LogoDesktop.vue":
+/*!*******************************************!*\
+  !*** ./resources/js/SVGs/LogoDesktop.vue ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LogoDesktop.vue?vue&type=template&id=55e60c6f& */ "./resources/js/SVGs/LogoDesktop.vue?vue&type=template&id=55e60c6f&");
+/* harmony import */ var _LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LogoDesktop.vue?vue&type=style&index=0&lang=css& */ "./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  script,
+  _LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__.render,
+  _LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/SVGs/LogoDesktop.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoDesktopXXL.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/SVGs/LogoDesktopXXL.vue ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LogoDesktopXXL.vue?vue&type=template&id=d38776a6& */ "./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__.render,
+  _LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/SVGs/LogoDesktopXXL.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoMedium.vue":
+/*!******************************************!*\
+  !*** ./resources/js/SVGs/LogoMedium.vue ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _LogoMedium_vue_vue_type_template_id_1295e472___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LogoMedium.vue?vue&type=template&id=1295e472& */ "./resources/js/SVGs/LogoMedium.vue?vue&type=template&id=1295e472&");
+/* harmony import */ var _LogoMedium_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LogoMedium.vue?vue&type=style&index=0&lang=css& */ "./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  script,
+  _LogoMedium_vue_vue_type_template_id_1295e472___WEBPACK_IMPORTED_MODULE_0__.render,
+  _LogoMedium_vue_vue_type_template_id_1295e472___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/SVGs/LogoMedium.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoSmall.vue":
+/*!*****************************************!*\
+  !*** ./resources/js/SVGs/LogoSmall.vue ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _LogoSmall_vue_vue_type_template_id_568752cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LogoSmall.vue?vue&type=template&id=568752cc& */ "./resources/js/SVGs/LogoSmall.vue?vue&type=template&id=568752cc&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _LogoSmall_vue_vue_type_template_id_568752cc___WEBPACK_IMPORTED_MODULE_0__.render,
+  _LogoSmall_vue_vue_type_template_id_568752cc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/SVGs/LogoSmall.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Chess.vue":
 /*!*******************************************!*\
   !*** ./resources/js/components/Chess.vue ***!
@@ -40912,6 +47171,45 @@ component.options.__file = "resources/js/components/SyncAccount.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Tooltip.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/Tooltip.vue ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Tooltip_vue_vue_type_template_id_09733fe8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Tooltip.vue?vue&type=template&id=09733fe8& */ "./resources/js/components/Tooltip.vue?vue&type=template&id=09733fe8&");
+/* harmony import */ var _Tooltip_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Tooltip.vue?vue&type=script&lang=js& */ "./resources/js/components/Tooltip.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Tooltip_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Tooltip_vue_vue_type_template_id_09733fe8___WEBPACK_IMPORTED_MODULE_0__.render,
+  _Tooltip_vue_vue_type_template_id_09733fe8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Tooltip.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Tree.vue":
 /*!******************************************!*\
   !*** ./resources/js/components/Tree.vue ***!
@@ -41053,6 +47351,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Tooltip.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/Tooltip.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tooltip_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Tooltip.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tooltip.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Tooltip_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/Tree.vue?vue&type=script&lang=js&":
 /*!*******************************************************************!*\
   !*** ./resources/js/components/Tree.vue?vue&type=script&lang=js& ***!
@@ -41085,6 +47399,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoDesktop.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css& ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoMedium_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoMedium.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/SyncAccount.vue?vue&type=style&index=0&lang=css&":
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/SyncAccount.vue?vue&type=style&index=0&lang=css& ***!
@@ -41094,6 +47434,74 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_0_rules_0_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SyncAccount_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader/dist/cjs.js!../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SyncAccount.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9[0].rules[0].use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/SyncAccount.vue?vue&type=style&index=0&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoDesktop.vue?vue&type=template&id=55e60c6f&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/SVGs/LogoDesktop.vue?vue&type=template&id=55e60c6f& ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktop_vue_vue_type_template_id_55e60c6f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoDesktop.vue?vue&type=template&id=55e60c6f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=template&id=55e60c6f&");
+
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6& ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoDesktopXXL_vue_vue_type_template_id_d38776a6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoDesktopXXL.vue?vue&type=template&id=d38776a6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6&");
+
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoMedium.vue?vue&type=template&id=1295e472&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/SVGs/LogoMedium.vue?vue&type=template&id=1295e472& ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoMedium_vue_vue_type_template_id_1295e472___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoMedium_vue_vue_type_template_id_1295e472___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoMedium_vue_vue_type_template_id_1295e472___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoMedium.vue?vue&type=template&id=1295e472& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=template&id=1295e472&");
+
+
+/***/ }),
+
+/***/ "./resources/js/SVGs/LogoSmall.vue?vue&type=template&id=568752cc&":
+/*!************************************************************************!*\
+  !*** ./resources/js/SVGs/LogoSmall.vue?vue&type=template&id=568752cc& ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoSmall_vue_vue_type_template_id_568752cc___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoSmall_vue_vue_type_template_id_568752cc___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LogoSmall_vue_vue_type_template_id_568752cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./LogoSmall.vue?vue&type=template&id=568752cc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoSmall.vue?vue&type=template&id=568752cc&");
 
 
 /***/ }),
@@ -41166,6 +47574,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Tooltip.vue?vue&type=template&id=09733fe8&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Tooltip.vue?vue&type=template&id=09733fe8& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tooltip_vue_vue_type_template_id_09733fe8___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tooltip_vue_vue_type_template_id_09733fe8___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tooltip_vue_vue_type_template_id_09733fe8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Tooltip.vue?vue&type=template&id=09733fe8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tooltip.vue?vue&type=template&id=09733fe8&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Tree.vue?vue&type=template&id=138228ee&":
 /*!*************************************************************************!*\
   !*** ./resources/js/components/Tree.vue?vue&type=template&id=138228ee& ***!
@@ -41179,6 +47604,2933 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tree_vue_vue_type_template_id_138228ee___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Tree_vue_vue_type_template_id_138228ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Tree.vue?vue&type=template&id=138228ee& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tree.vue?vue&type=template&id=138228ee&");
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=template&id=55e60c6f&":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktop.vue?vue&type=template&id=55e60c6f& ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "w-full lgSvg" }, [
+    _c(
+      "svg",
+      {
+        staticClass: "w-full h-auto",
+        attrs: {
+          viewBox: "0 0 1440 276",
+          fill: "none",
+          xmlns: "http://www.w3.org/2000/svg",
+        },
+      },
+      [
+        _c("path", {
+          attrs: {
+            d: "M643.803 203.468C643.035 203.98 641.99 204.556 640.667 205.196C639.344 205.836 637.787 206.369 635.995 206.796C634.246 207.222 632.326 207.436 630.235 207.436C626.651 207.393 623.408 206.753 620.507 205.516C617.648 204.278 615.216 202.593 613.211 200.46C611.206 198.326 609.648 195.873 608.539 193.1C607.472 190.284 606.939 187.297 606.939 184.14C606.939 180.684 607.494 177.505 608.603 174.604C609.755 171.66 611.355 169.121 613.403 166.988C615.451 164.812 617.862 163.126 620.635 161.932C623.451 160.737 626.523 160.14 629.851 160.14C632.624 160.14 635.142 160.524 637.403 161.292C639.664 162.017 641.606 162.892 643.227 163.916L640.731 169.676C639.451 168.822 637.894 168.012 636.059 167.244C634.267 166.476 632.262 166.092 630.043 166.092C627.782 166.092 625.648 166.54 623.643 167.436C621.638 168.332 619.867 169.59 618.331 171.212C616.795 172.833 615.579 174.732 614.683 176.908C613.83 179.041 613.403 181.345 613.403 183.82C613.403 186.337 613.787 188.684 614.555 190.86C615.366 192.993 616.496 194.849 617.947 196.428C619.44 198.006 621.232 199.244 623.323 200.14C625.414 201.036 627.76 201.484 630.363 201.484C632.71 201.484 634.8 201.121 636.635 200.396C638.47 199.67 639.984 198.86 641.179 197.964L643.803 203.468ZM690.864 160.652V206.924H684.72V186.636H660.464V206.924H654.256V160.652H660.464V180.748H684.72V160.652H690.864ZM704.194 160.652H734.274V166.604H710.402V180.684H731.714V186.636H710.402V200.972H735.17V206.924H704.194V160.652ZM769.88 168.908C768.301 168.097 766.573 167.393 764.696 166.796C762.819 166.198 760.984 165.9 759.192 165.9C756.717 165.9 754.733 166.476 753.24 167.628C751.789 168.78 751.064 170.316 751.064 172.236C751.064 173.686 751.533 174.924 752.472 175.948C753.411 176.929 754.648 177.782 756.184 178.508C757.72 179.233 759.32 179.916 760.984 180.556C762.435 181.11 763.864 181.729 765.272 182.412C766.68 183.094 767.939 183.948 769.048 184.972C770.2 185.996 771.096 187.254 771.736 188.748C772.419 190.241 772.76 192.097 772.76 194.316C772.76 196.748 772.141 198.966 770.904 200.972C769.709 202.977 767.981 204.556 765.72 205.708C763.459 206.86 760.771 207.436 757.656 207.436C755.608 207.436 753.645 207.201 751.768 206.732C749.933 206.262 748.227 205.665 746.648 204.94C745.069 204.172 743.661 203.382 742.424 202.572L745.176 197.708C746.2 198.433 747.373 199.137 748.696 199.82C750.019 200.46 751.405 200.993 752.856 201.42C754.307 201.804 755.715 201.996 757.08 201.996C758.531 201.996 759.96 201.74 761.368 201.228C762.819 200.673 764.013 199.841 764.952 198.732C765.891 197.622 766.36 196.15 766.36 194.316C766.36 192.737 765.933 191.436 765.08 190.412C764.269 189.345 763.181 188.449 761.816 187.724C760.451 186.956 759 186.273 757.464 185.676C756.013 185.121 754.541 184.524 753.048 183.884C751.555 183.201 750.168 182.39 748.888 181.452C747.608 180.47 746.584 179.276 745.816 177.868C745.048 176.46 744.664 174.753 744.664 172.748C744.664 170.316 745.24 168.204 746.392 166.412C747.587 164.577 749.208 163.148 751.256 162.124C753.304 161.057 755.651 160.481 758.296 160.396C761.283 160.396 763.907 160.758 766.168 161.484C768.472 162.209 770.499 163.105 772.248 164.172L769.88 168.908ZM807.13 168.908C805.551 168.097 803.823 167.393 801.946 166.796C800.069 166.198 798.234 165.9 796.442 165.9C793.967 165.9 791.983 166.476 790.49 167.628C789.039 168.78 788.314 170.316 788.314 172.236C788.314 173.686 788.783 174.924 789.722 175.948C790.661 176.929 791.898 177.782 793.434 178.508C794.97 179.233 796.57 179.916 798.234 180.556C799.685 181.11 801.114 181.729 802.522 182.412C803.93 183.094 805.189 183.948 806.298 184.972C807.45 185.996 808.346 187.254 808.986 188.748C809.669 190.241 810.01 192.097 810.01 194.316C810.01 196.748 809.391 198.966 808.154 200.972C806.959 202.977 805.231 204.556 802.97 205.708C800.709 206.86 798.021 207.436 794.906 207.436C792.858 207.436 790.895 207.201 789.018 206.732C787.183 206.262 785.477 205.665 783.898 204.94C782.319 204.172 780.911 203.382 779.674 202.572L782.426 197.708C783.45 198.433 784.623 199.137 785.946 199.82C787.269 200.46 788.655 200.993 790.106 201.42C791.557 201.804 792.965 201.996 794.33 201.996C795.781 201.996 797.21 201.74 798.618 201.228C800.069 200.673 801.263 199.841 802.202 198.732C803.141 197.622 803.61 196.15 803.61 194.316C803.61 192.737 803.183 191.436 802.33 190.412C801.519 189.345 800.431 188.449 799.066 187.724C797.701 186.956 796.25 186.273 794.714 185.676C793.263 185.121 791.791 184.524 790.298 183.884C788.805 183.201 787.418 182.39 786.138 181.452C784.858 180.47 783.834 179.276 783.066 177.868C782.298 176.46 781.914 174.753 781.914 172.748C781.914 170.316 782.49 168.204 783.642 166.412C784.837 164.577 786.458 163.148 788.506 162.124C790.554 161.057 792.901 160.481 795.546 160.396C798.533 160.396 801.157 160.758 803.418 161.484C805.722 162.209 807.749 163.105 809.498 164.172L807.13 168.908Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M604.078 237.12C603.79 237.312 603.398 237.528 602.902 237.768C602.406 238.008 601.822 238.208 601.15 238.368C600.494 238.528 599.774 238.608 598.99 238.608C597.646 238.592 596.43 238.352 595.342 237.888C594.27 237.424 593.358 236.792 592.606 235.992C591.854 235.192 591.27 234.272 590.854 233.232C590.454 232.176 590.254 231.056 590.254 229.872C590.254 228.576 590.462 227.384 590.878 226.296C591.31 225.192 591.91 224.24 592.678 223.44C593.446 222.624 594.35 221.992 595.39 221.544C596.446 221.096 597.598 220.872 598.846 220.872C599.886 220.872 600.83 221.016 601.678 221.304C602.526 221.576 603.254 221.904 603.862 222.288L602.926 224.448C602.446 224.128 601.862 223.824 601.174 223.536C600.502 223.248 599.75 223.104 598.918 223.104C598.07 223.104 597.27 223.272 596.518 223.608C595.766 223.944 595.102 224.416 594.526 225.024C593.95 225.632 593.494 226.344 593.158 227.16C592.838 227.96 592.678 228.824 592.678 229.752C592.678 230.696 592.822 231.576 593.11 232.392C593.414 233.192 593.838 233.888 594.382 234.48C594.942 235.072 595.614 235.536 596.398 235.872C597.182 236.208 598.062 236.376 599.038 236.376C599.918 236.376 600.702 236.24 601.39 235.968C602.078 235.696 602.646 235.392 603.094 235.056L604.078 237.12ZM606.918 229.752C606.918 228.552 607.142 227.424 607.59 226.368C608.054 225.296 608.694 224.352 609.51 223.536C610.326 222.704 611.262 222.056 612.318 221.592C613.39 221.112 614.542 220.872 615.774 220.872C616.99 220.872 618.126 221.112 619.182 221.592C620.254 222.056 621.198 222.704 622.014 223.536C622.846 224.352 623.494 225.296 623.958 226.368C624.422 227.424 624.654 228.552 624.654 229.752C624.654 230.984 624.422 232.136 623.958 233.208C623.494 234.28 622.846 235.224 622.014 236.04C621.198 236.84 620.254 237.472 619.182 237.936C618.126 238.384 616.99 238.608 615.774 238.608C614.542 238.608 613.39 238.384 612.318 237.936C611.262 237.488 610.326 236.864 609.51 236.064C608.694 235.264 608.054 234.328 607.59 233.256C607.142 232.184 606.918 231.016 606.918 229.752ZM609.318 229.776C609.318 230.688 609.486 231.544 609.822 232.344C610.158 233.128 610.622 233.824 611.214 234.432C611.806 235.04 612.494 235.52 613.278 235.872C614.062 236.208 614.91 236.376 615.822 236.376C616.718 236.376 617.558 236.208 618.342 235.872C619.126 235.52 619.806 235.04 620.382 234.432C620.958 233.824 621.414 233.128 621.75 232.344C622.086 231.544 622.254 230.68 622.254 229.752C622.254 228.84 622.086 227.984 621.75 227.184C621.414 226.368 620.95 225.656 620.358 225.048C619.766 224.44 619.078 223.968 618.294 223.632C617.51 223.28 616.67 223.104 615.774 223.104C614.862 223.104 614.014 223.28 613.23 223.632C612.446 223.984 611.758 224.464 611.166 225.072C610.574 225.68 610.118 226.392 609.798 227.208C609.478 228.008 609.318 228.864 609.318 229.776ZM628.576 238.416V220.512H628.6L637.696 233.424L636.712 233.232L645.784 220.512H645.832V238.416H643.528V225.792L643.672 226.968L637.12 236.232H637.072L630.424 226.968L630.832 225.888V238.416H628.576ZM650.818 238.416V220.512H650.842L659.938 233.424L658.954 233.232L668.026 220.512H668.074V238.416H665.77V225.792L665.914 226.968L659.362 236.232H659.314L652.666 226.968L653.074 225.888V238.416H650.818ZM671.98 229.752C671.98 228.552 672.204 227.424 672.652 226.368C673.116 225.296 673.756 224.352 674.572 223.536C675.388 222.704 676.324 222.056 677.38 221.592C678.452 221.112 679.604 220.872 680.836 220.872C682.052 220.872 683.188 221.112 684.244 221.592C685.316 222.056 686.26 222.704 687.076 223.536C687.908 224.352 688.556 225.296 689.02 226.368C689.484 227.424 689.716 228.552 689.716 229.752C689.716 230.984 689.484 232.136 689.02 233.208C688.556 234.28 687.908 235.224 687.076 236.04C686.26 236.84 685.316 237.472 684.244 237.936C683.188 238.384 682.052 238.608 680.836 238.608C679.604 238.608 678.452 238.384 677.38 237.936C676.324 237.488 675.388 236.864 674.572 236.064C673.756 235.264 673.116 234.328 672.652 233.256C672.204 232.184 671.98 231.016 671.98 229.752ZM674.38 229.776C674.38 230.688 674.548 231.544 674.884 232.344C675.22 233.128 675.684 233.824 676.276 234.432C676.868 235.04 677.556 235.52 678.34 235.872C679.124 236.208 679.972 236.376 680.884 236.376C681.78 236.376 682.62 236.208 683.404 235.872C684.188 235.52 684.868 235.04 685.444 234.432C686.02 233.824 686.476 233.128 686.812 232.344C687.148 231.544 687.316 230.68 687.316 229.752C687.316 228.84 687.148 227.984 686.812 227.184C686.476 226.368 686.012 225.656 685.42 225.048C684.828 224.44 684.14 223.968 683.356 223.632C682.572 223.28 681.732 223.104 680.836 223.104C679.924 223.104 679.076 223.28 678.292 223.632C677.508 223.984 676.82 224.464 676.228 225.072C675.636 225.68 675.18 226.392 674.86 227.208C674.54 228.008 674.38 228.864 674.38 229.776ZM708.662 238.968L695.246 225.36L695.918 225.528L695.966 238.416H693.638V220.536H693.758L707.03 234.192L706.478 234.072L706.43 221.064H708.734V238.968H708.662ZM721.318 238.416V220.512H721.342L730.438 233.424L729.454 233.232L738.526 220.512H738.574V238.416H736.27V225.792L736.414 226.968L729.862 236.232H729.814L723.166 226.968L723.574 225.888V238.416H721.318ZM743.56 221.064H745.888V238.416H743.56V221.064ZM759.849 224.16C759.257 223.856 758.609 223.592 757.905 223.368C757.201 223.144 756.513 223.032 755.841 223.032C754.913 223.032 754.169 223.248 753.609 223.68C753.065 224.112 752.793 224.688 752.793 225.408C752.793 225.952 752.969 226.416 753.321 226.8C753.673 227.168 754.137 227.488 754.713 227.76C755.289 228.032 755.889 228.288 756.513 228.528C757.057 228.736 757.593 228.968 758.121 229.224C758.649 229.48 759.121 229.8 759.537 230.184C759.969 230.568 760.305 231.04 760.545 231.6C760.801 232.16 760.929 232.856 760.929 233.688C760.929 234.6 760.697 235.432 760.233 236.184C759.785 236.936 759.137 237.528 758.289 237.96C757.441 238.392 756.433 238.608 755.265 238.608C754.497 238.608 753.761 238.52 753.057 238.344C752.369 238.168 751.729 237.944 751.137 237.672C750.545 237.384 750.017 237.088 749.553 236.784L750.585 234.96C750.969 235.232 751.409 235.496 751.905 235.752C752.401 235.992 752.921 236.192 753.465 236.352C754.009 236.496 754.537 236.568 755.049 236.568C755.593 236.568 756.129 236.472 756.657 236.28C757.201 236.072 757.649 235.76 758.001 235.344C758.353 234.928 758.529 234.376 758.529 233.688C758.529 233.096 758.369 232.608 758.049 232.224C757.745 231.824 757.337 231.488 756.825 231.216C756.313 230.928 755.769 230.672 755.193 230.448C754.649 230.24 754.097 230.016 753.537 229.776C752.977 229.52 752.457 229.216 751.977 228.864C751.497 228.496 751.113 228.048 750.825 227.52C750.537 226.992 750.393 226.352 750.393 225.6C750.393 224.688 750.609 223.896 751.041 223.224C751.489 222.536 752.097 222 752.865 221.616C753.633 221.216 754.513 221 755.505 220.968C756.625 220.968 757.609 221.104 758.457 221.376C759.321 221.648 760.081 221.984 760.737 222.384L759.849 224.16ZM763.452 221.064H774.972V223.296H770.316V238.416H767.988V223.296H763.452V221.064ZM775.582 238.416L783.166 220.344H783.31L790.87 238.416H788.206L782.542 223.992L784.198 222.912L777.862 238.416H775.582ZM780.022 231.84H786.478L787.246 233.856H779.35L780.022 231.84ZM796.49 228.048L796.418 228.912L796.73 228.48L803.834 221.064H806.834L799.658 228.504L807.242 238.416H804.29L797.954 229.992L796.49 231.408V238.416H794.138V221.064H796.49V228.048ZM810.428 221.064H821.708V223.296H812.756V228.576H820.748V230.808H812.756V236.184H822.044V238.416H810.428V221.064ZM835.06 224.16C834.468 223.856 833.82 223.592 833.116 223.368C832.412 223.144 831.724 223.032 831.052 223.032C830.124 223.032 829.38 223.248 828.82 223.68C828.276 224.112 828.004 224.688 828.004 225.408C828.004 225.952 828.18 226.416 828.532 226.8C828.884 227.168 829.348 227.488 829.924 227.76C830.5 228.032 831.1 228.288 831.724 228.528C832.268 228.736 832.804 228.968 833.332 229.224C833.86 229.48 834.332 229.8 834.748 230.184C835.18 230.568 835.516 231.04 835.756 231.6C836.012 232.16 836.14 232.856 836.14 233.688C836.14 234.6 835.908 235.432 835.444 236.184C834.996 236.936 834.348 237.528 833.5 237.96C832.652 238.392 831.644 238.608 830.476 238.608C829.708 238.608 828.972 238.52 828.268 238.344C827.58 238.168 826.94 237.944 826.348 237.672C825.756 237.384 825.228 237.088 824.764 236.784L825.796 234.96C826.18 235.232 826.62 235.496 827.116 235.752C827.612 235.992 828.132 236.192 828.676 236.352C829.22 236.496 829.748 236.568 830.26 236.568C830.804 236.568 831.34 236.472 831.868 236.28C832.412 236.072 832.86 235.76 833.212 235.344C833.564 234.928 833.74 234.376 833.74 233.688C833.74 233.096 833.58 232.608 833.26 232.224C832.956 231.824 832.548 231.488 832.036 231.216C831.524 230.928 830.98 230.672 830.404 230.448C829.86 230.24 829.308 230.016 828.748 229.776C828.188 229.52 827.668 229.216 827.188 228.864C826.708 228.496 826.324 228.048 826.036 227.52C825.748 226.992 825.604 226.352 825.604 225.6C825.604 224.688 825.82 223.896 826.252 223.224C826.7 222.536 827.308 222 828.076 221.616C828.844 221.216 829.724 221 830.716 220.968C831.836 220.968 832.82 221.104 833.668 221.376C834.532 221.648 835.292 221.984 835.948 222.384L835.06 224.16Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip0_156_2)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M708.963 78.5948H660.85C660.743 76.6413 660.799 74.7624 661.024 72.9558C663.713 51.3632 688.831 51.4523 683.091 26.0682C681.192 34.34 676.357 36.2936 669.049 35.3108L664.635 39.5864C659.916 44.1584 653.288 36.1202 657.636 31.17C666.721 21.6118 669.474 15.6283 672.77 13.1135C674.026 12.1572 675.573 12.2006 675.498 10.3843C675.464 9.61352 674.779 8.50305 674.179 8.16341C673.903 5.63656 673.823 3.10971 674.179 0.585266C678.288 2.22567 681.981 5.04399 685.081 8.45728L685.344 4.0082C699.692 4.95727 709.601 12.586 714.845 29.7826C717.783 59.5965 710.504 62.5738 708.963 78.5948ZM662.725 82.1334H709.033C711.153 82.1334 712.885 83.8677 712.885 85.9682C712.885 88.0687 711.143 89.8031 709.033 89.8031H662.725C660.615 89.8031 658.873 88.0784 658.873 85.9682C658.873 83.8581 660.606 82.1334 662.725 82.1334ZM655.744 115.818H716.014C718.207 115.818 720 117.603 720 119.786C720 121.968 718.207 123.753 716.014 123.753H655.744C653.551 123.753 651.758 121.968 651.758 119.786C651.758 117.603 653.551 115.818 655.744 115.818ZM708.113 93.344C711.341 98.9807 716.622 104.687 715.765 112.275H655.983C655.127 104.687 661.119 98.9807 664.344 93.344H708.113V93.344Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip1_156_2)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M731.037 78.5948H779.15C779.257 76.6413 779.201 74.7624 778.976 72.9558C776.287 51.3632 751.169 51.4523 756.909 26.0682C758.808 34.34 763.643 36.2936 770.951 35.3108L775.365 39.5864C780.084 44.1584 786.712 36.1202 782.364 31.17C773.279 21.6118 770.526 15.6283 767.23 13.1135C765.974 12.1572 764.427 12.2006 764.502 10.3843C764.536 9.61352 765.221 8.50305 765.821 8.16341C766.097 5.63656 766.177 3.10971 765.821 0.585266C761.712 2.22567 758.019 5.04399 754.919 8.45728L754.656 4.0082C740.308 4.95727 730.399 12.586 725.155 29.7826C722.217 59.5965 729.496 62.5738 731.037 78.5948ZM777.275 82.1334H730.967C728.847 82.1334 727.115 83.8677 727.115 85.9682C727.115 88.0687 728.857 89.8031 730.967 89.8031H777.275C779.385 89.8031 781.127 88.0784 781.127 85.9682C781.127 83.8581 779.394 82.1334 777.275 82.1334ZM784.256 115.818H723.986C721.793 115.818 720 117.603 720 119.786C720 121.968 721.793 123.753 723.986 123.753H784.256C786.449 123.753 788.242 121.968 788.242 119.786C788.242 117.603 786.449 115.818 784.256 115.818ZM731.887 93.344C728.659 98.9807 723.378 104.687 724.235 112.275H784.017C784.873 104.687 778.881 98.9807 775.656 93.344H731.887V93.344Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "-24.504",
+            y1: "120.664",
+            x2: "601.996",
+            y2: "119.673",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "2.4964",
+            y1: "273.165",
+            x2: "1504.5",
+            y2: "273.165",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "838.5",
+            y1: "120.155",
+            x2: "1495.5",
+            y2: "120.155",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "436.168",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "386.544",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "485.792",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "485.72",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 485.72 221.319)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "386.472",
+            y: "221.042",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 386.472 221.042)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "436.096",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 436.096 221.319)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "535.344",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 535.344 221.319)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "485.72",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 485.72 270.943)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "535.344",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 535.344 270.943)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "436.096",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 436.096 270.943)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "237.168",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "187.544",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "286.792",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "286.72",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 286.72 221.319)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "187.472",
+            y: "221.042",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 187.472 221.042)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "237.096",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 237.096 221.319)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "336.344",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 336.344 221.319)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "286.72",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 286.72 270.943)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "336.344",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 336.344 270.943)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "237.096",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 237.096 270.943)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "39.1683",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "-10.4558",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "88.792",
+            y: "122.143",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "88.7201",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 88.7201 221.319)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "39.0961",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 39.0961 221.319)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "138.344",
+            y: "221.319",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 138.344 221.319)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "88.7201",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 88.7201 270.943)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "138.344",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 138.344 270.943)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "39.0961",
+            y: "270.943",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 39.0961 270.943)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "946.664",
+            y: "121.667",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "896.527",
+            y: "121.667",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "996.8",
+            y: "121.667",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "996.727",
+            y: "221.867",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 996.727 221.867)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "946.591",
+            y: "221.867",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 946.591 221.867)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1046.86",
+            y: "221.867",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 1046.86 221.867)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "996.727",
+            y: "272.004",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 996.727 272.004)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1046.86",
+            y: "272.004",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 1046.86 272.004)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "946.591",
+            y: "272.004",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 946.591 272.004)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1146.11",
+            y: "121.635",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1096.49",
+            y: "121.635",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1195.74",
+            y: "121.635",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1195.66",
+            y: "220.811",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1195.66 220.811)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1096.42",
+            y: "220.534",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1096.42 220.534)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1146.04",
+            y: "220.811",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1146.04 220.811)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1245.29",
+            y: "220.811",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1245.29 220.811)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1195.66",
+            y: "270.435",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1195.66 270.435)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1245.29",
+            y: "270.435",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1245.29 270.435)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1146.04",
+            y: "270.435",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1146.04 270.435)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1344.54",
+            y: "121.358",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1294.91",
+            y: "121.358",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1394.16",
+            y: "121.358",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1394.09",
+            y: "220.534",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1394.09 220.534)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1294.84",
+            y: "220.258",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1294.84 220.258)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1344.46",
+            y: "220.534",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1344.46 220.534)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1443.71",
+            y: "220.534",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1443.71 220.534)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1394.09",
+            y: "270.158",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1394.09 270.158)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1443.71",
+            y: "270.158",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1443.71 270.158)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1344.46",
+            y: "270.158",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1344.46 270.158)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("defs", [
+          _c("clipPath", { attrs: { id: "clip0_156_2" } }, [
+            _c("rect", {
+              attrs: {
+                width: "68.2416",
+                height: "123.168",
+                fill: "white",
+                transform: "translate(651.758 0.585266)",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("clipPath", { attrs: { id: "clip1_156_2" } }, [
+            _c("rect", {
+              attrs: {
+                width: "68.2416",
+                height: "123.168",
+                fill: "white",
+                transform: "matrix(-1 0 0 1 788.242 0.585266)",
+              },
+            }),
+          ]),
+        ]),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoDesktopXXL.vue?vue&type=template&id=d38776a6& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "w-full hidden 3xl:block" }, [
+    _c(
+      "svg",
+      {
+        staticClass: "w-full h-auto",
+        attrs: {
+          viewBox: "0 0 2460 276",
+          fill: "none",
+          xmlns: "http://www.w3.org/2000/svg",
+        },
+      },
+      [
+        _c("path", {
+          attrs: {
+            d: "M1148.85 202.63C1148.09 203.142 1147.04 203.718 1145.72 204.358C1144.4 204.998 1142.84 205.532 1141.05 205.958C1139.3 206.385 1137.38 206.598 1135.29 206.598C1131.7 206.556 1128.46 205.916 1125.56 204.678C1122.7 203.441 1120.27 201.756 1118.26 199.622C1116.26 197.489 1114.7 195.036 1113.59 192.262C1112.52 189.446 1111.99 186.46 1111.99 183.302C1111.99 179.846 1112.55 176.668 1113.65 173.766C1114.81 170.822 1116.41 168.284 1118.45 166.15C1120.5 163.974 1122.91 162.289 1125.69 161.094C1128.5 159.9 1131.57 159.302 1134.9 159.302C1137.68 159.302 1140.19 159.686 1142.45 160.454C1144.72 161.18 1146.66 162.054 1148.28 163.078L1145.78 168.838C1144.5 167.985 1142.95 167.174 1141.11 166.406C1139.32 165.638 1137.31 165.254 1135.09 165.254C1132.83 165.254 1130.7 165.702 1128.69 166.598C1126.69 167.494 1124.92 168.753 1123.38 170.374C1121.85 171.996 1120.63 173.894 1119.73 176.07C1118.88 178.204 1118.45 180.508 1118.45 182.982C1118.45 185.5 1118.84 187.846 1119.61 190.022C1120.42 192.156 1121.55 194.012 1123 195.59C1124.49 197.169 1126.28 198.406 1128.37 199.302C1130.47 200.198 1132.81 200.646 1135.41 200.646C1137.76 200.646 1139.85 200.284 1141.69 199.558C1143.52 198.833 1145.04 198.022 1146.23 197.126L1148.85 202.63ZM1195.92 159.814V206.086H1189.77V185.798H1165.52V206.086H1159.31V159.814H1165.52V179.91H1189.77V159.814H1195.92ZM1209.25 159.814H1239.33V165.766H1215.45V179.846H1236.77V185.798H1215.45V200.134H1240.22V206.086H1209.25V159.814ZM1274.93 168.07C1273.35 167.26 1271.62 166.556 1269.75 165.958C1267.87 165.361 1266.04 165.062 1264.24 165.062C1261.77 165.062 1259.78 165.638 1258.29 166.79C1256.84 167.942 1256.12 169.478 1256.12 171.398C1256.12 172.849 1256.58 174.086 1257.52 175.11C1258.46 176.092 1259.7 176.945 1261.24 177.67C1262.77 178.396 1264.37 179.078 1266.04 179.718C1267.49 180.273 1268.92 180.892 1270.32 181.574C1271.73 182.257 1272.99 183.11 1274.1 184.134C1275.25 185.158 1276.15 186.417 1276.79 187.91C1277.47 189.404 1277.81 191.26 1277.81 193.478C1277.81 195.91 1277.19 198.129 1275.96 200.134C1274.76 202.14 1273.03 203.718 1270.77 204.87C1268.51 206.022 1265.82 206.598 1262.71 206.598C1260.66 206.598 1258.7 206.364 1256.82 205.894C1254.98 205.425 1253.28 204.828 1251.7 204.102C1250.12 203.334 1248.71 202.545 1247.48 201.734L1250.23 196.87C1251.25 197.596 1252.42 198.3 1253.75 198.982C1255.07 199.622 1256.46 200.156 1257.91 200.582C1259.36 200.966 1260.77 201.158 1262.13 201.158C1263.58 201.158 1265.01 200.902 1266.42 200.39C1267.87 199.836 1269.06 199.004 1270 197.894C1270.94 196.785 1271.41 195.313 1271.41 193.478C1271.41 191.9 1270.98 190.598 1270.13 189.574C1269.32 188.508 1268.23 187.612 1266.87 186.886C1265.5 186.118 1264.05 185.436 1262.52 184.838C1261.06 184.284 1259.59 183.686 1258.1 183.046C1256.61 182.364 1255.22 181.553 1253.94 180.614C1252.66 179.633 1251.64 178.438 1250.87 177.03C1250.1 175.622 1249.72 173.916 1249.72 171.91C1249.72 169.478 1250.29 167.366 1251.44 165.574C1252.64 163.74 1254.26 162.31 1256.31 161.286C1258.36 160.22 1260.7 159.644 1263.35 159.558C1266.33 159.558 1268.96 159.921 1271.22 160.646C1273.52 161.372 1275.55 162.268 1277.3 163.334L1274.93 168.07ZM1312.18 168.07C1310.6 167.26 1308.87 166.556 1307 165.958C1305.12 165.361 1303.29 165.062 1301.49 165.062C1299.02 165.062 1297.03 165.638 1295.54 166.79C1294.09 167.942 1293.37 169.478 1293.37 171.398C1293.37 172.849 1293.83 174.086 1294.77 175.11C1295.71 176.092 1296.95 176.945 1298.49 177.67C1300.02 178.396 1301.62 179.078 1303.29 179.718C1304.74 180.273 1306.17 180.892 1307.57 181.574C1308.98 182.257 1310.24 183.11 1311.35 184.134C1312.5 185.158 1313.4 186.417 1314.04 187.91C1314.72 189.404 1315.06 191.26 1315.06 193.478C1315.06 195.91 1314.44 198.129 1313.21 200.134C1312.01 202.14 1310.28 203.718 1308.02 204.87C1305.76 206.022 1303.07 206.598 1299.96 206.598C1297.91 206.598 1295.95 206.364 1294.07 205.894C1292.23 205.425 1290.53 204.828 1288.95 204.102C1287.37 203.334 1285.96 202.545 1284.73 201.734L1287.48 196.87C1288.5 197.596 1289.67 198.3 1291 198.982C1292.32 199.622 1293.71 200.156 1295.16 200.582C1296.61 200.966 1298.02 201.158 1299.38 201.158C1300.83 201.158 1302.26 200.902 1303.67 200.39C1305.12 199.836 1306.31 199.004 1307.25 197.894C1308.19 196.785 1308.66 195.313 1308.66 193.478C1308.66 191.9 1308.23 190.598 1307.38 189.574C1306.57 188.508 1305.48 187.612 1304.12 186.886C1302.75 186.118 1301.3 185.436 1299.77 184.838C1298.31 184.284 1296.84 183.686 1295.35 183.046C1293.86 182.364 1292.47 181.553 1291.19 180.614C1289.91 179.633 1288.89 178.438 1288.12 177.03C1287.35 175.622 1286.97 173.916 1286.97 171.91C1286.97 169.478 1287.54 167.366 1288.69 165.574C1289.89 163.74 1291.51 162.31 1293.56 161.286C1295.61 160.22 1297.95 159.644 1300.6 159.558C1303.58 159.558 1306.21 159.921 1308.47 160.646C1310.77 161.372 1312.8 162.268 1314.55 163.334L1312.18 168.07Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M1109.8 244.439C1109.52 244.631 1109.12 244.847 1108.63 245.087C1108.13 245.327 1107.55 245.527 1106.88 245.687C1106.22 245.847 1105.5 245.927 1104.72 245.927C1103.37 245.911 1102.16 245.671 1101.07 245.207C1100 244.743 1099.08 244.111 1098.33 243.311C1097.58 242.511 1097 241.591 1096.58 240.551C1096.18 239.495 1095.98 238.375 1095.98 237.191C1095.98 235.895 1096.19 234.703 1096.6 233.615C1097.04 232.511 1097.64 231.559 1098.4 230.759C1099.17 229.943 1100.08 229.311 1101.12 228.863C1102.17 228.415 1103.32 228.191 1104.57 228.191C1105.61 228.191 1106.56 228.335 1107.4 228.623C1108.25 228.895 1108.98 229.223 1109.59 229.607L1108.65 231.767C1108.17 231.447 1107.59 231.143 1106.9 230.855C1106.23 230.567 1105.48 230.423 1104.64 230.423C1103.8 230.423 1103 230.591 1102.24 230.927C1101.49 231.263 1100.83 231.735 1100.25 232.343C1099.68 232.951 1099.22 233.663 1098.88 234.479C1098.56 235.279 1098.4 236.143 1098.4 237.071C1098.4 238.015 1098.55 238.895 1098.84 239.711C1099.14 240.511 1099.56 241.207 1100.11 241.799C1100.67 242.391 1101.34 242.855 1102.12 243.191C1102.91 243.527 1103.79 243.695 1104.76 243.695C1105.64 243.695 1106.43 243.559 1107.12 243.287C1107.8 243.015 1108.37 242.711 1108.82 242.375L1109.8 244.439ZM1112.64 237.071C1112.64 235.871 1112.87 234.743 1113.32 233.687C1113.78 232.615 1114.42 231.671 1115.24 230.855C1116.05 230.023 1116.99 229.375 1118.04 228.911C1119.12 228.431 1120.27 228.191 1121.5 228.191C1122.72 228.191 1123.85 228.431 1124.91 228.911C1125.98 229.375 1126.92 230.023 1127.74 230.855C1128.57 231.671 1129.22 232.615 1129.68 233.687C1130.15 234.743 1130.38 235.871 1130.38 237.071C1130.38 238.303 1130.15 239.455 1129.68 240.527C1129.22 241.599 1128.57 242.543 1127.74 243.359C1126.92 244.159 1125.98 244.791 1124.91 245.255C1123.85 245.703 1122.72 245.927 1121.5 245.927C1120.27 245.927 1119.12 245.703 1118.04 245.255C1116.99 244.807 1116.05 244.183 1115.24 243.383C1114.42 242.583 1113.78 241.647 1113.32 240.575C1112.87 239.503 1112.64 238.335 1112.64 237.071ZM1115.04 237.095C1115.04 238.007 1115.21 238.863 1115.55 239.663C1115.88 240.447 1116.35 241.143 1116.94 241.751C1117.53 242.359 1118.22 242.839 1119 243.191C1119.79 243.527 1120.64 243.695 1121.55 243.695C1122.44 243.695 1123.28 243.527 1124.07 243.191C1124.85 242.839 1125.53 242.359 1126.11 241.751C1126.68 241.143 1127.14 240.447 1127.48 239.663C1127.81 238.863 1127.98 237.999 1127.98 237.071C1127.98 236.159 1127.81 235.303 1127.48 234.503C1127.14 233.687 1126.68 232.975 1126.08 232.367C1125.49 231.759 1124.8 231.287 1124.02 230.951C1123.24 230.599 1122.4 230.423 1121.5 230.423C1120.59 230.423 1119.74 230.599 1118.96 230.951C1118.17 231.303 1117.48 231.783 1116.89 232.391C1116.3 232.999 1115.84 233.711 1115.52 234.527C1115.2 235.327 1115.04 236.183 1115.04 237.095ZM1134.3 245.735V227.831H1134.33L1143.42 240.743L1142.44 240.551L1151.51 227.831H1151.56V245.735H1149.25V233.111L1149.4 234.287L1142.85 243.551H1142.8L1136.15 234.287L1136.56 233.207V245.735H1134.3ZM1156.54 245.735V227.831H1156.57L1165.66 240.743L1164.68 240.551L1173.75 227.831H1173.8V245.735H1171.5V233.111L1171.64 234.287L1165.09 243.551H1165.04L1158.39 234.287L1158.8 233.207V245.735H1156.54ZM1177.71 237.071C1177.71 235.871 1177.93 234.743 1178.38 233.687C1178.84 232.615 1179.48 231.671 1180.3 230.855C1181.11 230.023 1182.05 229.375 1183.11 228.911C1184.18 228.431 1185.33 228.191 1186.56 228.191C1187.78 228.191 1188.91 228.431 1189.97 228.911C1191.04 229.375 1191.99 230.023 1192.8 230.855C1193.63 231.671 1194.28 232.615 1194.75 233.687C1195.21 234.743 1195.44 235.871 1195.44 237.071C1195.44 238.303 1195.21 239.455 1194.75 240.527C1194.28 241.599 1193.63 242.543 1192.8 243.359C1191.99 244.159 1191.04 244.791 1189.97 245.255C1188.91 245.703 1187.78 245.927 1186.56 245.927C1185.33 245.927 1184.18 245.703 1183.11 245.255C1182.05 244.807 1181.11 244.183 1180.3 243.383C1179.48 242.583 1178.84 241.647 1178.38 240.575C1177.93 239.503 1177.71 238.335 1177.71 237.071ZM1180.11 237.095C1180.11 238.007 1180.27 238.863 1180.61 239.663C1180.95 240.447 1181.41 241.143 1182 241.751C1182.59 242.359 1183.28 242.839 1184.07 243.191C1184.85 243.527 1185.7 243.695 1186.61 243.695C1187.51 243.695 1188.35 243.527 1189.13 243.191C1189.91 242.839 1190.59 242.359 1191.17 241.751C1191.75 241.143 1192.2 240.447 1192.54 239.663C1192.87 238.863 1193.04 237.999 1193.04 237.071C1193.04 236.159 1192.87 235.303 1192.54 234.503C1192.2 233.687 1191.74 232.975 1191.15 232.367C1190.55 231.759 1189.87 231.287 1189.08 230.951C1188.3 230.599 1187.46 230.423 1186.56 230.423C1185.65 230.423 1184.8 230.599 1184.02 230.951C1183.23 231.303 1182.55 231.783 1181.95 232.391C1181.36 232.999 1180.91 233.711 1180.59 234.527C1180.27 235.327 1180.11 236.183 1180.11 237.095ZM1214.39 246.287L1200.97 232.679L1201.64 232.847L1201.69 245.735H1199.36V227.855H1199.48L1212.76 241.511L1212.2 241.391L1212.16 228.383H1214.46V246.287H1214.39ZM1227.04 245.735V227.831H1227.07L1236.16 240.743L1235.18 240.551L1244.25 227.831H1244.3V245.735H1242V233.111L1242.14 234.287L1235.59 243.551H1235.54L1228.89 234.287L1229.3 233.207V245.735H1227.04ZM1249.29 228.383H1251.61V245.735H1249.29V228.383ZM1265.57 231.479C1264.98 231.175 1264.33 230.911 1263.63 230.687C1262.93 230.463 1262.24 230.351 1261.57 230.351C1260.64 230.351 1259.89 230.567 1259.33 230.999C1258.79 231.431 1258.52 232.007 1258.52 232.727C1258.52 233.271 1258.69 233.735 1259.05 234.119C1259.4 234.487 1259.86 234.807 1260.44 235.079C1261.01 235.351 1261.61 235.607 1262.24 235.847C1262.78 236.055 1263.32 236.287 1263.85 236.543C1264.37 236.799 1264.85 237.119 1265.26 237.503C1265.69 237.887 1266.03 238.359 1266.27 238.919C1266.53 239.479 1266.65 240.175 1266.65 241.007C1266.65 241.919 1266.42 242.751 1265.96 243.503C1265.51 244.255 1264.86 244.847 1264.01 245.279C1263.17 245.711 1262.16 245.927 1260.99 245.927C1260.22 245.927 1259.49 245.839 1258.78 245.663C1258.09 245.487 1257.45 245.263 1256.86 244.991C1256.27 244.703 1255.74 244.407 1255.28 244.103L1256.31 242.279C1256.69 242.551 1257.13 242.815 1257.63 243.071C1258.13 243.311 1258.65 243.511 1259.19 243.671C1259.73 243.815 1260.26 243.887 1260.77 243.887C1261.32 243.887 1261.85 243.791 1262.38 243.599C1262.93 243.391 1263.37 243.079 1263.73 242.663C1264.08 242.247 1264.25 241.695 1264.25 241.007C1264.25 240.415 1264.09 239.927 1263.77 239.543C1263.47 239.143 1263.06 238.807 1262.55 238.535C1262.04 238.247 1261.49 237.991 1260.92 237.767C1260.37 237.559 1259.82 237.335 1259.26 237.095C1258.7 236.839 1258.18 236.535 1257.7 236.183C1257.22 235.815 1256.84 235.367 1256.55 234.839C1256.26 234.311 1256.12 233.671 1256.12 232.919C1256.12 232.007 1256.33 231.215 1256.77 230.543C1257.21 229.855 1257.82 229.319 1258.59 228.935C1259.36 228.535 1260.24 228.319 1261.23 228.287C1262.35 228.287 1263.33 228.423 1264.18 228.695C1265.05 228.967 1265.81 229.303 1266.46 229.703L1265.57 231.479ZM1269.18 228.383H1280.7V230.615H1276.04V245.735H1273.71V230.615H1269.18V228.383ZM1281.31 245.735L1288.89 227.663H1289.04L1296.6 245.735H1293.93L1288.27 231.311L1289.92 230.231L1283.59 245.735H1281.31ZM1285.75 239.159H1292.2L1292.97 241.175H1285.08L1285.75 239.159ZM1302.22 235.367L1302.14 236.231L1302.46 235.799L1309.56 228.383H1312.56L1305.38 235.823L1312.97 245.735H1310.02L1303.68 237.311L1302.22 238.727V245.735H1299.86V228.383H1302.22V235.367ZM1316.15 228.383H1327.43V230.615H1318.48V235.895H1326.47V238.127H1318.48V243.503H1327.77V245.735H1316.15V228.383ZM1340.79 231.479C1340.19 231.175 1339.55 230.911 1338.84 230.687C1338.14 230.463 1337.45 230.351 1336.78 230.351C1335.85 230.351 1335.11 230.567 1334.55 230.999C1334 231.431 1333.73 232.007 1333.73 232.727C1333.73 233.271 1333.91 233.735 1334.26 234.119C1334.61 234.487 1335.07 234.807 1335.65 235.079C1336.23 235.351 1336.83 235.607 1337.45 235.847C1337.99 236.055 1338.53 236.287 1339.06 236.543C1339.59 236.799 1340.06 237.119 1340.47 237.503C1340.91 237.887 1341.24 238.359 1341.48 238.919C1341.74 239.479 1341.87 240.175 1341.87 241.007C1341.87 241.919 1341.63 242.751 1341.17 243.503C1340.72 244.255 1340.07 244.847 1339.23 245.279C1338.38 245.711 1337.37 245.927 1336.2 245.927C1335.43 245.927 1334.7 245.839 1333.99 245.663C1333.31 245.487 1332.67 245.263 1332.07 244.991C1331.48 244.703 1330.95 244.407 1330.49 244.103L1331.52 242.279C1331.91 242.551 1332.35 242.815 1332.84 243.071C1333.34 243.311 1333.86 243.511 1334.4 243.671C1334.95 243.815 1335.47 243.887 1335.99 243.887C1336.53 243.887 1337.07 243.791 1337.59 243.599C1338.14 243.391 1338.59 243.079 1338.94 242.663C1339.29 242.247 1339.47 241.695 1339.47 241.007C1339.47 240.415 1339.31 239.927 1338.99 239.543C1338.68 239.143 1338.27 238.807 1337.76 238.535C1337.25 238.247 1336.71 237.991 1336.13 237.767C1335.59 237.559 1335.03 237.335 1334.47 237.095C1333.91 236.839 1333.39 236.535 1332.91 236.183C1332.43 235.815 1332.05 235.367 1331.76 234.839C1331.47 234.311 1331.33 233.671 1331.33 232.919C1331.33 232.007 1331.55 231.215 1331.98 230.543C1332.43 229.855 1333.03 229.319 1333.8 228.935C1334.57 228.535 1335.45 228.319 1336.44 228.287C1337.56 228.287 1338.55 228.423 1339.39 228.695C1340.26 228.967 1341.02 229.303 1341.67 229.703L1340.79 231.479Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip0_236_401)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M1206.26 78.4302H1158.15C1158.05 76.4767 1158.1 74.5978 1158.33 72.7912C1161.01 51.1985 1186.13 51.2877 1180.39 25.9035C1178.49 34.1754 1173.66 36.129 1166.35 35.1462L1161.94 39.4218C1157.22 43.9938 1150.59 35.9555 1154.94 31.0054C1164.02 21.4472 1166.78 15.4637 1170.07 12.9489C1171.33 11.9926 1172.87 12.036 1172.8 10.2197C1172.77 9.4489 1172.08 8.33844 1171.48 7.9988C1171.21 5.47195 1171.13 2.9451 1171.48 0.420654C1175.59 2.06106 1179.28 4.87938 1182.38 8.29267L1182.65 3.84359C1196.99 4.79266 1206.9 12.4214 1212.15 29.6179C1215.09 59.4319 1207.81 62.4092 1206.26 78.4302ZM1160.03 81.9688H1206.34C1208.45 81.9688 1210.19 83.7031 1210.19 85.8036C1210.19 87.9041 1208.45 89.6385 1206.34 89.6385H1160.03C1157.92 89.6385 1156.18 87.9137 1156.18 85.8036C1156.18 83.6935 1157.91 81.9688 1160.03 81.9688ZM1153.05 115.654H1213.32C1215.51 115.654 1217.3 117.439 1217.3 119.621C1217.3 121.803 1215.51 123.588 1213.32 123.588H1153.05C1150.85 123.588 1149.06 121.803 1149.06 119.621C1149.06 117.439 1150.85 115.654 1153.05 115.654ZM1205.42 93.1794C1208.64 98.8161 1213.92 104.523 1213.07 112.11H1153.29C1152.43 104.523 1158.42 98.8161 1161.65 93.1794H1205.42Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip1_236_401)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M1228.34 78.4302H1276.45C1276.56 76.4767 1276.5 74.5978 1276.28 72.7912C1273.59 51.1985 1248.47 51.2877 1254.21 25.9035C1256.11 34.1754 1260.95 36.129 1268.25 35.1462L1272.67 39.4218C1277.39 43.9938 1284.01 35.9555 1279.67 31.0054C1270.58 21.4472 1267.83 15.4637 1264.53 12.9489C1263.28 11.9926 1261.73 12.036 1261.8 10.2197C1261.84 9.4489 1262.52 8.33844 1263.12 7.9988C1263.4 5.47195 1263.48 2.9451 1263.12 0.420654C1259.01 2.06106 1255.32 4.87938 1252.22 8.29267L1251.96 3.84359C1237.61 4.79266 1227.7 12.4214 1222.46 29.6179C1219.52 59.4319 1226.8 62.4092 1228.34 78.4302ZM1274.58 81.9688H1228.27C1226.15 81.9688 1224.42 83.7031 1224.42 85.8036C1224.42 87.9041 1226.16 89.6385 1228.27 89.6385H1274.58C1276.69 89.6385 1278.43 87.9137 1278.43 85.8036C1278.43 83.6935 1276.7 81.9688 1274.58 81.9688ZM1281.56 115.654H1221.29C1219.1 115.654 1217.3 117.439 1217.3 119.621C1217.3 121.803 1219.1 123.588 1221.29 123.588H1281.56C1283.75 123.588 1285.54 121.803 1285.54 119.621C1285.54 117.439 1283.75 115.654 1281.56 115.654ZM1229.19 93.1794C1225.96 98.8161 1220.68 104.523 1221.54 112.11H1281.32C1282.18 104.523 1276.18 98.8161 1272.96 93.1794H1229.19Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M-16.7856 119.508L1099.3 119.509",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M-16.7856 273H2481.21",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M1335.8 119.991H2473.21",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "373.485",
+            y: "121.174",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "323.349",
+            y: "121.174",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "423.622",
+            y: "121.174",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "423.549",
+            y: "221.374",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 423.549 221.374)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "373.412",
+            y: "221.374",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 373.412 221.374)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "473.686",
+            y: "221.374",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 473.686 221.374)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "423.549",
+            y: "271.51",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 423.549 271.51)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "473.686",
+            y: "271.51",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 473.686 271.51)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "373.412",
+            y: "271.51",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 373.412 271.51)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "572.933",
+            y: "122.141",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "523.309",
+            y: "122.141",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "622.557",
+            y: "122.141",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "622.485",
+            y: "221.317",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 622.485 221.317)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "523.237",
+            y: "221.041",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 523.237 221.041)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "572.861",
+            y: "221.317",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 572.861 221.317)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "672.109",
+            y: "221.317",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 672.109 221.317)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "622.485",
+            y: "270.941",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 622.485 270.941)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "672.109",
+            y: "270.941",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 672.109 270.941)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "572.861",
+            y: "270.941",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 572.861 270.941)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "771.357",
+            y: "121.865",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "721.733",
+            y: "121.865",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "820.981",
+            y: "121.865",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "820.909",
+            y: "221.041",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 820.909 221.041)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "721.661",
+            y: "220.764",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 721.661 220.764)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "771.285",
+            y: "221.041",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 771.285 221.041)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "870.533",
+            y: "221.041",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 870.533 221.041)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "820.909",
+            y: "270.665",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 820.909 270.665)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "870.533",
+            y: "270.665",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 870.533 270.665)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "771.285",
+            y: "270.665",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 771.285 270.665)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "222.064",
+            y: "270.791",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 222.064 270.791)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "271.688",
+            y: "270.791",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 271.688 270.791)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "172.441",
+            y: "270.791",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 172.441 270.791)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "172.512",
+            y: "171.615",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "271.76",
+            y: "171.891",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "222.137",
+            y: "171.615",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "122.889",
+            y: "171.615",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "172.512",
+            y: "121.991",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "122.889",
+            y: "121.991",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "222.137",
+            y: "121.991",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "23.178",
+            y: "270.543",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 23.178 270.543)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "72.8021",
+            y: "270.543",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 72.8021 270.543)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "-26.3738",
+            y: "171.367",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "72.8741",
+            y: "171.644",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "23.2502",
+            y: "171.367",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "-26.3738",
+            y: "121.743",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "23.2502",
+            y: "121.743",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "969.781",
+            y: "121.711",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "920.156",
+            y: "121.711",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1019.4",
+            y: "121.711",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1019.33",
+            y: "220.886",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1019.33 220.886)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "920.084",
+            y: "220.61",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 920.084 220.61)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "969.708",
+            y: "220.886",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 969.708 220.886)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1068.96",
+            y: "220.886",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1068.96 220.886)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1019.33",
+            y: "270.51",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1019.33 270.51)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1068.96",
+            y: "270.51",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 1068.96 270.51)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "969.708",
+            y: "270.51",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 969.708 270.51)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1840.53",
+            y: "121.588",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1790.39",
+            y: "121.588",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1890.66",
+            y: "121.588",
+            width: "50.0636",
+            height: "50.0636",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1890.59",
+            y: "221.789",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 1890.59 221.789)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1840.45",
+            y: "221.789",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 1840.45 221.789)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1940.73",
+            y: "221.789",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(-180 1940.73 221.789)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1890.59",
+            y: "271.925",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 1890.59 271.925)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1940.73",
+            y: "271.925",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 1940.73 271.925)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1840.45",
+            y: "271.925",
+            width: "50.0636",
+            height: "50.0636",
+            transform: "rotate(180 1840.45 271.925)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2039.97",
+            y: "122.556",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1990.35",
+            y: "122.556",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2089.6",
+            y: "122.556",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2089.53",
+            y: "221.732",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2089.53 221.732)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1990.28",
+            y: "221.456",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1990.28 221.456)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2039.9",
+            y: "221.732",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2039.9 221.732)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2139.15",
+            y: "221.732",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2139.15 221.732)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2089.53",
+            y: "271.356",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2089.53 271.356)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2139.15",
+            y: "271.356",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2139.15 271.356)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2039.9",
+            y: "271.356",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2039.9 271.356)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2238.4",
+            y: "122.28",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2188.77",
+            y: "122.28",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2288.02",
+            y: "122.28",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2287.95",
+            y: "221.455",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2287.95 221.455)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2188.7",
+            y: "221.179",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2188.7 221.179)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2238.33",
+            y: "221.455",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2238.33 221.455)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2337.57",
+            y: "221.455",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2337.57 221.455)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2287.95",
+            y: "271.08",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2287.95 271.08)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2337.57",
+            y: "271.08",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2337.57 271.08)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2238.33",
+            y: "271.08",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2238.33 271.08)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1689.11",
+            y: "271.205",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1689.11 271.205)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1738.73",
+            y: "271.205",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1738.73 271.205)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1639.48",
+            y: "271.205",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1639.48 271.205)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1639.55",
+            y: "172.03",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1738.8",
+            y: "172.306",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1689.18",
+            y: "172.03",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1589.93",
+            y: "172.03",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1639.55",
+            y: "122.405",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1589.93",
+            y: "122.405",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1689.18",
+            y: "122.405",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1490.22",
+            y: "270.958",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1490.22 270.958)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1539.84",
+            y: "270.958",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1539.84 270.958)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1440.6",
+            y: "270.958",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 1440.6 270.958)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1440.67",
+            y: "171.782",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1539.92",
+            y: "172.058",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1490.29",
+            y: "171.782",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1391.04",
+            y: "171.782",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1440.67",
+            y: "122.158",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1391.04",
+            y: "122.158",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "1490.29",
+            y: "122.158",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2436.82",
+            y: "122.125",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2387.2",
+            y: "122.125",
+            width: "49.5517",
+            height: "49.5517",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2486.37",
+            y: "221.301",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2486.37 221.301)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2387.13",
+            y: "221.025",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2387.13 221.025)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2436.75",
+            y: "221.301",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(-180 2436.75 221.301)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2486.37",
+            y: "270.925",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2486.37 270.925)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "2436.75",
+            y: "270.925",
+            width: "49.5517",
+            height: "49.5517",
+            transform: "rotate(180 2436.75 270.925)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("defs", [
+          _c("clipPath", { attrs: { id: "clip0_236_401" } }, [
+            _c("rect", {
+              attrs: {
+                width: "68.2416",
+                height: "123.168",
+                fill: "white",
+                transform: "translate(1149.06 0.420654)",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("clipPath", { attrs: { id: "clip1_236_401" } }, [
+            _c("rect", {
+              attrs: {
+                width: "68.2416",
+                height: "123.168",
+                fill: "white",
+                transform: "matrix(-1 0 0 1 1285.54 0.420654)",
+              },
+            }),
+          ]),
+        ]),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=template&id=1295e472&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoMedium.vue?vue&type=template&id=1295e472& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "w-full medSvg xs:block" }, [
+    _c(
+      "svg",
+      {
+        staticClass: "w-full h-auto",
+        attrs: {
+          viewBox: "0 0 810 235",
+          fill: "none",
+          xmlns: "http://www.w3.org/2000/svg",
+        },
+      },
+      [
+        _c("path", {
+          attrs: {
+            d: "M340.299 170.41C339.531 170.922 338.485 171.498 337.163 172.138C335.84 172.778 334.283 173.311 332.491 173.738C330.741 174.164 328.821 174.378 326.731 174.378C323.147 174.335 319.904 173.695 317.003 172.458C314.144 171.22 311.712 169.535 309.707 167.402C307.701 165.268 306.144 162.815 305.035 160.042C303.968 157.226 303.435 154.239 303.435 151.082C303.435 147.626 303.989 144.447 305.099 141.546C306.251 138.602 307.851 136.063 309.899 133.93C311.947 131.754 314.357 130.068 317.131 128.874C319.947 127.679 323.019 127.082 326.347 127.082C329.12 127.082 331.637 127.466 333.899 128.234C336.16 128.959 338.101 129.834 339.723 130.858L337.227 136.618C335.947 135.764 334.389 134.954 332.555 134.186C330.763 133.418 328.757 133.034 326.539 133.034C324.277 133.034 322.144 133.482 320.139 134.378C318.133 135.274 316.363 136.532 314.827 138.154C313.291 139.775 312.075 141.674 311.179 143.85C310.325 145.983 309.899 148.287 309.899 150.762C309.899 153.279 310.283 155.626 311.051 157.802C311.861 159.935 312.992 161.791 314.443 163.37C315.936 164.948 317.728 166.186 319.819 167.082C321.909 167.978 324.256 168.426 326.859 168.426C329.205 168.426 331.296 168.063 333.131 167.338C334.965 166.612 336.48 165.802 337.675 164.906L340.299 170.41ZM387.36 127.594V173.866H381.216V153.578H356.96V173.866H350.752V127.594H356.96V147.69H381.216V127.594H387.36ZM400.69 127.594H430.77V133.546H406.898V147.626H428.21V153.578H406.898V167.914H431.666V173.866H400.69V127.594ZM466.376 135.85C464.797 135.039 463.069 134.335 461.192 133.738C459.314 133.14 457.48 132.842 455.688 132.842C453.213 132.842 451.229 133.418 449.736 134.57C448.285 135.722 447.56 137.258 447.56 139.178C447.56 140.628 448.029 141.866 448.968 142.89C449.906 143.871 451.144 144.724 452.68 145.45C454.216 146.175 455.816 146.858 457.48 147.498C458.93 148.052 460.36 148.671 461.768 149.354C463.176 150.036 464.434 150.89 465.544 151.914C466.696 152.938 467.592 154.196 468.232 155.69C468.914 157.183 469.256 159.039 469.256 161.258C469.256 163.69 468.637 165.908 467.4 167.914C466.205 169.919 464.477 171.498 462.216 172.65C459.954 173.802 457.266 174.378 454.152 174.378C452.104 174.378 450.141 174.143 448.264 173.674C446.429 173.204 444.722 172.607 443.144 171.882C441.565 171.114 440.157 170.324 438.92 169.514L441.672 164.65C442.696 165.375 443.869 166.079 445.192 166.762C446.514 167.402 447.901 167.935 449.352 168.362C450.802 168.746 452.21 168.938 453.576 168.938C455.026 168.938 456.456 168.682 457.864 168.17C459.314 167.615 460.509 166.783 461.448 165.674C462.386 164.564 462.856 163.092 462.856 161.258C462.856 159.679 462.429 158.378 461.576 157.354C460.765 156.287 459.677 155.391 458.312 154.666C456.946 153.898 455.496 153.215 453.96 152.618C452.509 152.063 451.037 151.466 449.544 150.826C448.05 150.143 446.664 149.332 445.384 148.394C444.104 147.412 443.08 146.218 442.312 144.81C441.544 143.402 441.16 141.695 441.16 139.69C441.16 137.258 441.736 135.146 442.888 133.354C444.082 131.519 445.704 130.09 447.752 129.066C449.8 127.999 452.146 127.423 454.792 127.338C457.778 127.338 460.402 127.7 462.664 128.426C464.968 129.151 466.994 130.047 468.744 131.114L466.376 135.85ZM503.626 135.85C502.047 135.039 500.319 134.335 498.442 133.738C496.564 133.14 494.73 132.842 492.938 132.842C490.463 132.842 488.479 133.418 486.986 134.57C485.535 135.722 484.81 137.258 484.81 139.178C484.81 140.628 485.279 141.866 486.218 142.89C487.156 143.871 488.394 144.724 489.93 145.45C491.466 146.175 493.066 146.858 494.73 147.498C496.18 148.052 497.61 148.671 499.018 149.354C500.426 150.036 501.684 150.89 502.794 151.914C503.946 152.938 504.842 154.196 505.482 155.69C506.164 157.183 506.506 159.039 506.506 161.258C506.506 163.69 505.887 165.908 504.65 167.914C503.455 169.919 501.727 171.498 499.466 172.65C497.204 173.802 494.516 174.378 491.402 174.378C489.354 174.378 487.391 174.143 485.514 173.674C483.679 173.204 481.972 172.607 480.394 171.882C478.815 171.114 477.407 170.324 476.17 169.514L478.922 164.65C479.946 165.375 481.119 166.079 482.442 166.762C483.764 167.402 485.151 167.935 486.602 168.362C488.052 168.746 489.46 168.938 490.826 168.938C492.276 168.938 493.706 168.682 495.114 168.17C496.564 167.615 497.759 166.783 498.698 165.674C499.636 164.564 500.106 163.092 500.106 161.258C500.106 159.679 499.679 158.378 498.826 157.354C498.015 156.287 496.927 155.391 495.562 154.666C494.196 153.898 492.746 153.215 491.21 152.618C489.759 152.063 488.287 151.466 486.794 150.826C485.3 150.143 483.914 149.332 482.634 148.394C481.354 147.412 480.33 146.218 479.562 144.81C478.794 143.402 478.41 141.695 478.41 139.69C478.41 137.258 478.986 135.146 480.138 133.354C481.332 131.519 482.954 130.09 485.002 129.066C487.05 127.999 489.396 127.423 492.042 127.338C495.028 127.338 497.652 127.7 499.914 128.426C502.218 129.151 504.244 130.047 505.994 131.114L503.626 135.85Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M296.045 200.773C295.757 200.965 295.365 201.181 294.869 201.421C294.373 201.661 293.789 201.861 293.117 202.021C292.461 202.181 291.741 202.261 290.957 202.261C289.613 202.245 288.397 202.005 287.309 201.541C286.237 201.077 285.325 200.445 284.573 199.645C283.821 198.845 283.237 197.925 282.821 196.885C282.421 195.829 282.221 194.709 282.221 193.525C282.221 192.229 282.429 191.037 282.845 189.949C283.277 188.845 283.877 187.893 284.645 187.093C285.413 186.277 286.317 185.645 287.357 185.197C288.413 184.749 289.565 184.525 290.813 184.525C291.853 184.525 292.797 184.669 293.645 184.957C294.493 185.229 295.221 185.557 295.829 185.941L294.893 188.101C294.413 187.781 293.829 187.477 293.141 187.189C292.469 186.901 291.717 186.757 290.885 186.757C290.037 186.757 289.237 186.925 288.485 187.261C287.733 187.597 287.069 188.069 286.493 188.677C285.917 189.285 285.461 189.997 285.125 190.813C284.805 191.613 284.645 192.477 284.645 193.405C284.645 194.349 284.789 195.229 285.077 196.045C285.381 196.845 285.805 197.541 286.349 198.133C286.909 198.725 287.581 199.189 288.365 199.525C289.149 199.861 290.029 200.029 291.005 200.029C291.885 200.029 292.669 199.893 293.357 199.621C294.045 199.349 294.613 199.045 295.061 198.709L296.045 200.773ZM298.885 193.405C298.885 192.205 299.109 191.077 299.557 190.021C300.021 188.949 300.661 188.005 301.477 187.189C302.293 186.357 303.229 185.709 304.285 185.245C305.357 184.765 306.509 184.525 307.741 184.525C308.957 184.525 310.093 184.765 311.149 185.245C312.221 185.709 313.165 186.357 313.981 187.189C314.813 188.005 315.461 188.949 315.925 190.021C316.389 191.077 316.621 192.205 316.621 193.405C316.621 194.637 316.389 195.789 315.925 196.861C315.461 197.933 314.813 198.877 313.981 199.693C313.165 200.493 312.221 201.125 311.149 201.589C310.093 202.037 308.957 202.261 307.741 202.261C306.509 202.261 305.357 202.037 304.285 201.589C303.229 201.141 302.293 200.517 301.477 199.717C300.661 198.917 300.021 197.981 299.557 196.909C299.109 195.837 298.885 194.669 298.885 193.405ZM301.285 193.429C301.285 194.341 301.453 195.197 301.789 195.997C302.125 196.781 302.589 197.477 303.181 198.085C303.773 198.693 304.461 199.173 305.245 199.525C306.029 199.861 306.877 200.029 307.789 200.029C308.685 200.029 309.525 199.861 310.309 199.525C311.093 199.173 311.773 198.693 312.349 198.085C312.925 197.477 313.381 196.781 313.717 195.997C314.053 195.197 314.221 194.333 314.221 193.405C314.221 192.493 314.053 191.637 313.717 190.837C313.381 190.021 312.917 189.309 312.325 188.701C311.733 188.093 311.045 187.621 310.261 187.285C309.477 186.933 308.637 186.757 307.741 186.757C306.829 186.757 305.981 186.933 305.197 187.285C304.413 187.637 303.725 188.117 303.133 188.725C302.541 189.333 302.085 190.045 301.765 190.861C301.445 191.661 301.285 192.517 301.285 193.429ZM320.543 202.069V184.165H320.567L329.663 197.077L328.679 196.885L337.751 184.165H337.799V202.069H335.495V189.445L335.639 190.621L329.087 199.885H329.039L322.391 190.621L322.799 189.541V202.069H320.543ZM342.785 202.069V184.165H342.809L351.905 197.077L350.921 196.885L359.993 184.165H360.041V202.069H357.737V189.445L357.881 190.621L351.329 199.885H351.281L344.633 190.621L345.041 189.541V202.069H342.785ZM363.947 193.405C363.947 192.205 364.171 191.077 364.619 190.021C365.083 188.949 365.723 188.005 366.539 187.189C367.355 186.357 368.291 185.709 369.347 185.245C370.419 184.765 371.571 184.525 372.803 184.525C374.019 184.525 375.155 184.765 376.211 185.245C377.283 185.709 378.227 186.357 379.043 187.189C379.875 188.005 380.523 188.949 380.987 190.021C381.451 191.077 381.683 192.205 381.683 193.405C381.683 194.637 381.451 195.789 380.987 196.861C380.523 197.933 379.875 198.877 379.043 199.693C378.227 200.493 377.283 201.125 376.211 201.589C375.155 202.037 374.019 202.261 372.803 202.261C371.571 202.261 370.419 202.037 369.347 201.589C368.291 201.141 367.355 200.517 366.539 199.717C365.723 198.917 365.083 197.981 364.619 196.909C364.171 195.837 363.947 194.669 363.947 193.405ZM366.347 193.429C366.347 194.341 366.515 195.197 366.851 195.997C367.187 196.781 367.651 197.477 368.243 198.085C368.835 198.693 369.523 199.173 370.307 199.525C371.091 199.861 371.939 200.029 372.851 200.029C373.747 200.029 374.587 199.861 375.371 199.525C376.155 199.173 376.835 198.693 377.411 198.085C377.987 197.477 378.443 196.781 378.779 195.997C379.115 195.197 379.283 194.333 379.283 193.405C379.283 192.493 379.115 191.637 378.779 190.837C378.443 190.021 377.979 189.309 377.387 188.701C376.795 188.093 376.107 187.621 375.323 187.285C374.539 186.933 373.699 186.757 372.803 186.757C371.891 186.757 371.043 186.933 370.259 187.285C369.475 187.637 368.787 188.117 368.195 188.725C367.603 189.333 367.147 190.045 366.827 190.861C366.507 191.661 366.347 192.517 366.347 193.429ZM400.629 202.621L387.213 189.013L387.885 189.181L387.933 202.069H385.605V184.189H385.725L398.997 197.845L398.445 197.725L398.397 184.717H400.701V202.621H400.629ZM413.285 202.069V184.165H413.309L422.405 197.077L421.421 196.885L430.493 184.165H430.541V202.069H428.237V189.445L428.381 190.621L421.829 199.885H421.781L415.133 190.621L415.541 189.541V202.069H413.285ZM435.527 184.717H437.855V202.069H435.527V184.717ZM451.816 187.813C451.224 187.509 450.576 187.245 449.872 187.021C449.168 186.797 448.48 186.685 447.808 186.685C446.88 186.685 446.136 186.901 445.576 187.333C445.032 187.765 444.76 188.341 444.76 189.061C444.76 189.605 444.936 190.069 445.288 190.453C445.64 190.821 446.104 191.141 446.68 191.413C447.256 191.685 447.856 191.941 448.48 192.181C449.024 192.389 449.56 192.621 450.088 192.877C450.616 193.133 451.088 193.453 451.504 193.837C451.936 194.221 452.272 194.693 452.512 195.253C452.768 195.813 452.896 196.509 452.896 197.341C452.896 198.253 452.664 199.085 452.2 199.837C451.752 200.589 451.104 201.181 450.256 201.613C449.408 202.045 448.4 202.261 447.232 202.261C446.464 202.261 445.728 202.173 445.024 201.997C444.336 201.821 443.696 201.597 443.104 201.325C442.512 201.037 441.984 200.741 441.52 200.437L442.552 198.613C442.936 198.885 443.376 199.149 443.872 199.405C444.368 199.645 444.888 199.845 445.432 200.005C445.976 200.149 446.504 200.221 447.016 200.221C447.56 200.221 448.096 200.125 448.624 199.933C449.168 199.725 449.616 199.413 449.968 198.997C450.32 198.581 450.496 198.029 450.496 197.341C450.496 196.749 450.336 196.261 450.016 195.877C449.712 195.477 449.304 195.141 448.792 194.869C448.28 194.581 447.736 194.325 447.16 194.101C446.616 193.893 446.064 193.669 445.504 193.429C444.944 193.173 444.424 192.869 443.944 192.517C443.464 192.149 443.08 191.701 442.792 191.173C442.504 190.645 442.36 190.005 442.36 189.253C442.36 188.341 442.576 187.549 443.008 186.877C443.456 186.189 444.064 185.653 444.832 185.269C445.6 184.869 446.48 184.653 447.472 184.621C448.592 184.621 449.576 184.757 450.424 185.029C451.288 185.301 452.048 185.637 452.704 186.037L451.816 187.813ZM455.419 184.717H466.939V186.949H462.283V202.069H459.955V186.949H455.419V184.717ZM467.549 202.069L475.133 183.997H475.277L482.837 202.069H480.173L474.509 187.645L476.165 186.565L469.829 202.069H467.549ZM471.989 195.493H478.445L479.213 197.509H471.317L471.989 195.493ZM488.457 191.701L488.385 192.565L488.697 192.133L495.801 184.717H498.801L491.625 192.157L499.209 202.069H496.257L489.921 193.645L488.457 195.061V202.069H486.105V184.717H488.457V191.701ZM502.394 184.717H513.674V186.949H504.722V192.229H512.714V194.461H504.722V199.837H514.01V202.069H502.394V184.717ZM527.027 187.813C526.435 187.509 525.787 187.245 525.083 187.021C524.379 186.797 523.691 186.685 523.019 186.685C522.091 186.685 521.347 186.901 520.787 187.333C520.243 187.765 519.971 188.341 519.971 189.061C519.971 189.605 520.147 190.069 520.499 190.453C520.851 190.821 521.315 191.141 521.891 191.413C522.467 191.685 523.067 191.941 523.691 192.181C524.235 192.389 524.771 192.621 525.299 192.877C525.827 193.133 526.299 193.453 526.715 193.837C527.147 194.221 527.483 194.693 527.723 195.253C527.979 195.813 528.107 196.509 528.107 197.341C528.107 198.253 527.875 199.085 527.411 199.837C526.963 200.589 526.315 201.181 525.467 201.613C524.619 202.045 523.611 202.261 522.443 202.261C521.675 202.261 520.939 202.173 520.235 201.997C519.547 201.821 518.907 201.597 518.315 201.325C517.723 201.037 517.195 200.741 516.731 200.437L517.763 198.613C518.147 198.885 518.587 199.149 519.083 199.405C519.579 199.645 520.099 199.845 520.643 200.005C521.187 200.149 521.715 200.221 522.227 200.221C522.771 200.221 523.307 200.125 523.835 199.933C524.379 199.725 524.827 199.413 525.179 198.997C525.531 198.581 525.707 198.029 525.707 197.341C525.707 196.749 525.547 196.261 525.227 195.877C524.923 195.477 524.515 195.141 524.003 194.869C523.491 194.581 522.947 194.325 522.371 194.101C521.827 193.893 521.275 193.669 520.715 193.429C520.155 193.173 519.635 192.869 519.155 192.517C518.675 192.149 518.291 191.701 518.003 191.173C517.715 190.645 517.571 190.005 517.571 189.253C517.571 188.341 517.787 187.549 518.219 186.877C518.667 186.189 519.275 185.653 520.043 185.269C520.811 184.869 521.691 184.653 522.683 184.621C523.803 184.621 524.787 184.757 525.635 185.029C526.499 185.301 527.259 185.637 527.915 186.037L527.027 187.813Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip0_197_396)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M394.987 66.952H354.114C354.024 65.2924 354.071 63.6963 354.262 62.1615C356.546 43.8179 377.885 43.8936 373.009 22.3291C371.395 29.3563 367.288 31.0159 361.079 30.181L357.329 33.8133C353.321 37.6973 347.69 30.8686 351.384 26.6633C359.102 18.5433 361.441 13.4602 364.241 11.3238C365.308 10.5114 366.622 10.5482 366.558 9.00526C366.529 8.35042 365.947 7.40705 365.437 7.11851C365.203 4.97188 365.135 2.82525 365.437 0.680664C368.928 2.07424 372.065 4.46848 374.699 7.36817L374.923 3.58854C387.112 4.39481 395.53 10.8756 399.985 25.4846C402.481 50.8124 396.297 53.3417 394.987 66.952ZM355.707 69.9581H395.047C396.848 69.9581 398.32 71.4315 398.32 73.2159C398.32 75.0004 396.84 76.4737 395.047 76.4737H355.707C353.915 76.4737 352.435 75.0085 352.435 73.2159C352.435 71.4233 353.907 69.9581 355.707 69.9581ZM349.777 98.5744H400.978C402.84 98.5744 404.364 100.091 404.364 101.945C404.364 103.799 402.84 105.315 400.978 105.315H349.777C347.914 105.315 346.391 103.799 346.391 101.945C346.391 100.091 347.914 98.5744 349.777 98.5744ZM394.266 79.4819C397.008 84.2704 401.494 89.1182 400.766 95.5642H349.98C349.252 89.1182 354.342 84.2704 357.083 79.4819H394.266V79.4819Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip1_197_396)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M413.74 66.952H454.614C454.704 65.2924 454.657 63.6963 454.466 62.1615C452.182 43.8179 430.843 43.8936 435.719 22.3291C437.333 29.3563 441.44 31.0159 447.649 30.181L451.398 33.8133C455.407 37.6973 461.038 30.8686 457.344 26.6633C449.626 18.5433 447.287 13.4602 444.487 11.3238C443.42 10.5114 442.106 10.5482 442.17 9.00526C442.199 8.35042 442.78 7.40705 443.29 7.11851C443.525 4.97188 443.593 2.82525 443.29 0.680664C439.8 2.07424 436.662 4.46848 434.029 7.36817L433.805 3.58854C421.616 4.39481 413.198 10.8756 408.743 25.4846C406.247 50.8124 412.431 53.3417 413.74 66.952ZM453.02 69.9581H413.681C411.88 69.9581 410.408 71.4315 410.408 73.2159C410.408 75.0004 411.888 76.4737 413.681 76.4737H453.02C454.813 76.4737 456.293 75.0085 456.293 73.2159C456.293 71.4233 454.821 69.9581 453.02 69.9581ZM458.951 98.5744H407.75C405.887 98.5744 404.364 100.091 404.364 101.945C404.364 103.799 405.887 105.315 407.75 105.315H458.951C460.814 105.315 462.337 103.799 462.337 101.945C462.337 100.091 460.814 98.5744 458.951 98.5744ZM414.462 79.4819C411.72 84.2704 407.234 89.1182 407.962 95.5642H458.748C459.476 89.1182 454.385 84.2704 451.645 79.4819H414.462V79.4819Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "-227.732",
+            y1: "102.32",
+            x2: "301.003",
+            y2: "102.813",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "-204.8",
+            y1: "231.868",
+            x2: "1070.45",
+            y2: "231.868",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "509",
+            y1: "101.676",
+            x2: "1062.8",
+            y2: "101.676",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "175.567",
+            y: "103.969",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "133.41",
+            y: "103.969",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "217.723",
+            y: "103.969",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "217.662",
+            y: "188.222",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 217.662 188.222)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "133.348",
+            y: "187.987",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 133.348 187.987)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "175.505",
+            y: "188.222",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 175.505 188.222)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "259.819",
+            y: "188.222",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 259.819 188.222)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "217.662",
+            y: "230.379",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 217.662 230.379)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "259.819",
+            y: "230.379",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 259.819 230.379)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "175.505",
+            y: "230.379",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 175.505 230.379)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "6.5105",
+            y: "103.969",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "-35.6465",
+            y: "103.969",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "48.667",
+            y: "103.969",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "48.606",
+            y: "188.222",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 48.606 188.222)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "6.44897",
+            y: "188.222",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 6.44897 188.222)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "90.7627",
+            y: "188.222",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 90.7627 188.222)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "48.606",
+            y: "230.379",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 48.606 230.379)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "90.7627",
+            y: "230.379",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 90.7627 230.379)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "6.44897",
+            y: "230.379",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 6.44897 230.379)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "593.396",
+            y: "103.315",
+            width: "42.5304",
+            height: "42.5304",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "550.804",
+            y: "103.315",
+            width: "42.5304",
+            height: "42.5304",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "635.989",
+            y: "103.315",
+            width: "42.5304",
+            height: "42.5304",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "635.927",
+            y: "188.438",
+            width: "42.5304",
+            height: "42.5304",
+            transform: "rotate(-180 635.927 188.438)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "593.334",
+            y: "188.438",
+            width: "42.5304",
+            height: "42.5304",
+            transform: "rotate(-180 593.334 188.438)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "678.519",
+            y: "188.438",
+            width: "42.5304",
+            height: "42.5304",
+            transform: "rotate(-180 678.519 188.438)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "635.927",
+            y: "231.031",
+            width: "42.5304",
+            height: "42.5304",
+            transform: "rotate(180 635.927 231.031)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "678.519",
+            y: "231.031",
+            width: "42.5304",
+            height: "42.5304",
+            transform: "rotate(180 678.519 231.031)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "593.334",
+            y: "231.031",
+            width: "42.5304",
+            height: "42.5304",
+            transform: "rotate(180 593.334 231.031)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "762.833",
+            y: "103.288",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "720.676",
+            y: "103.288",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "804.99",
+            y: "103.288",
+            width: "42.0956",
+            height: "42.0956",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "804.929",
+            y: "187.54",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 804.929 187.54)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "720.615",
+            y: "187.305",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 720.615 187.305)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "762.772",
+            y: "187.54",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 762.772 187.54)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "847.086",
+            y: "187.54",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(-180 847.086 187.54)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "804.929",
+            y: "229.697",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 804.929 229.697)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "847.086",
+            y: "229.697",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 847.086 229.697)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "762.772",
+            y: "229.697",
+            width: "42.0956",
+            height: "42.0956",
+            transform: "rotate(180 762.772 229.697)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("defs", [
+          _c("clipPath", { attrs: { id: "clip0_197_396" } }, [
+            _c("rect", {
+              attrs: {
+                width: "57.9732",
+                height: "104.634",
+                fill: "white",
+                transform: "translate(346.391 0.680664)",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("clipPath", { attrs: { id: "clip1_197_396" } }, [
+            _c("rect", {
+              attrs: {
+                width: "57.9732",
+                height: "104.634",
+                fill: "white",
+                transform: "matrix(-1 0 0 1 462.337 0.680664)",
+              },
+            }),
+          ]),
+        ]),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoSmall.vue?vue&type=template&id=568752cc&":
+/*!***************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/SVGs/LogoSmall.vue?vue&type=template&id=568752cc& ***!
+  \***************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "w-full xs:hidden" }, [
+    _c(
+      "svg",
+      {
+        staticClass: "w-full h-auto",
+        attrs: {
+          viewBox: "0 0 372 182",
+          fill: "none",
+          xmlns: "http://www.w3.org/2000/svg",
+        },
+      },
+      [
+        _c("path", {
+          attrs: {
+            d: "M135.75 129.3C135.15 129.7 134.333 130.15 133.3 130.65C132.267 131.15 131.05 131.567 129.65 131.9C128.283 132.233 126.783 132.4 125.15 132.4C122.35 132.367 119.817 131.867 117.55 130.9C115.317 129.933 113.417 128.617 111.85 126.95C110.283 125.283 109.067 123.367 108.2 121.2C107.367 119 106.95 116.667 106.95 114.2C106.95 111.5 107.383 109.017 108.25 106.75C109.15 104.45 110.4 102.467 112 100.8C113.6 99.1 115.483 97.7833 117.65 96.85C119.85 95.9167 122.25 95.45 124.85 95.45C127.017 95.45 128.983 95.75 130.75 96.35C132.517 96.9167 134.033 97.6 135.3 98.4L133.35 102.9C132.35 102.233 131.133 101.6 129.7 101C128.3 100.4 126.733 100.1 125 100.1C123.233 100.1 121.567 100.45 120 101.15C118.433 101.85 117.05 102.833 115.85 104.1C114.65 105.367 113.7 106.85 113 108.55C112.333 110.217 112 112.017 112 113.95C112 115.917 112.3 117.75 112.9 119.45C113.533 121.117 114.417 122.567 115.55 123.8C116.717 125.033 118.117 126 119.75 126.7C121.383 127.4 123.217 127.75 125.25 127.75C127.083 127.75 128.717 127.467 130.15 126.9C131.583 126.333 132.767 125.7 133.7 125L135.75 129.3ZM172.517 95.85V132H167.717V116.15H148.767V132H143.917V95.85H148.767V111.55H167.717V95.85H172.517ZM182.93 95.85H206.43V100.5H187.78V111.5H204.43V116.15H187.78V127.35H207.13V132H182.93V95.85ZM234.248 102.3C233.014 101.667 231.664 101.117 230.198 100.65C228.731 100.183 227.298 99.95 225.898 99.95C223.964 99.95 222.414 100.4 221.248 101.3C220.114 102.2 219.548 103.4 219.548 104.9C219.548 106.033 219.914 107 220.648 107.8C221.381 108.567 222.348 109.233 223.548 109.8C224.748 110.367 225.998 110.9 227.298 111.4C228.431 111.833 229.548 112.317 230.648 112.85C231.748 113.383 232.731 114.05 233.598 114.85C234.498 115.65 235.198 116.633 235.698 117.8C236.231 118.967 236.498 120.417 236.498 122.15C236.498 124.05 236.014 125.783 235.048 127.35C234.114 128.917 232.764 130.15 230.998 131.05C229.231 131.95 227.131 132.4 224.698 132.4C223.098 132.4 221.564 132.217 220.098 131.85C218.664 131.483 217.331 131.017 216.098 130.45C214.864 129.85 213.764 129.233 212.798 128.6L214.948 124.8C215.748 125.367 216.664 125.917 217.698 126.45C218.731 126.95 219.814 127.367 220.948 127.7C222.081 128 223.181 128.15 224.248 128.15C225.381 128.15 226.498 127.95 227.598 127.55C228.731 127.117 229.664 126.467 230.398 125.6C231.131 124.733 231.498 123.583 231.498 122.15C231.498 120.917 231.164 119.9 230.498 119.1C229.864 118.267 229.014 117.567 227.948 117C226.881 116.4 225.748 115.867 224.548 115.4C223.414 114.967 222.264 114.5 221.098 114C219.931 113.467 218.848 112.833 217.848 112.1C216.848 111.333 216.048 110.4 215.448 109.3C214.848 108.2 214.548 106.867 214.548 105.3C214.548 103.4 214.998 101.75 215.898 100.35C216.831 98.9167 218.098 97.8 219.698 97C221.298 96.1667 223.131 95.7167 225.198 95.65C227.531 95.65 229.581 95.9333 231.348 96.5C233.148 97.0667 234.731 97.7667 236.098 98.6L234.248 102.3ZM263.349 102.3C262.116 101.667 260.766 101.117 259.299 100.65C257.833 100.183 256.399 99.95 254.999 99.95C253.066 99.95 251.516 100.4 250.349 101.3C249.216 102.2 248.649 103.4 248.649 104.9C248.649 106.033 249.016 107 249.749 107.8C250.483 108.567 251.449 109.233 252.649 109.8C253.849 110.367 255.099 110.9 256.399 111.4C257.533 111.833 258.649 112.317 259.749 112.85C260.849 113.383 261.833 114.05 262.699 114.85C263.599 115.65 264.299 116.633 264.799 117.8C265.333 118.967 265.599 120.417 265.599 122.15C265.599 124.05 265.116 125.783 264.149 127.35C263.216 128.917 261.866 130.15 260.099 131.05C258.333 131.95 256.233 132.4 253.799 132.4C252.199 132.4 250.666 132.217 249.199 131.85C247.766 131.483 246.433 131.017 245.199 130.45C243.966 129.85 242.866 129.233 241.899 128.6L244.049 124.8C244.849 125.367 245.766 125.917 246.799 126.45C247.833 126.95 248.916 127.367 250.049 127.7C251.183 128 252.283 128.15 253.349 128.15C254.483 128.15 255.599 127.95 256.699 127.55C257.833 127.117 258.766 126.467 259.499 125.6C260.233 124.733 260.599 123.583 260.599 122.15C260.599 120.917 260.266 119.9 259.599 119.1C258.966 118.267 258.116 117.567 257.049 117C255.983 116.4 254.849 115.867 253.649 115.4C252.516 114.967 251.366 114.5 250.199 114C249.033 113.467 247.949 112.833 246.949 112.1C245.949 111.333 245.149 110.4 244.549 109.3C243.949 108.2 243.649 106.867 243.649 105.3C243.649 103.4 244.099 101.75 244.999 100.35C245.933 98.9167 247.199 97.8 248.799 97C250.399 96.1667 252.233 95.7167 254.299 95.65C256.633 95.65 258.683 95.9333 260.449 96.5C262.249 97.0667 263.833 97.7667 265.199 98.6L263.349 102.3Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("path", {
+          attrs: {
+            d: "M117.525 159.19C117.345 159.31 117.1 159.445 116.79 159.595C116.48 159.745 116.115 159.87 115.695 159.97C115.285 160.07 114.835 160.12 114.345 160.12C113.505 160.11 112.745 159.96 112.065 159.67C111.395 159.38 110.825 158.985 110.355 158.485C109.885 157.985 109.52 157.41 109.26 156.76C109.01 156.1 108.885 155.4 108.885 154.66C108.885 153.85 109.015 153.105 109.275 152.425C109.545 151.735 109.92 151.14 110.4 150.64C110.88 150.13 111.445 149.735 112.095 149.455C112.755 149.175 113.475 149.035 114.255 149.035C114.905 149.035 115.495 149.125 116.025 149.305C116.555 149.475 117.01 149.68 117.39 149.92L116.805 151.27C116.505 151.07 116.14 150.88 115.71 150.7C115.29 150.52 114.82 150.43 114.3 150.43C113.77 150.43 113.27 150.535 112.8 150.745C112.33 150.955 111.915 151.25 111.555 151.63C111.195 152.01 110.91 152.455 110.7 152.965C110.5 153.465 110.4 154.005 110.4 154.585C110.4 155.175 110.49 155.725 110.67 156.235C110.86 156.735 111.125 157.17 111.465 157.54C111.815 157.91 112.235 158.2 112.725 158.41C113.215 158.62 113.765 158.725 114.375 158.725C114.925 158.725 115.415 158.64 115.845 158.47C116.275 158.3 116.63 158.11 116.91 157.9L117.525 159.19ZM119.3 154.585C119.3 153.835 119.44 153.13 119.72 152.47C120.01 151.8 120.41 151.21 120.92 150.7C121.43 150.18 122.015 149.775 122.675 149.485C123.345 149.185 124.065 149.035 124.835 149.035C125.595 149.035 126.305 149.185 126.965 149.485C127.635 149.775 128.225 150.18 128.735 150.7C129.255 151.21 129.66 151.8 129.95 152.47C130.24 153.13 130.385 153.835 130.385 154.585C130.385 155.355 130.24 156.075 129.95 156.745C129.66 157.415 129.255 158.005 128.735 158.515C128.225 159.015 127.635 159.41 126.965 159.7C126.305 159.98 125.595 160.12 124.835 160.12C124.065 160.12 123.345 159.98 122.675 159.7C122.015 159.42 121.43 159.03 120.92 158.53C120.41 158.03 120.01 157.445 119.72 156.775C119.44 156.105 119.3 155.375 119.3 154.585ZM120.8 154.6C120.8 155.17 120.905 155.705 121.115 156.205C121.325 156.695 121.615 157.13 121.985 157.51C122.355 157.89 122.785 158.19 123.275 158.41C123.765 158.62 124.295 158.725 124.865 158.725C125.425 158.725 125.95 158.62 126.44 158.41C126.93 158.19 127.355 157.89 127.715 157.51C128.075 157.13 128.36 156.695 128.57 156.205C128.78 155.705 128.885 155.165 128.885 154.585C128.885 154.015 128.78 153.48 128.57 152.98C128.36 152.47 128.07 152.025 127.7 151.645C127.33 151.265 126.9 150.97 126.41 150.76C125.92 150.54 125.395 150.43 124.835 150.43C124.265 150.43 123.735 150.54 123.245 150.76C122.755 150.98 122.325 151.28 121.955 151.66C121.585 152.04 121.3 152.485 121.1 152.995C120.9 153.495 120.8 154.03 120.8 154.6ZM132.836 160V148.81H132.851L138.536 156.88L137.921 156.76L143.591 148.81H143.621V160H142.181V152.11L142.271 152.845L138.176 158.635H138.146L133.991 152.845L134.246 152.17V160H132.836ZM146.738 160V148.81H146.753L152.438 156.88L151.823 156.76L157.493 148.81H157.523V160H156.083V152.11L156.173 152.845L152.078 158.635H152.048L147.893 152.845L148.148 152.17V160H146.738ZM159.964 154.585C159.964 153.835 160.104 153.13 160.384 152.47C160.674 151.8 161.074 151.21 161.584 150.7C162.094 150.18 162.679 149.775 163.339 149.485C164.009 149.185 164.729 149.035 165.499 149.035C166.259 149.035 166.969 149.185 167.629 149.485C168.299 149.775 168.889 150.18 169.399 150.7C169.919 151.21 170.324 151.8 170.614 152.47C170.904 153.13 171.049 153.835 171.049 154.585C171.049 155.355 170.904 156.075 170.614 156.745C170.324 157.415 169.919 158.005 169.399 158.515C168.889 159.015 168.299 159.41 167.629 159.7C166.969 159.98 166.259 160.12 165.499 160.12C164.729 160.12 164.009 159.98 163.339 159.7C162.679 159.42 162.094 159.03 161.584 158.53C161.074 158.03 160.674 157.445 160.384 156.775C160.104 156.105 159.964 155.375 159.964 154.585ZM161.464 154.6C161.464 155.17 161.569 155.705 161.779 156.205C161.989 156.695 162.279 157.13 162.649 157.51C163.019 157.89 163.449 158.19 163.939 158.41C164.429 158.62 164.959 158.725 165.529 158.725C166.089 158.725 166.614 158.62 167.104 158.41C167.594 158.19 168.019 157.89 168.379 157.51C168.739 157.13 169.024 156.695 169.234 156.205C169.444 155.705 169.549 155.165 169.549 154.585C169.549 154.015 169.444 153.48 169.234 152.98C169.024 152.47 168.734 152.025 168.364 151.645C167.994 151.265 167.564 150.97 167.074 150.76C166.584 150.54 166.059 150.43 165.499 150.43C164.929 150.43 164.399 150.54 163.909 150.76C163.419 150.98 162.989 151.28 162.619 151.66C162.249 152.04 161.964 152.485 161.764 152.995C161.564 153.495 161.464 154.03 161.464 154.6ZM182.89 160.345L174.505 151.84L174.925 151.945L174.955 160H173.5V148.825H173.575L181.87 157.36L181.525 157.285L181.495 149.155H182.935V160.345H182.89ZM190.8 160V148.81H190.815L196.5 156.88L195.885 156.76L201.555 148.81H201.585V160H200.145V152.11L200.235 152.845L196.14 158.635H196.11L191.955 152.845L192.21 152.17V160H190.8ZM204.702 149.155H206.157V160H204.702V149.155ZM214.882 151.09C214.512 150.9 214.107 150.735 213.667 150.595C213.227 150.455 212.797 150.385 212.377 150.385C211.797 150.385 211.332 150.52 210.982 150.79C210.642 151.06 210.472 151.42 210.472 151.87C210.472 152.21 210.582 152.5 210.802 152.74C211.022 152.97 211.312 153.17 211.672 153.34C212.032 153.51 212.407 153.67 212.797 153.82C213.137 153.95 213.472 154.095 213.802 154.255C214.132 154.415 214.427 154.615 214.687 154.855C214.957 155.095 215.167 155.39 215.317 155.74C215.477 156.09 215.557 156.525 215.557 157.045C215.557 157.615 215.412 158.135 215.122 158.605C214.842 159.075 214.437 159.445 213.907 159.715C213.377 159.985 212.747 160.12 212.017 160.12C211.537 160.12 211.077 160.065 210.637 159.955C210.207 159.845 209.807 159.705 209.437 159.535C209.067 159.355 208.737 159.17 208.447 158.98L209.092 157.84C209.332 158.01 209.607 158.175 209.917 158.335C210.227 158.485 210.552 158.61 210.892 158.71C211.232 158.8 211.562 158.845 211.882 158.845C212.222 158.845 212.557 158.785 212.887 158.665C213.227 158.535 213.507 158.34 213.727 158.08C213.947 157.82 214.057 157.475 214.057 157.045C214.057 156.675 213.957 156.37 213.757 156.13C213.567 155.88 213.312 155.67 212.992 155.5C212.672 155.32 212.332 155.16 211.972 155.02C211.632 154.89 211.287 154.75 210.937 154.6C210.587 154.44 210.262 154.25 209.962 154.03C209.662 153.8 209.422 153.52 209.242 153.19C209.062 152.86 208.972 152.46 208.972 151.99C208.972 151.42 209.107 150.925 209.377 150.505C209.657 150.075 210.037 149.74 210.517 149.5C210.997 149.25 211.547 149.115 212.167 149.095C212.867 149.095 213.482 149.18 214.012 149.35C214.552 149.52 215.027 149.73 215.437 149.98L214.882 151.09ZM217.134 149.155H224.334V150.55H221.424V160H219.969V150.55H217.134V149.155ZM224.715 160L229.455 148.705H229.545L234.27 160H232.605L229.065 150.985L230.1 150.31L226.14 160H224.715ZM227.49 155.89H231.525L232.005 157.15H227.07L227.49 155.89ZM237.783 153.52L237.738 154.06L237.933 153.79L242.373 149.155H244.248L239.763 153.805L244.503 160H242.658L238.698 154.735L237.783 155.62V160H236.313V149.155H237.783V153.52ZM246.494 149.155H253.544V150.55H247.949V153.85H252.944V155.245H247.949V158.605H253.754V160H246.494V149.155ZM261.889 151.09C261.519 150.9 261.114 150.735 260.674 150.595C260.234 150.455 259.804 150.385 259.384 150.385C258.804 150.385 258.339 150.52 257.989 150.79C257.649 151.06 257.479 151.42 257.479 151.87C257.479 152.21 257.589 152.5 257.809 152.74C258.029 152.97 258.319 153.17 258.679 153.34C259.039 153.51 259.414 153.67 259.804 153.82C260.144 153.95 260.479 154.095 260.809 154.255C261.139 154.415 261.434 154.615 261.694 154.855C261.964 155.095 262.174 155.39 262.324 155.74C262.484 156.09 262.564 156.525 262.564 157.045C262.564 157.615 262.419 158.135 262.129 158.605C261.849 159.075 261.444 159.445 260.914 159.715C260.384 159.985 259.754 160.12 259.024 160.12C258.544 160.12 258.084 160.065 257.644 159.955C257.214 159.845 256.814 159.705 256.444 159.535C256.074 159.355 255.744 159.17 255.454 158.98L256.099 157.84C256.339 158.01 256.614 158.175 256.924 158.335C257.234 158.485 257.559 158.61 257.899 158.71C258.239 158.8 258.569 158.845 258.889 158.845C259.229 158.845 259.564 158.785 259.894 158.665C260.234 158.535 260.514 158.34 260.734 158.08C260.954 157.82 261.064 157.475 261.064 157.045C261.064 156.675 260.964 156.37 260.764 156.13C260.574 155.88 260.319 155.67 259.999 155.5C259.679 155.32 259.339 155.16 258.979 155.02C258.639 154.89 258.294 154.75 257.944 154.6C257.594 154.44 257.269 154.25 256.969 154.03C256.669 153.8 256.429 153.52 256.249 153.19C256.069 152.86 255.979 152.46 255.979 151.99C255.979 151.42 256.114 150.925 256.384 150.505C256.664 150.075 257.044 149.74 257.524 149.5C258.004 149.25 258.554 149.115 259.174 149.095C259.874 149.095 260.489 149.18 261.019 149.35C261.559 149.52 262.034 149.73 262.444 149.98L261.889 151.09Z",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "33.3495",
+            y: "77",
+            width: "33.3009",
+            height: "33.3009",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            y: "77",
+            width: "33.3009",
+            height: "33.3009",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "66.6991",
+            y: "77",
+            width: "33.3009",
+            height: "33.3009",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "66.6504",
+            y: "143.65",
+            width: "33.3009",
+            height: "33.3009",
+            transform: "rotate(-180 66.6504 143.65)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "33.3009",
+            y: "143.65",
+            width: "33.3009",
+            height: "33.3009",
+            transform: "rotate(-180 33.3009 143.65)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "100",
+            y: "143.65",
+            width: "33.3009",
+            height: "33.3009",
+            transform: "rotate(-180 100 143.65)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "66.6504",
+            y: "177",
+            width: "33.3009",
+            height: "33.3009",
+            transform: "rotate(180 66.6504 177)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "100",
+            y: "177",
+            width: "33.3009",
+            height: "33.3009",
+            transform: "rotate(180 100 177)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "33.3009",
+            y: "177",
+            width: "33.3009",
+            height: "33.3009",
+            transform: "rotate(180 33.3009 177)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip0_156_2)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M178.907 48.756H148.837C148.77 47.5351 148.805 46.3608 148.946 45.2316C150.626 31.7362 166.325 31.7919 162.738 15.9268C161.55 21.0967 158.528 22.3177 153.961 21.7035L151.202 24.3758C148.253 27.2332 144.11 22.2093 146.828 19.1155C152.506 13.1416 154.227 9.40192 156.287 7.83017C157.072 7.23248 158.038 7.25958 157.991 6.12442C157.97 5.64266 157.542 4.94862 157.167 4.73634C156.995 3.15706 156.945 1.57778 157.167 0C159.735 1.02525 162.043 2.7867 163.981 4.92001L164.146 2.13933C173.113 2.73251 179.306 7.50046 182.584 18.2483C184.42 36.882 179.871 38.7429 178.907 48.756ZM150.009 50.9676H178.951C180.276 50.9676 181.359 52.0516 181.359 53.3644C181.359 54.6772 180.27 55.7612 178.951 55.7612H150.009C148.69 55.7612 147.601 54.6832 147.601 53.3644C147.601 52.0456 148.684 50.9676 150.009 50.9676ZM145.645 72.0207H183.314C184.685 72.0207 185.805 73.1363 185.805 74.5003C185.805 75.8643 184.685 76.9799 183.314 76.9799H145.645C144.275 76.9799 143.154 75.8643 143.154 74.5003C143.154 73.1363 144.275 72.0207 145.645 72.0207ZM178.376 57.9743C180.394 61.4972 183.694 65.0637 183.159 69.8061H145.795C145.26 65.0637 149.005 61.4972 151.021 57.9743H178.376V57.9743Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("g", { attrs: { "clip-path": "url(#clip1_156_2)" } }, [
+          _c("path", {
+            attrs: {
+              "fill-rule": "evenodd",
+              "clip-rule": "evenodd",
+              d: "M192.704 48.756H222.774C222.841 47.5351 222.806 46.3608 222.665 45.2316C220.985 31.7362 205.286 31.7919 208.873 15.9268C210.061 21.0967 213.082 22.3177 217.65 21.7035L220.409 24.3758C223.358 27.2332 227.501 22.2093 224.783 19.1155C219.105 13.1416 217.384 9.40192 215.324 7.83017C214.539 7.23248 213.572 7.25958 213.619 6.12442C213.641 5.64266 214.069 4.94862 214.444 4.73634C214.616 3.15706 214.666 1.57778 214.444 0C211.875 1.02525 209.567 2.7867 207.63 4.92001L207.465 2.13933C198.498 2.73251 192.304 7.50046 189.027 18.2483C187.191 36.882 191.74 38.7429 192.704 48.756ZM221.602 50.9676H192.66C191.335 50.9676 190.252 52.0516 190.252 53.3644C190.252 54.6772 191.341 55.7612 192.66 55.7612H221.602C222.921 55.7612 224.01 54.6832 224.01 53.3644C224.01 52.0456 222.927 50.9676 221.602 50.9676ZM225.965 72.0207H188.296C186.926 72.0207 185.805 73.1363 185.805 74.5003C185.805 75.8643 186.926 76.9799 188.296 76.9799H225.965C227.336 76.9799 228.456 75.8643 228.456 74.5003C228.456 73.1363 227.336 72.0207 225.965 72.0207ZM193.235 57.9743C191.217 61.4972 187.917 65.0637 188.452 69.8061H225.816C226.351 65.0637 222.606 61.4972 220.59 57.9743H193.235V57.9743Z",
+              fill: "#333333",
+            },
+          }),
+        ]),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "-1.50035",
+            y1: "74.4996",
+            x2: "136.493",
+            y2: "74.4802",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "-5.5",
+            y1: "179.5",
+            x2: "381.5",
+            y2: "179.5",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("line", {
+          attrs: {
+            x1: "234.078",
+            y1: "74.4802",
+            x2: "378.5",
+            y2: "74.4997",
+            stroke: "#333333",
+            "stroke-width": "5",
+            "stroke-linecap": "round",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "304.336",
+            y: "77",
+            width: "33.2878",
+            height: "33.2878",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "271",
+            y: "77",
+            width: "33.2878",
+            height: "33.2878",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "337.673",
+            y: "77",
+            width: "33.2878",
+            height: "33.2878",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "337.624",
+            y: "143.624",
+            width: "33.2878",
+            height: "33.2878",
+            transform: "rotate(-180 337.624 143.624)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "304.288",
+            y: "143.624",
+            width: "33.2878",
+            height: "33.2878",
+            transform: "rotate(-180 304.288 143.624)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "370.961",
+            y: "143.624",
+            width: "33.2878",
+            height: "33.2878",
+            transform: "rotate(-180 370.961 143.624)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "337.624",
+            y: "176.961",
+            width: "33.2878",
+            height: "33.2878",
+            transform: "rotate(180 337.624 176.961)",
+            fill: "white",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "370.961",
+            y: "176.961",
+            width: "33.2878",
+            height: "33.2878",
+            transform: "rotate(180 370.961 176.961)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("rect", {
+          attrs: {
+            x: "304.288",
+            y: "176.961",
+            width: "33.2878",
+            height: "33.2878",
+            transform: "rotate(180 304.288 176.961)",
+            fill: "#333333",
+          },
+        }),
+        _vm._v(" "),
+        _c("defs", [
+          _c("clipPath", { attrs: { id: "clip0_156_2" } }, [
+            _c("rect", {
+              attrs: {
+                width: "42.651",
+                height: "76.9799",
+                fill: "white",
+                transform: "translate(143.154)",
+              },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("clipPath", { attrs: { id: "clip1_156_2" } }, [
+            _c("rect", {
+              attrs: {
+                width: "42.651",
+                height: "76.9799",
+                fill: "white",
+                transform: "matrix(-1 0 0 1 228.456 0)",
+              },
+            }),
+          ]),
+        ]),
+      ]
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
 
 
 /***/ }),
@@ -41199,19 +50551,39 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("sync-account", { on: { synced: _vm.handleSync } }),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("div", {}, [
-        _vm.itHasWorsePlays && _vm.sync > 0
-          ? _c("p", { staticClass: "font-bold block" }, [
-              _vm._v("We found these repeated mistakes!"),
-            ])
-          : _vm._e(),
+  return _c("div", { ref: "mainContainer", staticClass: "md:flex" }, [
+    _c(
+      "div",
+      { staticClass: "w-full" },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("sync-account", { on: { synced: _vm.handleSync } }),
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.synced,
+            expression: "synced",
+          },
+        ],
+        staticClass: "w-full md:w-1/2",
+      },
+      [
+        _c("div", { staticClass: "flex justify-center items-center py-5" }, [
+          _vm.itHasWorsePlays && _vm.sync > 0
+            ? _c("p", { staticClass: "font-bold block" }, [
+                _vm._v("We found these repeated\n                mistakes!"),
+              ])
+            : _vm._e(),
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -41221,21 +50593,16 @@ var render = function () {
               ? _c(
                   "div",
                   {
-                    staticClass: "px-1 space-x-4 items-center",
-                    staticStyle: {
-                      "background-color": "#ddd",
-                      padding: "10px",
-                      "border-radius": "5px",
-                      "min-width": "244px",
-                      "margin-right": "10px",
-                    },
+                    staticClass:
+                      "mr-3 border border-4 border-black  items-center bg-[#F16B6C]",
+                    staticStyle: { "min-width": "244px" },
                   },
                   [
                     _c(
                       "button",
                       {
                         staticClass:
-                          "w-full space-x-3 border border-2 bg-gray-100 mb-2 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
+                          "hover:bg-[#F07F8A] hover:text-white transition ease-in duration-100 px-4 pt-6 w-full bg-[#F16B6C] pb-2",
                         on: {
                           click: function ($event) {
                             return _vm.moveFromLeftTab(worsePlay)
@@ -41246,15 +50613,22 @@ var render = function () {
                         _c("span", { staticClass: "font-bold" }, [
                           _vm._v(_vm._s(worsePlay.name)),
                         ]),
-                        _vm._v(
-                          " | ΔE: " +
-                            _vm._s(worsePlay.deltaScore) +
-                            " |\n                    " +
-                            _vm._s(worsePlay.repetition) +
-                            " games\n                "
-                        ),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("|")]),
+                        _vm._v(" "),
+                        _c("span", { staticClass: "font-bold" }, [
+                          _vm._v("ΔE: " + _vm._s(worsePlay.deltaScore)),
+                        ]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("|")]),
+                        _vm._v(" "),
+                        _c("span", [
+                          _vm._v(_vm._s(worsePlay.repetition) + " games"),
+                        ]),
                       ]
                     ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-full bg-black h-1" }),
                     _vm._v(" "),
                     _c("hoverable", {
                       attrs: {
@@ -41270,113 +50644,126 @@ var render = function () {
         ),
         _vm._v(" "),
         !_vm.itHasWorsePlays && _vm.sync > 0
-          ? _c("div", [
-              _c("p", { staticClass: "font-bold underlined" }, [
-                _vm._v(
-                  "No errors with configured repetitions have been found. Try with more\n                games, or analyze more games on Lichess!"
-                ),
-              ]),
-            ])
+          ? _c(
+              "div",
+              { staticClass: "flex justify-center items-center py-5" },
+              [
+                _c("p", { staticClass: "font-bold underlined" }, [
+                  _vm._v(
+                    "No errors with configured repetitions have been found. Try with more\n                games, or analyze more games on Lichess!"
+                  ),
+                ]),
+              ]
+            )
           : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "flex items-start mt-8" }, [
-          _c(
-            "div",
-            { staticClass: "grid grid-cols-2 mx-4" },
-            _vm._l(_vm.played, function (move, index) {
-              return _c(
-                "movements-box",
-                { key: index, staticClass: "cursor-pointer" },
-                [
-                  _c(
-                    "button",
-                    {
-                      on: {
-                        click: function ($event) {
-                          return _vm.moveFromLeftTab(move)
-                        },
-                      },
-                    },
-                    [
-                      _c("span", { staticClass: "font-bold" }, [
-                        _vm._v(_vm._s(move.name)),
-                      ]),
-                      _vm._v(" | "),
-                      _c("span", { staticClass: "font-bold" }, [_vm._v("E:")]),
-                      _vm._v(
-                        "\n                        " +
-                          _vm._s(move.score) +
-                          " | "
-                      ),
-                      _c("span", { staticClass: "font-bold" }, [_vm._v("ΔE:")]),
-                      _vm._v(
-                        " " + _vm._s(move.deltaScore) + "\n                    "
-                      ),
-                    ]
-                  ),
-                ]
-              )
+        _c(
+          "div",
+          { staticClass: "w-full flex justify-center items-center " },
+          [
+            _c("board", {
+              attrs: {
+                id: "board",
+                fen: this.selectedFen,
+                orientation: _vm.color,
+              },
             }),
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "w-full md:w-2/3" },
-            [
-              _c("board", {
-                attrs: {
-                  id: "board",
-                  fen: this.selectedFen,
-                  orientation: _vm.color,
-                },
-              }),
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "w-full md:w-1/3 bg-light" }, [
-            _c("span", { staticClass: "font-bold" }, [_vm._v("Movements")]),
-            _vm._v(" "),
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("h2", { staticClass: "font-bold text-xl flex items-center" }, [
+          _c("span", { staticClass: "pr-3" }, [
             _c(
-              "div",
+              "svg",
               {
-                staticStyle: {
-                  height: "400px",
-                  width: "250px",
-                  "overflow-y": "scroll",
+                attrs: {
+                  width: "45",
+                  height: "45",
+                  viewBox: "0 0 45 45",
+                  fill: "none",
+                  xmlns: "http://www.w3.org/2000/svg",
                 },
               },
-              _vm._l(_vm.movementMatrix.movements, function (value, name) {
-                return _c(
-                  "div",
-                  {
-                    key: name + value.score,
-                    staticClass: "border border-3 border-gray-500 bg-gray-200",
+              [
+                _c("title", [_vm._v("What am i looking at?")]),
+                _vm._v(" "),
+                _c("desc", [_vm._v("Question mark inside red circle.")]),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M37.5563 22.786C37.3333 31.0519 30.4524 37.5716 22.188 37.3486C13.9233 37.1255 7.40414 30.2441 7.62726 21.9782C7.85037 13.7122 14.7313 7.19252 22.9959 7.41559C31.2604 7.63869 37.7796 14.5201 37.5563 22.786Z",
+                    stroke: "#F16B6C",
+                    "stroke-width": "4",
                   },
-                  [
-                    _c("tree", {
-                      attrs: {
-                        "story-received": [],
-                        name: name,
-                        moves: value,
-                        depth: 1,
-                      },
-                    }),
-                  ],
-                  1
-                )
-              }),
-              0
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M36.8213 22.7664C36.6092 30.6225 30.0682 36.822 22.2078 36.6099C14.3474 36.3979 8.15035 29.8542 8.36238 21.9982C8.57444 14.1423 15.1154 7.94252 22.9759 8.1547C30.8364 8.36688 37.0334 14.9104 36.8213 22.7664Z",
+                    fill: "#F16B6C",
+                    stroke: "#F4F4F4",
+                    "stroke-width": "3",
+                  },
+                }),
+                _vm._v(" "),
+                _c("path", {
+                  attrs: {
+                    d: "M20.2543 27.2712V25.8138C20.2543 24.897 20.3643 24.1362 20.5843 23.5312C20.8226 22.9079 21.116 22.3762 21.4643 21.9362C21.831 21.4962 22.1976 21.102 22.5643 20.7537C23.0593 20.2954 23.4993 19.8462 23.8844 19.4062C24.2693 18.9479 24.4617 18.352 24.4617 17.6187C24.4617 17.2154 24.361 16.8762 24.1593 16.6012C23.9576 16.3262 23.71 16.1154 23.4168 15.9687C23.1418 15.8037 22.8668 15.7212 22.5918 15.7212C22.0601 15.7212 21.611 15.8495 21.2443 16.1062C20.896 16.3445 20.6026 16.6562 20.3643 17.0412C20.1443 17.4262 19.9518 17.8295 19.7868 18.2512L16.6243 16.7662C16.7343 16.4362 16.9268 16.0145 17.2018 15.5012C17.4768 14.9879 17.8618 14.4745 18.3568 13.9612C18.8701 13.4479 19.5026 13.0171 20.2543 12.6687C21.0243 12.3204 21.941 12.1462 23.0043 12.1462C24.0493 12.1462 24.9844 12.3296 25.8093 12.6962C26.6527 13.0446 27.3217 13.5946 27.8168 14.3462C28.3117 15.0795 28.5593 16.0512 28.5593 17.2612C28.5593 18.2695 28.4217 19.0854 28.1468 19.7087C27.8717 20.332 27.5327 20.8637 27.1293 21.3037C26.7261 21.7254 26.3227 22.147 25.9193 22.5687C25.6076 22.8804 25.3051 23.2287 25.0117 23.6137C24.7368 23.9805 24.5168 24.4112 24.3517 24.9061C24.1868 25.4013 24.1044 25.997 24.1044 26.6938V27.2712H20.2543ZM22.1793 33.0738C21.5193 33.0738 20.9785 32.8995 20.5568 32.5512C20.1351 32.1845 19.9243 31.708 19.9243 31.1213C19.9243 30.553 20.1351 30.0762 20.5568 29.6912C20.9968 29.3061 21.5376 29.1138 22.1793 29.1138C22.821 29.1138 23.3435 29.3061 23.7468 29.6912C24.1685 30.0762 24.3793 30.553 24.3793 31.1213C24.3793 31.708 24.1776 32.1845 23.7744 32.5512C23.371 32.8995 22.8393 33.0738 22.1793 33.0738Z",
+                    fill: "#F4F4F4",
+                  },
+                }),
+              ]
             ),
           ]),
+          _vm._v("\n            What am I looking at?\n        "),
         ]),
-      ]),
-    ],
-    1
-  )
+        _vm._v(" "),
+        _vm._m(1),
+      ]
+    ),
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "text-center mb-4 pt-4" }, [
+      _vm._v("Get your "),
+      _c("span", { staticClass: "highlight" }, [
+        _vm._v(" most common mistakes"),
+      ]),
+      _vm._v(" in the openings\n            given "),
+      _c("span", { staticClass: "font-bold" }, [
+        _vm._v("a number of Lichess games."),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "my-2 " }, [
+      _vm._v(
+        "A working open-source analyzing tool, to check which mistakes any given "
+      ),
+      _c("span", { staticClass: "font-bold" }, [_vm._v("Lichess user")]),
+      _vm._v(" repeats mutiple times.\n            The goal is "),
+      _c("span", { staticClass: "font-bold" }, [
+        _vm._v("to be aware of the positions you may repeat in any game"),
+      ]),
+      _vm._v(
+        ", and then know that you repeated the same mistakes\n            in the same position a determined amount of times and "
+      ),
+      _c("span", { staticClass: "underline" }, [
+        _vm._v(
+          "how to get better on those positions going to the\n        lichess board and studying the game."
+        ),
+      ]),
+    ])
+  },
+]
 render._withStripped = true
 
 
@@ -41415,7 +50802,7 @@ var render = function () {
           "button",
           {
             staticClass:
-              "w-full border border-2 bg-gray-100 hover:bg-green-500 hover:text-white transition ease-in duration-100",
+              "py-4 w-full bg-[#F16B6C] hover:bg-[#F07F8A] hover:text-white transition ease-in duration-100",
           },
           [_vm._v("Show lichess games")]
         ),
@@ -41425,7 +50812,7 @@ var render = function () {
               "div",
               {
                 staticClass:
-                  "shadow-xl bg-white rounded-lg h-auto mx-auto w-56 z-10 relative py-6 border border-2",
+                  "shadow-xl bg-white rounded-lg h-auto mx-auto w-56 z-10 relative py-6 border border-2 my-2",
               },
               _vm._l(_vm.worsePlayUrl, function (url, index) {
                 return _c(
@@ -41504,250 +50891,1106 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("label", { staticClass: "block", attrs: { for: "account" } }, [
-      _vm._v("Select color"),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-4" }, [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.color,
-            expression: "color",
-          },
-        ],
-        attrs: { type: "radio", id: "white", value: "white" },
-        domProps: { checked: _vm._q(_vm.color, "white") },
-        on: {
-          change: function ($event) {
-            _vm.color = "white"
-          },
-        },
-      }),
-      _vm._v(" "),
-      _c("label", { attrs: { for: "white" } }, [_vm._v("White")]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.color,
-            expression: "color",
-          },
-        ],
-        attrs: { type: "radio", id: "black", value: "black" },
-        domProps: { checked: _vm._q(_vm.color, "black") },
-        on: {
-          change: function ($event) {
-            _vm.color = "black"
-          },
-        },
-      }),
-      _vm._v(" "),
-      _c("label", { attrs: { for: "black" } }, [_vm._v("Black")]),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.color,
-            expression: "color",
-          },
-        ],
-        attrs: { type: "radio", id: "both", value: "both", checked: "" },
-        domProps: { checked: _vm._q(_vm.color, "both") },
-        on: {
-          change: function ($event) {
-            _vm.color = "both"
-          },
-        },
-      }),
-      _vm._v(" "),
-      _c("label", { attrs: { for: "both" } }, [_vm._v("Both")]),
-    ]),
-    _vm._v(" "),
-    _c("label", { staticClass: "block", attrs: { for: "matches" } }, [
-      _vm._v("Matches selected"),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-4" }, [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.matches,
-            expression: "matches",
-          },
-        ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "matches", min: "0", placeholder: "200", type: "number" },
-        domProps: { value: _vm.matches },
-        on: {
-          input: [
-            function ($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.matches = $event.target.value
-            },
-            _vm.limitMaxMatchesValue,
-          ],
-        },
-      }),
-    ]),
-    _vm._v(" "),
+  return _c("transition", [
     _c(
-      "label",
-      { staticClass: "block", attrs: { for: "ignore_first_moves" } },
-      [_vm._v("How many first moves to ignore")]
+      "div",
+      {
+        ref: "syncContainer",
+        staticClass: "w-full px-3 lg:px-0",
+        class: _vm.mdClasses
+          ? "md:flex md:flex-col md:justify-center md:items-center"
+          : "",
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "mb-4 pt-2",
+            class: _vm.mdClasses
+              ? "md:w-full md:flex md:justify-evenly md:items-center md:px-16"
+              : "",
+          },
+          [
+            _c("div", { staticClass: "lg:w-1/2 lg:px-4" }, [
+              _c("label", { staticClass: "block", attrs: { for: "account" } }, [
+                _vm._v("Select color"),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "flex lg:justify-between justify-evenly items-center lg:w-1/2",
+                class: _vm.mdClasses ? "md:w-2/3" : "",
+              },
+              [
+                _c("div", { staticClass: "flex flex-col justify-center" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.color,
+                        expression: "color",
+                      },
+                    ],
+                    staticClass: "hidden",
+                    attrs: { type: "radio", id: "white", value: "white" },
+                    domProps: { checked: _vm._q(_vm.color, "white") },
+                    on: {
+                      change: function ($event) {
+                        _vm.color = "white"
+                      },
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "white" } }, [
+                    _c(
+                      "div",
+                      {
+                        class:
+                          _vm.color === "white"
+                            ? "border border-4 border-[#86A5D9]"
+                            : "",
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              width: "40",
+                              height: "40",
+                              viewBox: "0 0 40 40",
+                              fill: "none",
+                              xmlns: "http://www.w3.org/2000/svg",
+                            },
+                          },
+                          [
+                            _c("rect", {
+                              attrs: {
+                                x: "2",
+                                y: "2",
+                                width: "36",
+                                height: "36",
+                                fill: "white",
+                                stroke: "#333333",
+                                "stroke-width": "4",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M16.018 24.0495H23.9823V23.3986L22.3522 21.6744H17.6019L16.018 23.2584L16.018 24.0495Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M15.5281 24.702H24.4695V25.6792H15.5281V24.702Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M17.7344 20.2784H22.2656C22.4161 20.2784 22.5383 20.429 22.5383 20.5511V20.7969C22.5383 20.9474 22.4163 21.0695 22.2656 21.0695H17.7344C17.5839 21.0695 17.4617 20.919 17.4617 20.7969V20.5511C17.4617 20.4006 17.5837 20.2784 17.7344 20.2784V20.2784Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M21.3978 14.6432H18.6022L18.0436 19.6716H21.9563L21.3978 14.6432Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M21.1194 13.3856C21.6353 13.0599 21.9837 12.5257 22.0737 11.9223C22.1638 11.319 21.9865 10.7062 21.5883 10.2441C21.19 9.78199 20.6101 9.51617 20.0001 9.51617C19.39 9.51617 18.8101 9.78202 18.4118 10.2441C18.0136 10.7062 17.8363 11.319 17.9265 11.9223C18.0165 12.5257 18.3648 13.0599 18.8807 13.3856H18.1128C17.9399 13.3856 17.7742 13.4542 17.6518 13.5762C17.5294 13.6982 17.4604 13.8638 17.4599 14.0365H22.5383C22.5377 13.8638 22.4688 13.6982 22.3465 13.5762C22.2241 13.4542 22.0583 13.3856 21.8855 13.3856H21.1194Z",
+                                fill: "#333333",
+                              },
+                            }),
+                          ]
+                        ),
+                      ]
+                    ),
+                    _vm._v(
+                      "\n                        White\n                    "
+                    ),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex flex-col justify-center" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.color,
+                        expression: "color",
+                      },
+                    ],
+                    staticClass: "hidden",
+                    attrs: { type: "radio", id: "black", value: "black" },
+                    domProps: { checked: _vm._q(_vm.color, "black") },
+                    on: {
+                      change: function ($event) {
+                        _vm.color = "black"
+                      },
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "black" } }, [
+                    _c(
+                      "div",
+                      {
+                        class:
+                          _vm.color === "black"
+                            ? "border border-4 border-[#86A5D9]"
+                            : "",
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              width: "40",
+                              height: "40",
+                              viewBox: "0 0 40 40",
+                              fill: "none",
+                              xmlns: "http://www.w3.org/2000/svg",
+                            },
+                          },
+                          [
+                            _c("rect", {
+                              attrs: {
+                                x: "2",
+                                y: "2",
+                                width: "36",
+                                height: "36",
+                                fill: "#333333",
+                                stroke: "white",
+                                "stroke-width": "4",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "g",
+                              { attrs: { filter: "url(#filter0_d_156_2)" } },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d: "M16.0181 24.0495H23.9823V23.3986L22.3522 21.6744H17.6019L16.018 23.2584L16.0181 24.0495Z",
+                                    fill: "white",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d: "M15.5281 24.702H24.4695V25.6792H15.5281V24.702Z",
+                                    fill: "white",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d: "M17.7344 20.2784H22.2656C22.4161 20.2784 22.5383 20.429 22.5383 20.5511V20.7969C22.5383 20.9474 22.4163 21.0695 22.2656 21.0695H17.7344C17.5839 21.0695 17.4617 20.919 17.4617 20.7969V20.5511C17.4617 20.4006 17.5837 20.2784 17.7344 20.2784Z",
+                                    fill: "white",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d: "M21.3978 14.6432H18.6022L18.0436 19.6716H21.9563L21.3978 14.6432Z",
+                                    fill: "white",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d: "M21.1194 13.3856C21.6353 13.0599 21.9837 12.5257 22.0737 11.9223C22.1638 11.319 21.9865 10.7062 21.5883 10.2441C21.19 9.78199 20.6101 9.51617 20.0001 9.51617C19.39 9.51617 18.8101 9.78202 18.4118 10.2441C18.0137 10.7062 17.8363 11.319 17.9265 11.9223C18.0165 12.5257 18.3648 13.0599 18.8807 13.3856H18.1128C17.9399 13.3856 17.7742 13.4542 17.6518 13.5762C17.5294 13.6982 17.4604 13.8638 17.4599 14.0365H22.5383C22.5378 13.8638 22.4688 13.6982 22.3465 13.5762C22.2241 13.4542 22.0583 13.3856 21.8855 13.3856H21.1194Z",
+                                    fill: "white",
+                                  },
+                                }),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("defs", [
+                              _c(
+                                "filter",
+                                {
+                                  attrs: {
+                                    id: "filter0_d_156_2",
+                                    x: "8",
+                                    y: "8",
+                                    width: "37",
+                                    height: "32",
+                                    filterUnits: "userSpaceOnUse",
+                                    "color-interpolation-filters": "sRGB",
+                                  },
+                                },
+                                [
+                                  _c("feFlood", {
+                                    attrs: {
+                                      "flood-opacity": "0",
+                                      result: "BackgroundImageFix",
+                                    },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("feColorMatrix", {
+                                    attrs: {
+                                      in: "SourceAlpha",
+                                      type: "matrix",
+                                      values:
+                                        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0",
+                                      result: "hardAlpha",
+                                    },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("feOffset", {
+                                    attrs: { dx: "9", dy: "4" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("feGaussianBlur", {
+                                    attrs: { stdDeviation: "2" },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("feComposite", {
+                                    attrs: {
+                                      in2: "hardAlpha",
+                                      operator: "out",
+                                    },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("feColorMatrix", {
+                                    attrs: {
+                                      type: "matrix",
+                                      values:
+                                        "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0",
+                                    },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("feBlend", {
+                                    attrs: {
+                                      mode: "normal",
+                                      in2: "BackgroundImageFix",
+                                      result: "effect1_dropShadow_156_2",
+                                    },
+                                  }),
+                                  _vm._v(" "),
+                                  _c("feBlend", {
+                                    attrs: {
+                                      mode: "normal",
+                                      in: "SourceGraphic",
+                                      in2: "effect1_dropShadow_156_2",
+                                      result: "shape",
+                                    },
+                                  }),
+                                ],
+                                1
+                              ),
+                            ]),
+                          ]
+                        ),
+                      ]
+                    ),
+                    _vm._v(
+                      "\n                        Black\n                    "
+                    ),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex flex-col justify-center" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.color,
+                        expression: "color",
+                      },
+                    ],
+                    staticClass: "hidden",
+                    attrs: {
+                      type: "radio",
+                      id: "both",
+                      value: "both",
+                      checked: "",
+                    },
+                    domProps: { checked: _vm._q(_vm.color, "both") },
+                    on: {
+                      change: function ($event) {
+                        _vm.color = "both"
+                      },
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "both" } }, [
+                    _c(
+                      "div",
+                      {
+                        class:
+                          _vm.color === "both"
+                            ? "border border-4 border-[#86A5D9]"
+                            : "",
+                      },
+                      [
+                        _c(
+                          "svg",
+                          {
+                            attrs: {
+                              width: "40",
+                              height: "40",
+                              viewBox: "0 0 40 40",
+                              fill: "none",
+                              xmlns: "http://www.w3.org/2000/svg",
+                            },
+                          },
+                          [
+                            _c("rect", {
+                              attrs: {
+                                x: "2",
+                                y: "2",
+                                width: "36",
+                                height: "36",
+                                fill: "#C4C4C4",
+                                stroke: "#333333",
+                                "stroke-width": "4",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M16.018 24.0495H23.9823V23.3986L22.3522 21.6744H17.6019L16.018 23.2584L16.018 24.0495Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M15.5281 24.702H24.4695V25.6792H15.5281V24.702Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M17.7344 20.2784H22.2656C22.4161 20.2784 22.5383 20.429 22.5383 20.5511V20.7969C22.5383 20.9474 22.4163 21.0695 22.2656 21.0695H17.7344C17.5839 21.0695 17.4617 20.919 17.4617 20.7969V20.5511C17.4617 20.4006 17.5837 20.2784 17.7344 20.2784Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M21.3978 14.6432H18.6022L18.0436 19.6716H21.9563L21.3978 14.6432Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c("path", {
+                              attrs: {
+                                d: "M21.1194 13.3856C21.6353 13.0599 21.9837 12.5257 22.0737 11.9223C22.1638 11.319 21.9865 10.7062 21.5883 10.2441C21.19 9.78199 20.6101 9.51617 20.0001 9.51617C19.39 9.51617 18.8101 9.78202 18.4118 10.2441C18.0137 10.7062 17.8363 11.319 17.9265 11.9223C18.0165 12.5257 18.3648 13.0599 18.8807 13.3856H18.1128C17.9399 13.3856 17.7742 13.4542 17.6518 13.5762C17.5294 13.6982 17.4604 13.8638 17.4599 14.0365H22.5383C22.5378 13.8638 22.4688 13.6982 22.3465 13.5762C22.2241 13.4542 22.0583 13.3856 21.8855 13.3856H21.1194Z",
+                                fill: "#333333",
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "mask",
+                              {
+                                staticStyle: { "mask-type": "alpha" },
+                                attrs: {
+                                  id: "mask0_156_2",
+                                  maskUnits: "userSpaceOnUse",
+                                  x: "8",
+                                  y: "8",
+                                  width: "24",
+                                  height: "24",
+                                },
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    d: "M16.018 24.0495H23.9823V23.3986L22.3522 21.6744H17.6019L16.018 23.2584L16.018 24.0495Z",
+                                    fill: "white",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d: "M15.5281 24.702H24.4695V25.6792H15.5281V24.702Z",
+                                    fill: "white",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d: "M17.7344 20.2784H22.2656C22.4161 20.2784 22.5383 20.429 22.5383 20.5511V20.7969C22.5383 20.9474 22.4163 21.0695 22.2656 21.0695H17.7344C17.5839 21.0695 17.4617 20.919 17.4617 20.7969V20.5511C17.4617 20.4006 17.5837 20.2784 17.7344 20.2784Z",
+                                    fill: "white",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d: "M21.3978 14.6432H18.6022L18.0436 19.6716H21.9563L21.3978 14.6432Z",
+                                    fill: "white",
+                                  },
+                                }),
+                                _vm._v(" "),
+                                _c("path", {
+                                  attrs: {
+                                    d: "M21.1194 13.3856C21.6353 13.0599 21.9837 12.5257 22.0737 11.9223C22.1638 11.319 21.9865 10.7062 21.5883 10.2441C21.19 9.78199 20.6101 9.51617 20.0001 9.51617C19.39 9.51617 18.8101 9.78202 18.4118 10.2441C18.0137 10.7062 17.8363 11.319 17.9265 11.9223C18.0165 12.5257 18.3648 13.0599 18.8807 13.3856H18.1128C17.9399 13.3856 17.7742 13.4542 17.6518 13.5762C17.5294 13.6982 17.4604 13.8638 17.4599 14.0365H22.5383C22.5378 13.8638 22.4688 13.6982 22.3465 13.5762C22.2241 13.4542 22.0583 13.3856 21.8855 13.3856H21.1194Z",
+                                    fill: "white",
+                                  },
+                                }),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("g", { attrs: { mask: "url(#mask0_156_2)" } }, [
+                              _c("rect", {
+                                attrs: {
+                                  x: "20",
+                                  y: "9.59998",
+                                  width: "8",
+                                  height: "16",
+                                  fill: "white",
+                                },
+                              }),
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "mask",
+                              {
+                                staticStyle: { "mask-type": "alpha" },
+                                attrs: {
+                                  id: "mask1_156_2",
+                                  maskUnits: "userSpaceOnUse",
+                                  x: "0",
+                                  y: "0",
+                                  width: "40",
+                                  height: "40",
+                                },
+                              },
+                              [
+                                _c("rect", {
+                                  attrs: {
+                                    x: "2",
+                                    y: "2",
+                                    width: "36",
+                                    height: "36",
+                                    stroke: "white",
+                                    "stroke-width": "4",
+                                  },
+                                }),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("g", { attrs: { mask: "url(#mask1_156_2)" } }, [
+                              _c("rect", {
+                                attrs: {
+                                  x: "20.8",
+                                  width: "23.2",
+                                  height: "40",
+                                  fill: "white",
+                                },
+                              }),
+                            ]),
+                          ]
+                        ),
+                      ]
+                    ),
+                    _vm._v(
+                      "\n                        Both\n                    "
+                    ),
+                  ]),
+                ]),
+              ]
+            ),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "mb-4",
+            class: _vm.mdClasses ? "md:flex md:w-full md:px-16" : "",
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "flex items-center relative",
+                class: _vm.mdClasses ? " md:w-1/2 md:px-4" : "",
+              },
+              [
+                _c(
+                  "label",
+                  { staticClass: "block w-full", attrs: { for: "matches" } },
+                  [_vm._v("Matches selected")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "tooltip",
+                  { attrs: { tabindex: "[0|-1]", role: "tooltip" } },
+                  [
+                    _vm._v("\n                    It uses "),
+                    _c("span", { staticClass: "font-bold" }, [
+                      _vm._v("only analyzed games."),
+                    ]),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "font-bold" }, [
+                      _vm._v("Use > 50"),
+                    ]),
+                    _vm._v(
+                      "\n                    numbers of games\n                "
+                    ),
+                  ]
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.matches,
+                  expression: "matches",
+                },
+              ],
+              staticClass:
+                "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2",
+              class: _vm.mdClasses ? "md:w-1/2" : "",
+              attrs: {
+                id: "matches",
+                min: "0",
+                placeholder: "200",
+                type: "number",
+              },
+              domProps: { value: _vm.matches },
+              on: {
+                input: [
+                  function ($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.matches = $event.target.value
+                  },
+                  _vm.limitMaxMatchesValue,
+                ],
+              },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "mb-4",
+            class: _vm.mdClasses ? "md:flex md:w-full md:px-16" : "",
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "flex items-center relative",
+                class: _vm.mdClasses ? "md:w-1/2 md:px-4" : "",
+              },
+              [
+                _c(
+                  "label",
+                  {
+                    staticClass: "block w-full",
+                    attrs: { for: "ignore_first_moves" },
+                  },
+                  [_vm._v("How many first moves to ignore")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "tooltip",
+                  { attrs: { tabindex: "[0|-1]", role: "tooltip" } },
+                  [
+                    _c("span", { staticClass: "font-bold" }, [
+                      _vm._v("Ignore first 4 moves"),
+                    ]),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "italic font-light " }, [
+                      _vm._v("(meaning 2 for white and 2 for black)"),
+                    ]),
+                  ]
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.ignore_first_moves,
+                  expression: "ignore_first_moves",
+                },
+              ],
+              staticClass:
+                "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2",
+              class: _vm.mdClasses ? "md:w-1/2" : "",
+              attrs: {
+                id: "ignore_first_moves",
+                placeholder: "3",
+                min: "0",
+                type: "number",
+              },
+              domProps: { value: _vm.ignore_first_moves },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.ignore_first_moves = $event.target.value
+                },
+              },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "mb-4",
+            class: _vm.mdClasses ? "md:flex md:w-full md:px-16" : "",
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "flex items-center relative",
+                class: _vm.mdClasses ? "md:w-1/2 md:px-4" : "",
+              },
+              [
+                _c(
+                  "label",
+                  { staticClass: "block w-full", attrs: { for: "error" } },
+                  [_vm._v("Score lost to consider an error")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "tooltip",
+                  { attrs: { tabindex: "[0|-1]", role: "tooltip" } },
+                  [
+                    _vm._v("\n                    Means "),
+                    _c("span", { staticClass: "font-bold" }, [
+                      _vm._v(
+                        "the score lost from the previous move to the actual move made."
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("br"),
+                    _vm._v(
+                      "\n                    If the score is +3 after white moves, and black then moves and the score now is +6, then the\n                    score\n                    lost\n                    is 3.\n                "
+                    ),
+                  ]
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.errorScoreThreshold,
+                  expression: "errorScoreThreshold",
+                },
+              ],
+              staticClass:
+                "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2",
+              class: _vm.mdClasses ? "md:w-1/2" : "",
+              attrs: {
+                id: "error",
+                min: "0",
+                placeholder: "0.5",
+                type: "number",
+              },
+              domProps: { value: _vm.errorScoreThreshold },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.errorScoreThreshold = $event.target.value
+                },
+              },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "mb-4",
+            class: _vm.mdClasses ? "md:flex md:w-full md:px-16" : "",
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "flex items-center relative",
+                class: _vm.mdClasses ? "md:w-1/2 md:px-4" : "",
+              },
+              [
+                _c(
+                  "label",
+                  { staticClass: "w-full block", attrs: { for: "account" } },
+                  [_vm._v("Minimum times the error is repeated")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "tooltip",
+                  {
+                    attrs: {
+                      tabindex: "[0|-1]",
+                      role: "tooltip",
+                      "aria-live": "polite",
+                    },
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Set this minimum to two to get a nice feedback\n                "
+                    ),
+                  ]
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.repetition,
+                  expression: "repetition",
+                },
+              ],
+              staticClass:
+                "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2",
+              class: _vm.mdClasses ? "md:w-1/2" : "",
+              attrs: {
+                id: "repetition",
+                type: "number",
+                min: "0",
+                placeholder: "2",
+              },
+              domProps: { value: _vm.repetition },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.repetition = $event.target.value
+                },
+              },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "mb-4",
+            class: _vm.mdClasses ? "md:flex md:w-full md:px-16" : "",
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "flex items-center relative",
+                class: _vm.mdClasses ? "md:w-1/2 md:px-4" : "",
+              },
+              [
+                _c(
+                  "label",
+                  { staticClass: "w-full block", attrs: { for: "account" } },
+                  [_vm._v("Select account")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "tooltip",
+                  {
+                    attrs: {
+                      tabindex: "[0|-1]",
+                      role: "tooltip",
+                      "aria-live": "polite",
+                    },
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Select your Lichess account\n                "
+                    ),
+                  ]
+                ),
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.account,
+                  expression: "account",
+                },
+              ],
+              staticClass:
+                "border transition ease-in-out focus:pl-4 pl-2 w-full bg-[#FEFEFE] border-[#333333] border-2",
+              class: _vm.mdClasses ? "md:w-1/2" : "",
+              attrs: { id: "account", type: "text", placeholder: "Account" },
+              domProps: { value: _vm.account },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.account = $event.target.value
+                },
+              },
+            }),
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "flex flex-col items-center w-full",
+            class: _vm.mdClasses ? "md:pt-4" : "",
+          },
+          [
+            _c(
+              "p",
+              {
+                staticClass:
+                  "pb-2 text-blue-500 mx-4 cursor-pointer text-sm text-[#F16B6C] flex",
+                on: { click: _vm.clear },
+              },
+              [
+                _c("span", { staticClass: "pr-1" }, [
+                  _c(
+                    "svg",
+                    {
+                      attrs: {
+                        width: "19",
+                        height: "19",
+                        viewBox: "0 0 19 19",
+                        fill: "none",
+                        xmlns: "http://www.w3.org/2000/svg",
+                      },
+                    },
+                    [
+                      _c("title", [_vm._v("Trashcan")]),
+                      _vm._v(" "),
+                      _c("desc", [_vm._v("Clear all input values")]),
+                      _vm._v(" "),
+                      _c("circle", {
+                        attrs: {
+                          cx: "9.34253",
+                          cy: "9.86304",
+                          r: "7.89087",
+                          stroke: "#F16B6C",
+                          "stroke-width": "2",
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c("circle", {
+                        attrs: {
+                          cx: "9.34252",
+                          cy: "9.86303",
+                          r: "7.80321",
+                          fill: "#F16B6C",
+                          stroke: "#F4F4F4",
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "g",
+                        { attrs: { "clip-path": "url(#clip0_192_358)" } },
+                        [
+                          _c("path", {
+                            attrs: {
+                              d: "M8.47589 5.44538C8.28488 5.49747 8.10775 5.62944 8.00877 5.79788C7.98272 5.8413 7.91847 6.00626 7.86464 6.16429L7.7674 6.45081L6.90957 6.45949C6.36431 6.46644 6.03264 6.47686 5.99964 6.48901C5.78605 6.56542 5.59851 6.7217 5.51863 6.89362C5.44744 7.04469 5.43181 7.16277 5.43876 7.53959L5.44396 7.88168L5.49259 7.93204C5.52211 7.96156 5.57594 7.99282 5.61761 8.00324C5.67145 8.01713 6.76544 8.02234 9.36845 8.02234C13.0168 8.02234 13.0429 8.02234 13.1106 7.98761C13.2339 7.92509 13.2495 7.86779 13.2495 7.49444C13.2495 7.31732 13.2408 7.13152 13.2304 7.08116C13.1731 6.81721 12.9873 6.60188 12.732 6.50464C12.6365 6.46991 12.5983 6.46817 11.7752 6.45949L10.9174 6.45081L10.8254 6.17818C10.716 5.84824 10.6691 5.75795 10.5406 5.63639C10.4295 5.53046 10.3426 5.48011 10.1985 5.44364C10.0561 5.40544 8.61655 5.40717 8.47589 5.44538ZM10.1134 5.96285C10.1968 5.99758 10.2367 6.05836 10.2992 6.24764C10.3287 6.33967 10.3583 6.4265 10.3635 6.43692C10.3687 6.45428 10.1568 6.45949 9.3424 6.45949C8.52799 6.45949 8.31613 6.45428 8.32134 6.43692C8.32655 6.4265 8.35607 6.33967 8.38559 6.24764C8.44811 6.06183 8.48805 5.99758 8.56792 5.96285C8.6478 5.92812 10.0301 5.92812 10.1134 5.96285Z",
+                              fill: "#F4F4F4",
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c("path", {
+                            attrs: {
+                              d: "M6.0257 8.61276C6.0257 8.6336 6.11947 9.78142 6.23408 11.1671C6.46156 13.9178 6.44593 13.7858 6.57617 13.9751C6.68209 14.1313 6.83143 14.2321 7.02766 14.2824C7.11274 14.305 7.43226 14.3085 9.3372 14.3085C10.907 14.3085 11.5721 14.3033 11.6381 14.2894C11.8985 14.2338 12.1086 14.048 12.2024 13.7927C12.2389 13.6903 12.2615 13.4611 12.4507 11.1654C12.5653 9.78142 12.6591 8.6336 12.6591 8.61276V8.57803H9.34241H6.0257V8.61276ZM7.90111 9.13718C8.05045 9.21359 8.04003 9.05036 8.04003 11.1828C8.04003 13.3152 8.05045 13.152 7.90111 13.2284C7.80387 13.277 7.75525 13.277 7.658 13.2266C7.50866 13.152 7.51908 13.3152 7.51908 11.1828C7.51908 9.4237 7.52082 9.2952 7.55034 9.2379C7.58333 9.17191 7.70315 9.09898 7.77956 9.09898C7.80387 9.09898 7.85944 9.11634 7.90111 9.13718ZM9.46396 9.13718C9.6133 9.21359 9.60288 9.05036 9.60288 11.1828C9.60288 13.3152 9.6133 13.152 9.46396 13.2284C9.36672 13.277 9.3181 13.277 9.22085 13.2266C9.07151 13.152 9.08193 13.3152 9.08193 11.1828C9.08193 9.4237 9.08367 9.2952 9.11319 9.2379C9.14618 9.17191 9.266 9.09898 9.34241 9.09898C9.36672 9.09898 9.42229 9.11634 9.46396 9.13718ZM11.0268 9.13371C11.072 9.15628 11.1084 9.19275 11.131 9.2379C11.1657 9.30562 11.1657 9.33688 11.1657 11.1862C11.1657 13.3135 11.1761 13.152 11.0268 13.2284C10.9296 13.277 10.8809 13.277 10.7837 13.2284C10.6344 13.152 10.6448 13.3135 10.6448 11.1862C10.6448 9.33688 10.6448 9.30562 10.6795 9.2379C10.7438 9.11113 10.8948 9.06598 11.0268 9.13371Z",
+                              fill: "#F4F4F4",
+                            },
+                          }),
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("defs", [
+                        _c("clipPath", { attrs: { id: "clip0_192_358" } }, [
+                          _c("rect", {
+                            attrs: {
+                              width: "8.89087",
+                              height: "8.89087",
+                              fill: "white",
+                              transform: "translate(4.89697 5.4176)",
+                            },
+                          }),
+                        ]),
+                      ]),
+                    ]
+                  ),
+                ]),
+                _vm._v("\n                clear values\n            "),
+              ]
+            ),
+            _vm._v(" "),
+            !_vm.loading
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "bg-[#86A5D9] px-3 hover:bg-[#1f4481] hover:text-white transition ease-in duration-100 uppercase w-36 h-12",
+                    on: { click: _vm.getGames },
+                  },
+                  [_vm._v("Go!\n            ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-full flex justify-center" }, [
+              _vm.loading ? _c("div", { attrs: { id: "loading" } }) : _vm._e(),
+            ]),
+          ]
+        ),
+      ]
     ),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-4" }, [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.ignore_first_moves,
-            expression: "ignore_first_moves",
-          },
-        ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: {
-          id: "ignore_first_moves",
-          placeholder: "3",
-          min: "0",
-          type: "number",
-        },
-        domProps: { value: _vm.ignore_first_moves },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.ignore_first_moves = $event.target.value
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("label", { staticClass: "block", attrs: { for: "error" } }, [
-      _vm._v("Score lost to consider an error"),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-4" }, [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.errorScoreThreshold,
-            expression: "errorScoreThreshold",
-          },
-        ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "error", min: "0", placeholder: "0.5", type: "number" },
-        domProps: { value: _vm.errorScoreThreshold },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.errorScoreThreshold = $event.target.value
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("label", { staticClass: "block", attrs: { for: "account" } }, [
-      _vm._v("Minimum times the error is repeated"),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "mb-4" }, [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.repetition,
-            expression: "repetition",
-          },
-        ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "repetition", type: "number", min: "0", placeholder: "2" },
-        domProps: { value: _vm.repetition },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.repetition = $event.target.value
-          },
-        },
-      }),
-    ]),
-    _vm._v(" "),
-    _c("label", { staticClass: "block", attrs: { for: "account" } }, [
-      _vm._v("Select account"),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "flex mb-4 items-center" }, [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.account,
-            expression: "account",
-          },
-        ],
-        staticClass: "border transition ease-in-out focus:pl-4 pl-2 ",
-        attrs: { id: "account", type: "text", placeholder: "Account" },
-        domProps: { value: _vm.account },
-        on: {
-          input: function ($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.account = $event.target.value
-          },
-        },
-      }),
-      _vm._v(" "),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tooltip.vue?vue&type=template&id=09733fe8&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Tooltip.vue?vue&type=template&id=09733fe8& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "cursor-pointer" },
+    [
       _c(
         "button",
         {
-          staticClass:
-            "border border-2 bg-gray-100 px-3 hover:bg-green-500 hover:text-white transition ease-in duration-100",
-          on: { click: _vm.getGames },
+          staticClass: "group",
+          on: {
+            click: function ($event) {
+              _vm.show = !_vm.show
+            },
+            mouseover: function ($event) {
+              _vm.show = true
+            },
+            mouseleave: function ($event) {
+              _vm.show = false
+            },
+          },
         },
-        [_vm._v("Go!\n        ")]
+        [
+          _c(
+            "svg",
+            {
+              attrs: {
+                width: "17",
+                height: "17",
+                viewBox: "0 0 17 17",
+                fill: "none",
+                xmlns: "http://www.w3.org/2000/svg",
+              },
+            },
+            [
+              _c("title", [_vm._v("Tooltip")]),
+              _vm._v(" "),
+              _c("desc", [
+                _vm._v(
+                  "Blue circle with a blue border and a letter i in the center"
+                ),
+              ]),
+              _vm._v(" "),
+              _c("path", {
+                attrs: {
+                  d: "M14.9 8.92452C14.8052 12.4655 11.8793 15.2584 8.36515 15.1629C4.85092 15.0673 2.07888 12.1194 2.17375 8.57846C2.26862 5.03751 5.19448 2.24459 8.7087 2.34015C12.2229 2.43571 14.9949 5.38357 14.9 8.92452Z",
+                  stroke: "#86A5D9",
+                },
+              }),
+              _vm._v(" "),
+              _c("path", {
+                attrs: {
+                  d: "M14.1777 8.75691C14.1763 11.9032 11.6439 14.4539 8.52122 14.4539C5.39853 14.4539 2.86812 11.9032 2.86939 8.75691C2.87066 5.61055 5.40314 3.05994 8.52583 3.05994C11.6485 3.05994 14.179 5.61055 14.1777 8.75691Z",
+                  fill: "#86A5D9",
+                  stroke: "#F4F4F4",
+                },
+              }),
+              _vm._v(" "),
+              _c("path", {
+                attrs: {
+                  d: "M7.80697 7.70189H9.20697V12.0719H7.80697V7.70189ZM7.77698 6.15189C7.77698 5.94523 7.85698 5.77523 8.01698 5.64189C8.18362 5.50856 8.36033 5.44189 8.54697 5.44189C8.73362 5.44189 8.90362 5.50856 9.05698 5.64189C9.21698 5.77523 9.29698 5.94523 9.29698 6.15189C9.29698 6.35855 9.21698 6.52855 9.05698 6.66189C8.90362 6.78855 8.73362 6.85189 8.54697 6.85189C8.36033 6.85189 8.18362 6.78855 8.01698 6.66189C7.85698 6.52855 7.77698 6.35855 7.77698 6.15189Z",
+                  fill: "#1F4481",
+                },
+              }),
+            ]
+          ),
+        ]
       ),
       _vm._v(" "),
-      _c(
-        "p",
-        {
-          staticClass: "text-blue-500 mx-4 cursor-pointer text-sm",
-          on: { click: _vm.clearAccount },
-        },
-        [_vm._v("clear")]
-      ),
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "w-full flex justify-center" }, [
-      _vm.loading ? _c("div", { attrs: { id: "loading" } }) : _vm._e(),
-    ]),
-  ])
+      _c("transition", { attrs: { name: "tooltip" } }, [
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.show,
+                expression: "show",
+              },
+            ],
+            staticClass:
+              "z-10 absolute w-[300px] right-1 border border-[3px] border-[#86A5D9] bg-white",
+          },
+          [_c("p", { staticClass: "p-4 text-center" }, [_vm._t("default")], 2)]
+        ),
+      ]),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

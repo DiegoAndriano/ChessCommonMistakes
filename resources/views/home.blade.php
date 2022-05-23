@@ -1,57 +1,29 @@
 <x-app>
-    <div id="app" class="bg-white py-3 mt-3">
-        <div class="flex justify-around">
-
-            <div class="font-bold text-xl">
-                Chess Common Mistakes
-            </div>
-
-            <div>
-                <a class="text-xl font-bold hover:underline"
-                   href="https://github.com/DiegoAndriano/ChessCommonMistakes/">
-                    Repository
-                </a>
-            </div>
-
-        </div>
+    <div class="absolute right-7">
+        <a href="https://github.com/DiegoAndriano/ChessCommonMistakes" target="_blank">
+            <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_197_510)">
+                    <path d="M12.1561 0.991833C7.41232 1.31527 3.29201 4.45121 1.67951 8.97465C1.43107 9.65902 1.20139 10.6106 1.09357 11.3746C0.98576 12.1106 0.976385 13.6996 1.07014 14.445C1.54826 18.27 3.76545 21.5981 7.10295 23.5012C7.8717 23.9418 9.06233 24.4387 9.36701 24.4481C9.60608 24.4528 9.80764 24.3543 9.91076 24.1809C9.99514 24.0403 9.99983 23.9465 9.98576 22.9293C9.98108 22.3246 9.9717 21.8231 9.96701 21.8231C9.96233 21.8184 9.78889 21.8418 9.58264 21.8793C8.34982 22.0809 7.25295 21.8043 6.55451 21.1059C6.28264 20.834 6.19826 20.7028 5.92639 20.1403C5.48576 19.2215 5.22795 18.87 4.73107 18.509C4.36545 18.2465 4.16857 18.0496 4.16857 17.9512C4.16857 17.7168 4.73576 17.6371 5.18576 17.8106C5.7717 18.0309 6.16076 18.3684 6.58732 19.02C7.17795 19.9153 7.91857 20.3137 8.86076 20.2434C9.2217 20.2153 9.95295 20.0137 10.0092 19.9246C10.0233 19.8965 10.0701 19.7465 10.103 19.5918C10.192 19.2168 10.4217 18.7434 10.6186 18.5231C10.8061 18.3121 10.8248 18.3262 10.2155 18.2418C9.73264 18.1762 8.89358 17.9606 8.49045 17.8012C6.79357 17.1309 5.81389 15.8793 5.44826 13.9153C5.33107 13.2871 5.33107 11.745 5.44826 11.2575C5.61701 10.559 5.93107 9.92152 6.36232 9.39183L6.56389 9.1434L6.49357 8.92308C6.24982 8.1684 6.27795 7.18871 6.56857 6.27933C6.66232 5.99339 6.68107 5.96527 6.8217 5.93715C7.32326 5.8434 8.4717 6.2559 9.5217 6.90277L9.98108 7.18871L10.3889 7.09496C11.3451 6.87465 11.7858 6.82777 12.9811 6.82777C14.1811 6.82777 14.617 6.87465 15.5733 7.09496L15.9858 7.18871L16.3467 6.96371C17.0639 6.51371 17.7717 6.18089 18.2545 6.05902C18.653 5.96058 18.9998 5.91371 19.1498 5.94183C19.2811 5.96527 19.3045 5.99808 19.3936 6.27933C19.6608 7.11371 19.7076 8.17308 19.5014 8.81996L19.403 9.12465L19.4967 9.24183C19.9561 9.80902 20.317 10.5028 20.4905 11.159C20.6123 11.6184 20.6592 12.7903 20.5795 13.4465C20.2326 16.2965 18.6717 17.8293 15.6998 18.2418C15.1373 18.3168 15.1467 18.3121 15.3108 18.4903C15.5264 18.7153 15.7326 19.1184 15.8498 19.5356C15.9436 19.8825 15.953 20.0325 15.9764 22.0153C16.0092 24.3215 15.9998 24.2746 16.2858 24.3918C16.5061 24.4856 16.7639 24.4528 17.2233 24.27C18.8545 23.6371 20.1389 22.8121 21.367 21.6028C23.3217 19.6809 24.5498 17.1871 24.892 14.445C24.9858 13.6996 24.9764 12.1106 24.8686 11.3746C24.0576 5.66058 19.4733 1.38558 13.7451 0.991833C12.9905 0.940271 12.9248 0.940271 12.1561 0.991833Z" fill="#333333"/>
+                </g>
+                <defs>
+                    <clipPath id="clip0_197_510">
+                        <rect width="24" height="24" fill="white" transform="translate(0.981079 0.710693)"/>
+                    </clipPath>
+                </defs>
+            </svg>
+        </a>
     </div>
 
+    <div class="w-full">
+        <logosmall-component></logosmall-component>
+        <logomedium-component></logomedium-component>
+        <logodesktop-component></logodesktop-component>
+        <logodesktopxxl-component></logodesktopxxl-component>
+    </div>
 
-    <div class="max-w-4xl mx-auto">
-        <div style="padding:10px; border-radius:10px; color:#fff; background-color:#333; text-align:center;">
-            <a href="mailto:andrianodna@gmail.com">Made by the Filocode team! | andrianodna@gmail.com</a>
-        </div>
-        <div style="padding:10px; border-radius:10px; color:#fff; background-color:#333; text-align:center; margin-top:5px">
-            <a href="https://www.paypal.com/donate/?hosted_button_id=9ZMQY27X9N6ZL">Buy us a coffee!</a>
-        </div>
-        <h2 class="font-bold text-3xl mt-6">Select your account</h2>
-        <p class="mb-4">Get your most common errors in the openings given a number of games.</p>
+    <div class="px-4 py-2 mx-auto max-w-7xl">
 
         <chess-component></chess-component>
-
-        <h2 class="font-bold text-xl">What am I looking at?</h2>
-        <p class="my-2 ">A working analyzing tool, to check which mistakes any given lichess user repeats mutiple times. The goal is
-            to be aware of the positions you may repeat in any game, and then know that you repeated the same mistakes
-            in the same position a determined amount of times and how to get better on those positions going to the
-            lichess board and studying the game.</p>
-
-        <h2 class="font-bold text-xl">Recommended use:</h2>
-
-        <ul class="mt-4 mb-12">
-            <li>It uses <span class="font-bold">only analyzed</span> games</li>
-            <li>Use >50 numbers of games</li>
-            <li>Ignore first 4 moves (meaning 2 for white and 2 for black)</li>
-            <li>Score lost to consider an error means the score lost from the previous move to the actual move made. If the
-                score is +3 after white moves, and black then moves and the score now is +6, then the score lost is 3.</li>
-            <li>Minimum times the error is repeated: set this in at least two to get a nice feedback</li>
-        </ul>
-
-        <div style="padding:10px; border-radius:10px; color:#fff; background-color:#333; text-align:center;">
-            <a href="mailto:andrianodna@gmail.com">Made by the Filocode team! | andrianodna@gmail.com</a>
-        </div>
-        <div style="padding:10px; border-radius:10px; color:#fff; background-color:#333; text-align:center; margin-top:5px; margin-bottom: 50px;">
-            <a href="https://www.paypal.com/donate/?hosted_button_id=9ZMQY27X9N6ZL">Buy us a coffee!</a>
-        </div>
 
     </div>
 
