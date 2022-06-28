@@ -12,7 +12,7 @@
 }
 
 .tooltip-enter-active, .tooltip-leave-active {
-    @apply transition scale-100 transform scale-100 origin-center
+    @apply transition transform scale-100 origin-center
 }
 
 .tooltip-enter, .tooltip-leave-to {
