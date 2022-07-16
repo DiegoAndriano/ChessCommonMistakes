@@ -516,6 +516,12 @@ Ensure the default browser behavior of the `hidden` attribute.
     max-width: 1280px;
   }
 }
+@media (min-width: 1440px) {
+
+  .container {
+    max-width: 1440px;
+  }
+}
 @media (min-width: 1536px) {
 
   .container {
@@ -626,6 +632,16 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .justify-evenly {
   justify-content: space-evenly;
+}
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .overflow-x-scroll {
   overflow-x: scroll;
@@ -888,10 +904,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 @media (min-width: 1024px) {
 
-  .lg\:block {
-    display: block;
-  }
-
   .lg\:w-1\/2 {
     width: 50%;
   }
@@ -911,13 +923,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   }
 }
 
-@media (min-width: 1536px) {
-
-  .\32xl\:block {
-    display: block;
-  }
-}
-
 @media (min-width: 500px) {
 
   .xs\:block {
@@ -929,10 +934,41 @@ Ensure the default browser behavior of the `hidden` attribute.
   }
 }
 
+@media (min-width: 1440px) {
+
+  .\32\.5xl\:flex {
+    display: flex;
+  }
+
+  .\32\.5xl\:h-\[40px\] {
+    height: 40px;
+  }
+
+  .\32\.5xl\:h-\[100px\] {
+    height: 100px;
+  }
+
+  .\32\.5xl\:h-\[156px\] {
+    height: 156px;
+  }
+
+  .\32\.5xl\:space-x-3 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+}
+
 @media (min-width: 2000px) {
 
   .\33xl\:block {
     display: block;
+  }
+
+  .\33xl\:space-x-5 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 0;
+    margin-right: calc(1.25rem * var(--tw-space-x-reverse));
+    margin-left: calc(1.25rem * calc(1 - var(--tw-space-x-reverse)));
   }
 }
 

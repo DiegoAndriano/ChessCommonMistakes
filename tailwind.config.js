@@ -27,6 +27,7 @@ module.exports = {
         extend: {
             screens: {
                 'xs': '500px',
+                '2.5xl': '1440px',
                 '3xl': '2000px'
             },
             transitionProperty: {

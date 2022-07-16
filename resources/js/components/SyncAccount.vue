@@ -364,6 +364,9 @@ export default {
                     this.synced = true
                     this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
                 }
+            } else {
+                this.synced = true
+                this.$emit('synced', [this.movementMatrix, this.worsePlays, this.repetition])
             }
         },
         limitMaxMatchesValue(event) {
