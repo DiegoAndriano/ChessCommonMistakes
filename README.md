@@ -1,5 +1,5 @@
 # Working tool
-https://chess.filocode.com.ar/
+http://chesscommonmistakes.diegoandriano.com/
 
  **1.4k users in the first 3 days! Thanks for passing by!**
 
