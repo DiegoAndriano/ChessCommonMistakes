@@ -26,6 +26,5 @@ A working analyzing tool, to check which mistakes any given lichess user repeats
 
 ## Tools
 
-- Laravel (not used in the long run
 - VueJS
 - Tailwindcss
