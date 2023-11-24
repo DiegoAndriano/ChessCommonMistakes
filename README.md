@@ -13,6 +13,8 @@ Have access to your most repeated mistakes (in the same position) and check the 
 
 Made with love in ***4 days*** with a team of **2 developers**.
 
+Later upped the design game with 1 dev and 1 designer!
+
 # Goal and what it is.
 
 A working analyzing tool, to check which mistakes any given lichess user repeats mutiple times. The goal is to be aware of the positions you may repeat in any game, and then know that you repeated the same mistakes in the same position a determined amount of times and how to get better on those positions going to the lichess board and studying the game.
